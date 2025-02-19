@@ -32,7 +32,7 @@ namespace FlashHackForum
 
             app.Run();
 
-            // Testing Ett Två , här kommer ett eko från github.
+            // Testing Ett Två , här kommer ett eko från github. <3
         }
     }
 }
