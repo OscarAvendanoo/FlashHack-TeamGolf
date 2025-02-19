@@ -398,3 +398,5 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+/Filer/FlashHack.txt
+/Filer/Projektuppgift - Agil Systemutveckling - Flashhack.pdf

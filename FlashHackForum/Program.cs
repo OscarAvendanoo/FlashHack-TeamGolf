@@ -31,6 +31,9 @@ namespace FlashHackForum
                 pattern: "{controller=Home}/{action=Index}/{id?}");
 
             app.Run();
+
+
+            // Nu testar jag att lägga till en kommentar
         }
     }
 }
