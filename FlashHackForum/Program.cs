@@ -32,7 +32,7 @@ namespace FlashHackForum
 
             app.Run();
 
-            // hejsan oscar heter jag
+            // hallå
         }
     }
 }
