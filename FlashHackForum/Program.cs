@@ -31,7 +31,8 @@ namespace FlashHackForum
                 pattern: "{controller=Home}/{action=Index}/{id?}");
 
             app.Run();
-            
+
+            Console.WriteLine("Tjolahopp på dig du");
         }
     }
 }
