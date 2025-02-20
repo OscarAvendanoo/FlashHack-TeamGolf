@@ -32,7 +32,7 @@ namespace FlashHackForum
 
             app.Run();
 
-            Console.WriteLine("Tjolahopp på dig du");
+            
         }
     }
 }
