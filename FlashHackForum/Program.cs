@@ -54,7 +54,6 @@ namespace FlashHackForum
 
             app.Run();
 
-            
         }
     }
 }

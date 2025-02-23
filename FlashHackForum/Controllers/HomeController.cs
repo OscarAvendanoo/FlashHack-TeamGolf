@@ -31,5 +31,6 @@ namespace FlashHackForum.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+        //Här kommer en kommentar om du vill
     }
 }
