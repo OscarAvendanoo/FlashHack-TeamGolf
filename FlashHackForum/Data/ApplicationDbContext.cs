@@ -18,6 +18,13 @@ namespace FlashHackForum.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            // Configure the relationship between User and Account
+            modelBuilder.Entity<User>()
+               .HasOne(u => u.Account)
+               .WithOne(a => a.User)
+               .HasForeignKey<Account>(a => a.UserId) // Set UserId as Foreign Key in Account
+               .IsRequired(); // Optional: Enforce every Account must have a User
+
             // Configure the relationship between Account and ForumThread for "Favorites"
             modelBuilder.Entity<Account>()
                 .HasMany(a => a.Favorites)
