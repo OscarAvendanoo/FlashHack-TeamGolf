@@ -1,5 +1,7 @@
 ﻿using FlashHackForum.Data;
+using FlashHackForum.Data.Interfaces;
 using FlashHackForum.Models;
+using FLashHackForum.Data;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Reflection.Metadata.Ecma335;
@@ -8,12 +10,10 @@ namespace FlashHackForum.Controllers
 {
     public class SecondCategoryController : Controller
     {
-        private readonly MainCategoryRepository mainCategoryRepo;
-        private readonly SecondCategoryRepository secondCategoryRepository;
+        private readonly ISecondCategoryRepository secondCategoryRepository;
 
-        public SecondCategoryController(MainCategoryRepository mainCategoryRepo, SecondCategoryRepository secondCategoryRepository)
+        public SecondCategoryController(ISecondCategoryRepository secondCategoryRepository)
         {
-            this.mainCategoryRepo = mainCategoryRepo;
             this.secondCategoryRepository = secondCategoryRepository;
         }
 
@@ -21,15 +21,17 @@ namespace FlashHackForum.Controllers
         
         
         //GET: SecondCategory/GetAll
-        public async Task<ActionResult> GetAllSecondCategoriesAsync()
+        public async Task<ActionResult> GetAllCategories()
         {
             return View(await secondCategoryRepository.GetAllAsync());
+            
+            
         }
         
         // GET: CategoryController/Details/5
         public async Task<ActionResult> GetSecondCategoryAsync(int id)
         {
-            return View(await secondCategoryRepository.GetByCategoryIdIncludeThreads(id));
+            return View(/*await secondCategoryRepository.GetByCategoryIdIncludeThreads(id)*/);
         }
 
         // GET: CategoryController/Create
