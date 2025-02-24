@@ -1,3 +1,4 @@
+using FlashHackForum.Data.Interfaces;
 using FlashHackForum.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
@@ -7,10 +8,11 @@ namespace FlashHackForum.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-
+       
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
+           
         }
 
         public IActionResult Index()
@@ -18,8 +20,9 @@ namespace FlashHackForum.Controllers
             return View();
         }
 
-        public IActionResult Privacy()
+        public async Task<IActionResult> Privacy()
         {
+          
             return View();
         }
 
@@ -28,5 +31,6 @@ namespace FlashHackForum.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+        //Här kommer en kommentar om du vill
     }
 }
