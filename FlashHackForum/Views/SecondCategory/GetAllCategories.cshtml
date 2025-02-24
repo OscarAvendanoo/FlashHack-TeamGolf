@@ -7,7 +7,7 @@
 <h1>GetAllSecondCategoriesAsync</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="CreateCategory">Create New</a>
 </p>
 <table class="table">
     <thead>
@@ -25,9 +25,9 @@
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.SecondCategoryId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.SecondCategoryId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.SecondCategoryId">Delete</a>
+                <a asp-action="Edit" asp-route-SecondCategoryId="@item.SecondCategoryId">Edit</a> |
+                    <a asp-action="Details" asp-route-SecondCategoryId="@item.SecondCategoryId">Details</a> |
+                    <a asp-action="Delete" asp-route-SecondCategoryId="@item.SecondCategoryId">Delete</a>
             </td>
         </tr>
 }

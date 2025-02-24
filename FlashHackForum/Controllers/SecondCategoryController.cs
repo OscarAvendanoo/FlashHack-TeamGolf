@@ -18,24 +18,20 @@ namespace FlashHackForum.Controllers
         }
 
 
-        
-        
         //GET: SecondCategory/GetAll
         public async Task<ActionResult> GetAllCategories()
         {
             return View(await secondCategoryRepository.GetAllAsync());
-            
-            
         }
         
-        // GET: CategoryController/Details/5
-        public async Task<ActionResult> GetSecondCategoryAsync(int id)
-        {
-            return View(/*await secondCategoryRepository.GetByCategoryIdIncludeThreads(id)*/);
-        }
+        //// GET: CategoryController/Details/5
+        //public async Task<ActionResult> GetCategory(int id)
+        //{
+        //    return View(await secondCategoryRepository.GetByIDAsync(id));
+        //}
 
         // GET: CategoryController/Create
-        public ActionResult CreateSecondCategory()
+        public ActionResult CreateCategory()
         {
             return View();
         }
@@ -43,12 +39,12 @@ namespace FlashHackForum.Controllers
         // POST: CategoryController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> CreateSecondCategoryAsync(int categoryId, SecondCategory secondCategory)
+        public async Task<ActionResult> CreateCategory(int categoryId, SecondCategory secondCategory)
         {
             try
             {
                 await secondCategoryRepository.AddAsync(secondCategory);
-                return View(secondCategory);
+                return RedirectToAction("GetAllCategories");
             }
             catch
             {
@@ -57,7 +53,7 @@ namespace FlashHackForum.Controllers
         }
 
         // GET: CategoryController/Edit/5
-        public async Task<ActionResult> EditSecondCategoryAsync(int id)
+        public async Task<ActionResult> EditCategory(int id)
         {
             return View(await secondCategoryRepository.GetByIDAsync(id));
         }
@@ -65,7 +61,7 @@ namespace FlashHackForum.Controllers
         // POST: CategoryController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> EditSecondCategoryAsync(int id, SecondCategory secondCategory)
+        public async Task<ActionResult> EditCategory(int id, SecondCategory secondCategory)
         {
             try
             {
@@ -83,7 +79,7 @@ namespace FlashHackForum.Controllers
         }
 
         // GET: CategoryController/Delete/5
-        public async Task<ActionResult> DeleteSecondCategoryAsync(int id)
+        public async Task<ActionResult> DeleteCategory(int id)
         {
             return View(await secondCategoryRepository.GetByIDAsync(id));
         }
@@ -91,7 +87,7 @@ namespace FlashHackForum.Controllers
         // POST: CategoryController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> DeleteSecondCategoryAsync(int id, SecondCategory secondCategory)
+        public async Task<ActionResult> DeleteCategory(int id, SecondCategory secondCategory)
         {
             try
             {
