@@ -25,9 +25,9 @@
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-SecondCategoryId="@item.SecondCategoryId">Edit</a> |
-                    <a asp-action="Details" asp-route-SecondCategoryId="@item.SecondCategoryId">Details</a> |
-                    <a asp-action="Delete" asp-route-SecondCategoryId="@item.SecondCategoryId">Delete</a>
+                    <a asp-action="EditCategory" asp-route-id="@item.SecondCategoryId">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.SecondCategoryId">Details</a> |
+                    <a asp-action="DeleteCategory" asp-route-id="@item.SecondCategoryId">Delete</a>
             </td>
         </tr>
 }

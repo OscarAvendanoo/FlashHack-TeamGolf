@@ -24,11 +24,7 @@ namespace FlashHackForum.Controllers
             return View(await secondCategoryRepository.GetAllAsync());
         }
         
-        //// GET: CategoryController/Details/5
-        //public async Task<ActionResult> GetCategory(int id)
-        //{
-        //    return View(await secondCategoryRepository.GetByIDAsync(id));
-        //}
+        
 
         // GET: CategoryController/Create
         public ActionResult CreateCategory()
@@ -67,7 +63,8 @@ namespace FlashHackForum.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    return View(await secondCategoryRepository.UpdateAsync(secondCategory));
+                    await secondCategoryRepository.UpdateAsync(secondCategory);
+                    return RedirectToAction("GetAllCategories");
                 }
                 return View();
                 
@@ -92,7 +89,7 @@ namespace FlashHackForum.Controllers
             try
             {
                 await secondCategoryRepository.DeleteAsync(secondCategory);
-                return View(secondCategory);
+                return RedirectToAction("GetAllCategories");
             }
             catch
             {
