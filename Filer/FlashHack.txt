@@ -1,0 +1,63 @@
+* Admin (class/ role ?)
+
+* User (class)
+	Förnamn		(prop-string)
+	Efternamn	(prop-string)
+	Arbetsgivare	(prop-string)
+	Telefonnummer	(prop-string)
+	e-post		(prop-string)
+	bio		(prop-string)
+	Kompetenser/ färdigheter (prop-dict: string & int) ska kunna matchas mot Company-kompetenser
+	Favoriter (prop (lista-inlägg (obj?)) )
+	Skapade trådar (prop (lista-inlägg (obj?)) )
+	Profilbild	(prop-string (url?))
+	IsPremium	(prop-bool)
+	Signature	(prop-string)
+	?? IsAdmin	(prop-bool)   <<om ingen admin class ska finnas.>>
+
+
+	Hidden (syns ej på profilsidan)
+		ShowContact 		(prop-bool)
+		ShowToCompanies 	(prop-bool)
+		ShowAdvertisements 	(prop-bool)  om premiummembership
+		Password 		(prop-string)
+		Confirm Password 	(prop-string)
+
+
+Premiummembership allows for:
+ - se annonser från annonsörer 	(class?)
+ - member-rating 		(prop-int)
+ - visibility mot företag 	(prop-bool)
+ - visibility mot profil 	(prop-bool)
+ - visibility mot member inlägg	()
+ - matcha mot Company kompetenser (sökta)
+
+
+* Company (class ?)
+	Name		(prop-string)
+	Profile		(prop-string)
+	Kompetens sök(prop lista ?)   ska kunna matchas mot member-kompetenser
+
+* MainCategory (class)
+	Name/ Topic	(prop-string)
+	SubCategories 	(prop list-SubCategories)
+
+* SubCategory (class)
+	Name/ Subject	(prop-string)
+	Threads 	(prop list-Thread)
+	
+* Thread (class)
+	Title		(prop-string)
+	Creator		(prop-(obj) User )
+	CreateDate	(prop-DateTime)
+	Inlägg 		(prop (list-inlägg) )
+
+* Inlägg (class)
+	Title 		(prop-string)
+	PostDate	(prop-DateTime)
+	UpVotes		(prop-int)
+	DownVotes 	(prop-int)
+	Author 		(prop-User)
+	?? Signature (prop-Author-Signature) (nullable)
+
+
