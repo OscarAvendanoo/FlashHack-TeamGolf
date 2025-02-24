@@ -24,7 +24,6 @@ namespace FlashHackForum.Controllers
             return View(await secondCategoryRepository.GetAllAsync());
         }
         
-        
 
         // GET: CategoryController/Create
         public ActionResult CreateCategory()
