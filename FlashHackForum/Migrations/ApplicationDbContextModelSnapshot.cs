@@ -37,6 +37,66 @@ namespace FlashHackForum.Migrations
                     b.ToTable("AccountFavorites");
                 });
 
+            modelBuilder.Entity("FlashHackForum.Models.Account", b =>
+                {
+                    b.Property<int>("AccountId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AccountId"));
+
+                    b.Property<DateTime>("AccountCreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("AccountRating")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Biography")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Employer")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsPremium")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ProfileImage")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("ShowAdvertisements")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("ShowContact")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("ShowToCompanies")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Signature")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("AccountId");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("Accounts");
+                });
+
             modelBuilder.Entity("FlashHackForum.Models.Company", b =>
                 {
                     b.Property<int>("CompanyId")
@@ -73,7 +133,7 @@ namespace FlashHackForum.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CompetensId"));
 
-                    b.Property<int?>("AccountUserId")
+                    b.Property<int?>("AccountId")
                         .HasColumnType("int");
 
                     b.Property<int?>("CompanyId")
@@ -95,7 +155,7 @@ namespace FlashHackForum.Migrations
 
                     b.HasKey("CompetensId");
 
-                    b.HasIndex("AccountUserId");
+                    b.HasIndex("AccountId");
 
                     b.HasIndex("CompanyId");
 
@@ -245,14 +305,12 @@ namespace FlashHackForum.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserId"));
 
+                    b.Property<int?>("AccountId")
+                        .HasColumnType("int");
+
                     b.Property<string>("ConfirmPassword")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
-                        .HasMaxLength(8)
-                        .HasColumnType("nvarchar(8)");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -284,54 +342,6 @@ namespace FlashHackForum.Migrations
                     b.HasKey("UserId");
 
                     b.ToTable("Users");
-
-                    b.HasDiscriminator().HasValue("User");
-
-                    b.UseTphMappingStrategy();
-                });
-
-            modelBuilder.Entity("FlashHackForum.Models.Account", b =>
-                {
-                    b.HasBaseType("FlashHackForum.Models.User");
-
-                    b.Property<DateTime>("AccountCreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("AccountId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("AccountRating")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Biography")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Employer")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsPremium")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("PhoneNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ProfileImage")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("ShowAdvertisements")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("ShowContact")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("ShowToCompanies")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Signature")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasDiscriminator().HasValue("Account");
                 });
 
             modelBuilder.Entity("AccountFavorites", b =>
@@ -349,11 +359,22 @@ namespace FlashHackForum.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("FlashHackForum.Models.Account", b =>
+                {
+                    b.HasOne("FlashHackForum.Models.User", "User")
+                        .WithOne("Account")
+                        .HasForeignKey("FlashHackForum.Models.Account", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("FlashHackForum.Models.Competens", b =>
                 {
                     b.HasOne("FlashHackForum.Models.Account", null)
                         .WithMany("Competenses")
-                        .HasForeignKey("AccountUserId");
+                        .HasForeignKey("AccountId");
 
                     b.HasOne("FlashHackForum.Models.Company", null)
                         .WithMany("CompetensesToLookFor")
@@ -403,6 +424,15 @@ namespace FlashHackForum.Migrations
                     b.Navigation("PostCreator");
                 });
 
+            modelBuilder.Entity("FlashHackForum.Models.Account", b =>
+                {
+                    b.Navigation("Competenses");
+
+                    b.Navigation("ThreadPosts");
+
+                    b.Navigation("ThreadsStarted");
+                });
+
             modelBuilder.Entity("FlashHackForum.Models.Company", b =>
                 {
                     b.Navigation("CompetensesToLookFor");
@@ -423,13 +453,9 @@ namespace FlashHackForum.Migrations
                     b.Navigation("Threads");
                 });
 
-            modelBuilder.Entity("FlashHackForum.Models.Account", b =>
+            modelBuilder.Entity("FlashHackForum.Models.User", b =>
                 {
-                    b.Navigation("Competenses");
-
-                    b.Navigation("ThreadPosts");
-
-                    b.Navigation("ThreadsStarted");
+                    b.Navigation("Account");
                 });
 #pragma warning restore 612, 618
         }
