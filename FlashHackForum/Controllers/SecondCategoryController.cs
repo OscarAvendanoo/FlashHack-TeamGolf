@@ -18,11 +18,18 @@ namespace FlashHackForum.Controllers
         }
 
 
-        //SECONDCATEGORY
-        // GET: CategoryController/Details/5
-        public ActionResult GetSecondCategory(int id)
+        
+        
+        //GET: SecondCategory/GetAll
+        public async Task<ActionResult> GetAllSecondCategoriesAsync()
         {
-            return View(secondCategoryRepository.GetByCategoryIdIncludeThreads(id));
+            return View(await secondCategoryRepository.GetAllAsync());
+        }
+        
+        // GET: CategoryController/Details/5
+        public async Task<ActionResult> GetSecondCategoryAsync(int id)
+        {
+            return View(await secondCategoryRepository.GetByCategoryIdIncludeThreads(id));
         }
 
         // GET: CategoryController/Create
@@ -48,7 +55,7 @@ namespace FlashHackForum.Controllers
         }
 
         // GET: CategoryController/Edit/5
-        public async Task<ActionResult> EditSecondCategory(int id)
+        public async Task<ActionResult> EditSecondCategoryAsync(int id)
         {
             return View(await secondCategoryRepository.GetByIDAsync(id));
         }
@@ -56,7 +63,7 @@ namespace FlashHackForum.Controllers
         // POST: CategoryController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> EditSecondCategory(int id, SecondCategory secondCategory)
+        public async Task<ActionResult> EditSecondCategoryAsync(int id, SecondCategory secondCategory)
         {
             try
             {
@@ -74,19 +81,20 @@ namespace FlashHackForum.Controllers
         }
 
         // GET: CategoryController/Delete/5
-        public ActionResult Delete(int id)
+        public async Task<ActionResult> DeleteSecondCategoryAsync(int id)
         {
-            return View();
+            return View(await secondCategoryRepository.GetByIDAsync(id));
         }
 
         // POST: CategoryController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public async Task<ActionResult> DeleteSecondCategoryAsync(int id, SecondCategory secondCategory)
         {
             try
             {
-                return RedirectToAction(nameof(Index));
+                await secondCategoryRepository.DeleteAsync(secondCategory);
+                return View(secondCategory);
             }
             catch
             {
