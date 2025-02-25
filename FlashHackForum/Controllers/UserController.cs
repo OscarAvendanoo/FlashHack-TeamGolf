@@ -104,7 +104,7 @@ namespace FlashHackForum.Controllers
         {
             if (ModelState.IsValid)
             {
-               await _unitOfWork.BeginTransactionAsync();
+               await _unitOfWork.BeginTransactionAsync(); //Starting the transaction here
                 try
                 {
                     var user = new User
@@ -112,13 +112,30 @@ namespace FlashHackForum.Controllers
                         FirstName = registerVM.FirstName,
                         LastName = registerVM.LastName,
                         Email = registerVM.Email,
-                        UserName = registerVM.
-                    }
-                }
-                catch (Exception)
-                {
+                        UserName = registerVM.UserName,
+                        Password = registerVM.Password
 
-                    throw;
+                    };
+                    await _unitOfWork.UserRepository.AddAsync(user);
+
+                    var account = new Account
+                    {
+                        Biography = registerVM.Biography,
+                        PhoneNumber = registerVM.PhoneNumber,
+                        DisplayName = registerVM.DisplayName,
+                        IsPremium = registerVM.IsPremium,
+                        UserId = user.UserId,
+                        User = user,
+                        AccountCreatedAt = DateTime.UtcNow
+                    };
+                    await _unitOfWork.AccountRepository.AddAsync(account);
+                    await _unitOfWork.CommitTransactionAsync(); // Commit the transaction if Successful
+                    return RedirectToAction("Index","Auth");
+                }
+                catch (Exception ex)
+                {
+                    await _unitOfWork.RollbackTransactionAsync(); // Rolling back whole transaction if error occured
+                    ModelState.AddModelError("", "Registrering mislyckades. Försök igen.");
                 }
             }
             return View(registerVM);
