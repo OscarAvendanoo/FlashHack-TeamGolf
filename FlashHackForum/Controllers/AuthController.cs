@@ -24,7 +24,6 @@ namespace FlashHackForum.Controllers
         {
             if (ModelState.IsValid) 
             {
-                //var user = userRepository.GetUserByEmail(userLoginVM.Email);
                 var user = (await userRepository.GetAllAsync()).FirstOrDefault(c => c.Email == userLoginVM.Email && c.Password == userLoginVM.Password);
                 if (user == null) 
                 {
