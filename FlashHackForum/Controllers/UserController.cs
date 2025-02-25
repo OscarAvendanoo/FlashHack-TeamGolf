@@ -101,8 +101,7 @@ namespace FlashHackForum.Controllers
         {
             if (ModelState.IsValid)
             {
-                using (var transaction = await userRepository.) ;
-                await userRepository.
+               
             }
             return View(registerVM);
 
