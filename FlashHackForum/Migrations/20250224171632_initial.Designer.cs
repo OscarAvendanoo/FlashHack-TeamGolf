@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FlashHackForum.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250224162343_initial")]
+    [Migration("20250224171632_initial")]
     partial class initial
     {
         /// <inheritdoc />
