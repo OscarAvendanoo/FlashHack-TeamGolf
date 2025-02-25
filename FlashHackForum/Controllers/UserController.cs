@@ -1,4 +1,5 @@
 ﻿using FlashHackForum.Data.Interfaces;
+using FlashHackForum.Models;
 using FlashHackForum.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -7,11 +8,13 @@ namespace FlashHackForum.Controllers
 {
     public class UserController : Controller
     {
-        private readonly IUserRepository userRepository;
+        private readonly IUserRepository _userRepository;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public UserController(IUserRepository userRepository)
+        public UserController(IUserRepository userRepository, IUnitOfWork unitOfWork)
         {
-            this.userRepository = userRepository;
+            _userRepository = userRepository;
+            _unitOfWork = unitOfWork;
         }
         // Det är en Mall Controller går justera respectiva methoder
 
@@ -101,7 +104,22 @@ namespace FlashHackForum.Controllers
         {
             if (ModelState.IsValid)
             {
-               
+               await _unitOfWork.BeginTransactionAsync();
+                try
+                {
+                    var user = new User
+                    {
+                        FirstName = registerVM.FirstName,
+                        LastName = registerVM.LastName,
+                        Email = registerVM.Email,
+                        UserName = registerVM.
+                    }
+                }
+                catch (Exception)
+                {
+
+                    throw;
+                }
             }
             return View(registerVM);
 
