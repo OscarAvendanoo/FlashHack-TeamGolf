@@ -28,6 +28,7 @@ namespace FlashHackForum.Controllers
                 var user = (await userRepository.GetAllAsync()).FirstOrDefault(c => c.Email == userLoginVM.Email && c.Password == userLoginVM.Password);
                 if (user == null) 
                 {
+                    ViewBag.Error = "Invalid Email or Password.";
                     ViewData["Message"] = "Invalid user id or password.";
                     return View(userLoginVM);
                 }
