@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.CompilerServices;
 
 namespace FlashHackForum.Models
@@ -35,6 +36,13 @@ namespace FlashHackForum.Models
         [DataType(DataType.Password)]
         [Compare("Password", ErrorMessage = "Passwords do not match.")]
         public string ConfirmPassword { get; set; }
-    
+
+        // Foreign Key Property
+        public int? AccountId { get; set; }
+
+        // Navigation Property
+        [ForeignKey("AccountId")]
+        public Account? Account { get; set; }
+
     }
 }
