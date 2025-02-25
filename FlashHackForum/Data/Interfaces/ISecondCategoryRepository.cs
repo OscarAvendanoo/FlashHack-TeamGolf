@@ -6,5 +6,6 @@ namespace FlashHackForum.Data.Interfaces
     {
         Task<SecondCategory> GetByCategoryIdIncludeThreads(int id);
         Task<SecondCategory> GetByCategoryNameIncludeThreads(string name);
+
     }
 }
