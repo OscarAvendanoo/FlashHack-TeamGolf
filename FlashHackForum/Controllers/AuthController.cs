@@ -33,7 +33,7 @@ namespace FlashHackForum.Controllers
                 }
                 HttpContext.Session.SetInt32("UserId", user.UserId);
                 HttpContext.Session.SetString("UserName", ($"{user.FirstName} {user.LastName}"));
-                return RedirectToAction("index","Home");
+                return RedirectToAction("Index","Home");
 
             }
             return View(userLoginVM);
