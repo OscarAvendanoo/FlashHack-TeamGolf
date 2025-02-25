@@ -1,22 +1,37 @@
-﻿@model FlashHackForum.Models.SecondCategory
+﻿@* @model FlashHackForum.ViewModels.CreateSubCategoryViewModel *@
 
 @{
     ViewData["Title"] = "CreateCategory";
 }
 
-<h1>CreateCategory</h1>
+<h1>Create Sub Category</h1>
 
-<h4>SecondCategory</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="CreateCategory">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+
             <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
+                <label for="SubCategoryName">Name for sub category:</label>
+                <input type="text" name="SubCategoryName" class="form-control" placeholder="Name">
             </div>
+            @*
+                Här behöver vi troligtvis göra en viewmodel eller liknande så att vi kan skapa en subkategori som är kopplad till en huvudkategori
+                Kolla hur vi ska göra med valen i selecten om vi ska gå på ID eller om vi ska gå på namnet vi tilldelat huvudkategorin
+            *@
+            <br />
+            <div class="form-group">
+                <label for="MainCategoryId">Choose main category:</label>
+                <select name="MainCategoryId" class="form-control">
+                    <option value="">-- Välj huvudkategori --</option>
+                    @foreach (var kategori in ViewBag.MainCategories)
+                    {
+                        <option value="@kategori.MainCategoryId">@kategori.Name</option>
+                    }
+                </select>
+            </div>
+            <br />
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
@@ -25,9 +40,11 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="GetAllCategories">Back to List</a>
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

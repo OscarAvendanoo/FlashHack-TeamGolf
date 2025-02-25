@@ -1,5 +1,6 @@
 ﻿using FlashHackForum.Data.Interfaces;
 using FlashHackForum.Models;
+using FlashHackForum.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
 
@@ -10,10 +11,12 @@ namespace FlashHackForum.Controllers
     public class SecondCategoryController : Controller
     {
         private readonly ISecondCategoryRepository secondCategoryRepository;
+        private readonly IMainCategoryRepository mainCategoryRepository;
 
-        public SecondCategoryController(ISecondCategoryRepository secondCategoryRepository)
+        public SecondCategoryController(ISecondCategoryRepository secondCategoryRepository, IMainCategoryRepository mainCategoryRepository)
         {
             this.secondCategoryRepository = secondCategoryRepository;
+            this.mainCategoryRepository = mainCategoryRepository;
         }
 
 
@@ -25,20 +28,29 @@ namespace FlashHackForum.Controllers
         
 
         // GET: CategoryController/CreateCategory
-        public ActionResult CreateCategory()
+        public async Task<ActionResult> CreateCategory()
         {
+            ViewBag.MainCategories = await mainCategoryRepository.GetAllAsync();
             return View();
         }
 
         // POST: CategoryController/CreateCategory
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> CreateCategory(int categoryId, SecondCategory secondCategory)
+        public async Task<ActionResult> CreateCategory(int mainCategoryId, string subCategoryName)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
+                    
+                    SecondCategory secondCategory = new SecondCategory
+                    {
+                        
+                        Name = subCategoryName,
+                         MainCategoryId = mainCategoryId,
+                         
+                    };
                     await secondCategoryRepository.AddAsync(secondCategory);
                     return RedirectToAction("GetAllCategories");
                 }
