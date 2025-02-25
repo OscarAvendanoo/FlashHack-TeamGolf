@@ -1,16 +1,43 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using FlashHackForum.Data.Interfaces;
+using FlashHackForum.ViewModels;
+using Microsoft.AspNetCore.Mvc;
 
 namespace FlashHackForum.Controllers
 {
     public class AuthController : Controller
     {
-        public AuthController()
+        private readonly IUserRepository userRepository;
+
+        public AuthController(IUserRepository userRepository)
         {
-          
+            this.userRepository = userRepository;
         }
+
+        // Get 
         public IActionResult Index()
         {
             return View();
+        }
+
+        [HttpPost]
+        public async Task< IActionResult> Index(UserLoginViewModel userLoginVM)
+        {
+            if (ModelState.IsValid) 
+            {
+                //var user = userRepository.GetUserByEmail(userLoginVM.Email);
+                var user = (await userRepository.GetAllAsync()).FirstOrDefault(c => c.Email == userLoginVM.Email && c.Password == userLoginVM.Password);
+                if (user == null) 
+                {
+                    ViewData["Message"] = "Invalid user id or password.";
+                    return View(userLoginVM);
+                }
+                HttpContext.Session.SetInt32("UserId", user.UserId);
+                HttpContext.Session.SetString("UserName", ($"{user.FirstName} {user.LastName}"));
+                return RedirectToAction("index","Home");
+
+            }
+            return View(userLoginVM);
+
         }
     }
 }
