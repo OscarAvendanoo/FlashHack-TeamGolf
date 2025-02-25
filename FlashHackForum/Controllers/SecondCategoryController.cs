@@ -1,13 +1,12 @@
-﻿using FlashHackForum.Data;
-using FlashHackForum.Data.Interfaces;
+﻿using FlashHackForum.Data.Interfaces;
 using FlashHackForum.Models;
-using FLashHackForum.Data;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System.Reflection.Metadata.Ecma335;
+
 
 namespace FlashHackForum.Controllers
 {
+
+    
     public class SecondCategoryController : Controller
     {
         private readonly ISecondCategoryRepository secondCategoryRepository;
