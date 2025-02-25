@@ -1,10 +1,18 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using FlashHackForum.Data.Interfaces;
+using FlashHackForum.ViewModels;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FlashHackForum.Controllers
 {
     public class UserController : Controller
     {
+        private readonly IUserRepository userRepository;
+
+        public UserController(IUserRepository userRepository)
+        {
+            this.userRepository = userRepository;
+        }
         // Det är en Mall Controller går justera respectiva methoder
 
         // GET: UserController
@@ -80,6 +88,24 @@ namespace FlashHackForum.Controllers
             {
                 return View();
             }
+        }
+
+        [HttpGet]
+        public IActionResult Registration()
+        {
+            return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Registration(RegistrationViewModel registerVM)
+        {
+            if (ModelState.IsValid)
+            {
+                using (var transaction = await userRepository.) ;
+                await userRepository.
+            }
+            return View(registerVM);
+
         }
     }
 }
