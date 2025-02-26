@@ -11,6 +11,15 @@ namespace FlashHackForum
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            // Sesson state setup
+            builder.Services.AddMemoryCache();
+            builder.Services.AddSession(options => 
+            {
+                // Auto-end session after 10min of user idling
+                options.IdleTimeout = TimeSpan.FromSeconds(60 * 10);
+                options.Cookie.IsEssential = true;
+            });
+
             // Add services to the container.
 
             builder.Services.AddControllersWithViews();
@@ -60,6 +69,9 @@ namespace FlashHackForum
             app.UseSession();
 
             app.UseAuthorization();
+
+            // enable session state
+            app.UseSession();
 
             app.MapControllerRoute(
                 name: "default",
