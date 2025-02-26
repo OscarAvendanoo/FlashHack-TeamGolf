@@ -1,4 +1,4 @@
-﻿@* @model FlashHackForum.ViewModels.CreateSubCategoryViewModel *@
+﻿@model FlashHackForum.ViewModels.CreateEditSubCategoryViewModel
 
 @{
     ViewData["Title"] = "CreateCategory";
@@ -13,19 +13,21 @@
 
             <div class="form-group">
                 <label for="MainCategoryId">Choose main category:</label>
-                <select name="MainCategoryId" class="form-control">
+                <select asp-for="MainCategoryId" class="form-control">
                     <option value="">-- Välj huvudkategori --</option>
-                    @foreach (var category in ViewBag.MainCategories)
+                    @foreach (var category in Model.MainCategories)
                     {
                         <option value="@category.MainCategoryId">@category.Name</option>
                     }
                 </select>
+                <span asp-validation-for="MainCategoryId" class="text-danger"></span>
             </div>
            
             <br />
             <div class="form-group">
-                <label for="SubCategoryName">Name for sub category:</label>
-                <input type="text" name="SubCategoryName" class="form-control" placeholder="Name">
+                <label asp-for="Name">Name for sub category:</label>
+                <input asp-for="Name" class="form-control" placeholder="Name">
+                <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <br />
             <div class="form-group">

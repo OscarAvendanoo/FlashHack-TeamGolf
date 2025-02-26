@@ -27,35 +27,46 @@ namespace FlashHackForum.Controllers
         }
         
 
+        
+        
+        /*Här lurade jag runt lite och försökte komma på något vettigt med validering och skapade en viewmodel för både CREATE och EDIT.
+         Blir lite av spaghettikod och kan nog förbättra det men just nu funkar det :)*/
+
+        
         // GET: CategoryController/CreateCategory
         public async Task<ActionResult> CreateCategory()
         {
-            ViewBag.MainCategories = await mainCategoryRepository.GetAllAsync();
-            return View();
+            var model = new CreateEditSubCategoryViewModel
+            {
+                MainCategoryId = null,
+                MainCategories = await mainCategoryRepository.GetAllAsync()
+            };
+            return View(model);
         }
 
         // POST: CategoryController/CreateCategory
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> CreateCategory(int mainCategoryId, string subCategoryName)
+        public async Task<ActionResult> CreateCategory(CreateEditSubCategoryViewModel createSubCategoryViewModel)
         {
             try
             {
-                if (ModelState.IsValid)
+                if (!ModelState.IsValid)
                 {
-                    
-                    SecondCategory secondCategory = new SecondCategory
-                    {
-                        
-                        Name = subCategoryName,
-                         MainCategoryId = mainCategoryId,
-                         
-                    };
-                    await secondCategoryRepository.AddAsync(secondCategory);
-                    return RedirectToAction("GetAllCategories");
+
+                    createSubCategoryViewModel.MainCategories = await mainCategoryRepository.GetAllAsync();
+                    return View(createSubCategoryViewModel);
                 }
-                return View();
-                
+                SecondCategory secondCategory = new SecondCategory
+                {
+
+                    Name = createSubCategoryViewModel.Name,
+                    MainCategoryId = (int)createSubCategoryViewModel.MainCategoryId,
+
+                };
+                await secondCategoryRepository.AddAsync(secondCategory);
+                return RedirectToAction("GetAllCategories");
+
             }
             catch
             {
@@ -66,24 +77,42 @@ namespace FlashHackForum.Controllers
         // GET: CategoryController/EditCategory/5
         public async Task<ActionResult> EditCategory(int id)
         {
-            ViewBag.MainCategories = await mainCategoryRepository.GetAllAsync();
-            return View(await secondCategoryRepository.GetByIDAsync(id));
+            var model = new CreateEditSubCategoryViewModel
+            {
+                MainCategoryId = null,
+                MainCategories = await mainCategoryRepository.GetAllAsync()
+            };
+            var subCategory = await secondCategoryRepository.GetByIDAsync(id);
+            
+            
+            ViewBag.SubCategoryName = subCategory.Name;
+            return View(model);
+            
         }
 
         // POST: CategoryController/EditCategory/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> EditCategory(/*int mainCategoryId,*/ SecondCategory secondCategory)
+        public async Task<ActionResult> EditCategory(int id, CreateEditSubCategoryViewModel createSubCategoryViewModel)
         {
             try
             {
-                if (ModelState.IsValid)
+                if (!ModelState.IsValid)
                 {
-                    await secondCategoryRepository.UpdateAsync(secondCategory);
-                    return RedirectToAction("GetAllCategories");
+
+                    createSubCategoryViewModel.MainCategories = await mainCategoryRepository.GetAllAsync();
+                    return View(createSubCategoryViewModel);
                 }
-                return View();
                 
+                var secondCategory = await secondCategoryRepository.GetByIDAsync(id);
+                if (secondCategory != null)
+                {
+                    secondCategory.MainCategoryId = (int)createSubCategoryViewModel.MainCategoryId;
+                    secondCategory.Name = createSubCategoryViewModel.Name;
+
+                }
+                await secondCategoryRepository.UpdateAsync(secondCategory);
+                return RedirectToAction("GetAllCategories");
             }
             catch
             {

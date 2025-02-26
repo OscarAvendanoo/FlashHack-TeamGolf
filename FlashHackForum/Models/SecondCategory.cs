@@ -10,7 +10,7 @@ namespace FlashHackForum.Models
         public string Name { get; set; }
 
         //TEST
-        public int? MainCategoryId { get; set; }
+        public int MainCategoryId { get; set; }
         public MainCategory? MainCategory { get; set; }
 
         public virtual List<ForumThread> Threads { get; set; } = new List<ForumThread>();
