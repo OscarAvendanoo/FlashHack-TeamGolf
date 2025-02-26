@@ -9,6 +9,7 @@ namespace FlashHackForum.ViewModels
         public int? MainCategoryId { get; set; }
 
         [Required(ErrorMessage = "You have to enter a name for sub category")]
+        [StringLength(40, MinimumLength =2)]
         public string? Name { get; set; }
 
         public IEnumerable<MainCategory>? MainCategories { get; set; }
