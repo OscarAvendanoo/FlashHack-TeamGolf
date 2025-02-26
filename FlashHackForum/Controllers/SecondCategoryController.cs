@@ -66,13 +66,14 @@ namespace FlashHackForum.Controllers
         // GET: CategoryController/EditCategory/5
         public async Task<ActionResult> EditCategory(int id)
         {
+            ViewBag.MainCategories = await mainCategoryRepository.GetAllAsync();
             return View(await secondCategoryRepository.GetByIDAsync(id));
         }
 
         // POST: CategoryController/EditCategory/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> EditCategory(int id, SecondCategory secondCategory)
+        public async Task<ActionResult> EditCategory(/*int mainCategoryId,*/ SecondCategory secondCategory)
         {
             try
             {

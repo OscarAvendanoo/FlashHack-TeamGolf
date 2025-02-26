@@ -14,6 +14,17 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="SecondCategoryId" />
             <div class="form-group">
+                <label for="MainCategoryId">Choose main category:</label>
+                <select name="MainCategoryId" class="form-control">
+                    <option value="">Välj huvudkategori</option>
+                    @foreach (var category in ViewBag.MainCategories)
+                    {
+                        <option value="@category.MainCategoryId">@category.Name</option>
+                    }
+                </select>
+            </div>
+            <br />
+            <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
                 <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
@@ -26,7 +37,7 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="GetAllCategories">Back to List</a>
 </div>
 
 @section Scripts {
