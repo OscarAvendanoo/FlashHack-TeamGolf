@@ -131,7 +131,20 @@ namespace FlashHackForum.Controllers
                     await _unitOfWork.AccountRepository.AddAsync(account);
                     await _unitOfWork.CommitTransactionAsync(); // Commit the transaction if Successful
 
-                    return RedirectToAction("Index","Auth");
+                    // Set Session variables
+                    HttpContext.Session.SetInt32("UserId", user.UserId);
+                    HttpContext.Session.SetString("UserName", user.UserName);
+
+                    ViewBag.UserName = user.UserName;
+
+                    // If user IS an admin, set Session int [IsAdmin] to 1
+                    if (user.IsAdmin)
+                    {
+                        HttpContext.Session.SetInt32("IsAdmin", 1);
+                    }
+                    return RedirectToAction("Index", "Home");
+
+                    //return RedirectToAction("Index","Auth");
                 }
                 catch (Exception ex)
                 {
