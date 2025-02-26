@@ -104,6 +104,7 @@ namespace FlashHackForum.Controllers
         {
             if (ModelState.IsValid)
             {
+
                await _unitOfWork.BeginTransactionAsync(); //Starting the transaction here
                 try
                 {
@@ -151,6 +152,7 @@ namespace FlashHackForum.Controllers
                     await _unitOfWork.RollbackTransactionAsync(); // Rolling back whole transaction if error occured
                     ModelState.AddModelError("", "Registrering mislyckades. Försök igen.");
                 }
+
             }
             return View(registerVM);
 
