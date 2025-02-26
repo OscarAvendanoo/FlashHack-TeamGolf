@@ -1,86 +1,133 @@
-﻿using FlashHackForum.Data;
-using FlashHackForum.Data.Interfaces;
+﻿using FlashHackForum.Data.Interfaces;
 using FlashHackForum.Models;
-using FLashHackForum.Data;
-using Microsoft.AspNetCore.Http;
+using FlashHackForum.ViewModels;
 using Microsoft.AspNetCore.Mvc;
-using System.Reflection.Metadata.Ecma335;
+
 
 namespace FlashHackForum.Controllers
 {
+
+    
     public class SecondCategoryController : Controller
     {
         private readonly ISecondCategoryRepository secondCategoryRepository;
+        private readonly IMainCategoryRepository mainCategoryRepository;
 
-        public SecondCategoryController(ISecondCategoryRepository secondCategoryRepository)
+        public SecondCategoryController(ISecondCategoryRepository secondCategoryRepository, IMainCategoryRepository mainCategoryRepository)
         {
             this.secondCategoryRepository = secondCategoryRepository;
+            this.mainCategoryRepository = mainCategoryRepository;
         }
 
 
-        //GET: SecondCategory/GetAll
+        //GET: SecondCategory/GetAllCategories
         public async Task<ActionResult> GetAllCategories()
         {
             return View(await secondCategoryRepository.GetAllAsync());
         }
         
 
-        // GET: CategoryController/Create
-        public ActionResult CreateCategory()
+        
+        
+        /*Här lurade jag runt lite och försökte komma på något vettigt med validering och skapade en viewmodel för både CREATE och EDIT.
+         Blir lite av spaghettikod och kan nog förbättra det men just nu funkar det :)*/
+
+        
+        // GET: CategoryController/CreateCategory
+        public async Task<ActionResult> CreateCategory()
         {
-            return View();
+            var model = new CreateEditSubCategoryViewModel
+            {
+                MainCategoryId = null,
+                MainCategories = await mainCategoryRepository.GetAllAsync()
+            };
+            return View(model);
         }
 
-        // POST: CategoryController/Create
+        // POST: CategoryController/CreateCategory
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> CreateCategory(int categoryId, SecondCategory secondCategory)
+        public async Task<ActionResult> CreateCategory(CreateEditSubCategoryViewModel createSubCategoryViewModel)
         {
             try
             {
+                if (!ModelState.IsValid)
+                {
+
+                    createSubCategoryViewModel.MainCategories = await mainCategoryRepository.GetAllAsync();
+                    return View(createSubCategoryViewModel);
+                }
+                SecondCategory secondCategory = new SecondCategory
+                {
+
+                    Name = createSubCategoryViewModel.Name,
+                    MainCategoryId = (int)createSubCategoryViewModel.MainCategoryId,
+
+                };
                 await secondCategoryRepository.AddAsync(secondCategory);
+                return RedirectToAction("GetAllCategories");
+
+            }
+            catch
+            {
+                return NotFound();
+            }
+        }
+
+        // GET: CategoryController/EditCategory/5
+        public async Task<ActionResult> EditCategory(int id)
+        {
+            var subCategory = await secondCategoryRepository.GetByIDAsync(id);
+
+            var model = new CreateEditSubCategoryViewModel
+            {
+                MainCategoryId = subCategory.MainCategoryId,
+                MainCategories = await mainCategoryRepository.GetAllAsync()
+            };
+            
+            
+            ViewBag.SubCategoryName = subCategory.Name;
+            return View(model);
+            
+        }
+
+        // POST: CategoryController/EditCategory/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> EditCategory(int id, CreateEditSubCategoryViewModel createSubCategoryViewModel)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+
+                    createSubCategoryViewModel.MainCategories = await mainCategoryRepository.GetAllAsync();
+                    return View(createSubCategoryViewModel);
+                }
+                
+                var secondCategory = await secondCategoryRepository.GetByIDAsync(id);
+                if (secondCategory != null)
+                {
+                    secondCategory.MainCategoryId = (int)createSubCategoryViewModel.MainCategoryId;
+                    secondCategory.Name = createSubCategoryViewModel.Name;
+
+                }
+                await secondCategoryRepository.UpdateAsync(secondCategory);
                 return RedirectToAction("GetAllCategories");
             }
             catch
             {
-                return View();
+                return NotFound();
             }
         }
 
-        // GET: CategoryController/Edit/5
-        public async Task<ActionResult> EditCategory(int id)
-        {
-            return View(await secondCategoryRepository.GetByIDAsync(id));
-        }
-
-        // POST: CategoryController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> EditCategory(int id, SecondCategory secondCategory)
-        {
-            try
-            {
-                if (ModelState.IsValid)
-                {
-                    await secondCategoryRepository.UpdateAsync(secondCategory);
-                    return RedirectToAction("GetAllCategories");
-                }
-                return View();
-                
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: CategoryController/Delete/5
+        // GET: CategoryController/DeleteCategory/5
         public async Task<ActionResult> DeleteCategory(int id)
         {
             return View(await secondCategoryRepository.GetByIDAsync(id));
         }
 
-        // POST: CategoryController/Delete/5
+        // POST: CategoryController/DeleteCategory/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteCategory(int id, SecondCategory secondCategory)

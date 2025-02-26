@@ -4,10 +4,10 @@
     ViewData["Title"] = "GetAllSecondCategoriesAsync";
 }
 
-<h1>GetAllSecondCategoriesAsync</h1>
+<h1>Sub Categories</h1>
 
 <p>
-    <a asp-action="CreateCategory">Create New</a>
+    <a asp-action="CreateCategory">Create New Sub Category</a>
 </p>
 <table class="table">
     <thead>
@@ -26,7 +26,6 @@
             </td>
             <td>
                     <a asp-action="EditCategory" asp-route-id="@item.SecondCategoryId">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.SecondCategoryId">Details</a> |
                     <a asp-action="DeleteCategory" asp-route-id="@item.SecondCategoryId">Delete</a>
             </td>
         </tr>

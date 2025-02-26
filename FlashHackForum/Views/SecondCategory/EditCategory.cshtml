@@ -1,23 +1,36 @@
-﻿@model FlashHackForum.Models.SecondCategory
+﻿@model FlashHackForum.ViewModels.CreateEditSubCategoryViewModel
 
 @{
     ViewData["Title"] = "EditCategory";
 }
 
-<h1>EditCategory</h1>
+<h1>Edit Second Category</h1>
 
-<h4>SecondCategory</h4>
+
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="EditCategory">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="SecondCategoryId" />
+
             <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
+                <label for="MainCategoryId">Choose main category:</label>
+                <select asp-for="MainCategoryId" class="form-control">
+                    <option value="">-- Välj huvudkategori --</option>
+                     @foreach (var category in Model.MainCategories)
+                    {
+                        <option value="@category.MainCategoryId">@category.Name</option>
+                    }
+                </select>
+                <span asp-validation-for="MainCategoryId" class="text-danger"></span>
+            </div>
+
+            <br />
+            <div class="form-group">
+                <label asp-for="Name">Name for sub category:</label>
+                <input asp-for="Name" value="@ViewBag.SubCategoryName" class="form-control" placeholder="Name">
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
+            <br />
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
@@ -26,7 +39,7 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="GetAllCategories" asp-controller="SecondCategory">Back to List</a>
 </div>
 
 @section Scripts {
