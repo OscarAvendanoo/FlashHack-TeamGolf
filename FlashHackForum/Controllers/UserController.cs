@@ -130,6 +130,7 @@ namespace FlashHackForum.Controllers
                     };
                     await _unitOfWork.AccountRepository.AddAsync(account);
                     await _unitOfWork.CommitTransactionAsync(); // Commit the transaction if Successful
+
                     return RedirectToAction("Index","Auth");
                 }
                 catch (Exception ex)
