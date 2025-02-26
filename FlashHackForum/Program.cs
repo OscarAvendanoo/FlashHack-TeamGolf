@@ -27,6 +27,8 @@ namespace FlashHackForum
             builder.Services.AddScoped<ISecondCategoryRepository, SecondCategoryRepository>();
             builder.Services.AddScoped<IUserRepository, UserRepository>();
             builder.Services.AddScoped<IThreadPostRepository, ThreadPostRepository>();
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWorkRepository>();
+
 
             // Services här under har endast det generiska repositoryt "IRepository", alltså inga "Include" metoder.
             // Om ni vill lägga till include metoder till dessa så behöver dem implementeras som Services här ovan, kika i interfacemappen samt repo-filer om ni undrar hur det fungerar.

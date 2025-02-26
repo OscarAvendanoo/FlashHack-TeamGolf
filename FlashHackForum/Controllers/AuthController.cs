@@ -20,24 +20,35 @@ namespace FlashHackForum.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task< IActionResult> Index(UserLoginViewModel userLoginVM)
         {
             if (ModelState.IsValid) 
             {
                 var user = (await userRepository.GetAllAsync()).FirstOrDefault(c => c.Email == userLoginVM.Email && c.Password == userLoginVM.Password);
-                if (user == null) 
+                if (user == null)
                 {
-                    ViewBag.Error = "Invalid Email or Password.";
-                    ViewData["Message"] = "Invalid user id or password.";
+                    ViewData["Message"] = "Fel epost eller lösenord.";
                     return View(userLoginVM);
                 }
+
+                // Set Session variables
                 HttpContext.Session.SetInt32("UserId", user.UserId);
-                HttpContext.Session.SetString("UserName", ($"{user.FirstName} {user.LastName}"));
-                return RedirectToAction("Index","Home");
+                HttpContext.Session.SetString("UserName", user.UserName);
+
+                ViewBag.UserName = user.UserName;
+
+                // If user IS an admin, set Session int [IsAdmin] to 1
+                if (user.IsAdmin)
+                {
+                    HttpContext.Session.SetInt32("IsAdmin", 1);
+                }
+                return RedirectToAction("Index", "Home");
 
             }
             return View(userLoginVM);
 
         }
+        
     }
 }

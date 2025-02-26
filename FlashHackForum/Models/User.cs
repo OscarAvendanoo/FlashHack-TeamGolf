@@ -32,10 +32,10 @@ namespace FlashHackForum.Models
         [StringLength(100, MinimumLength = 6, ErrorMessage = "Password must be at least 6 characters.")]
         public string Password { get; set; }
 
-        [Required]
-        [DataType(DataType.Password)]
-        [Compare("Password", ErrorMessage = "Passwords do not match.")]
-        public string ConfirmPassword { get; set; }
+        //[Required]
+        //[DataType(DataType.Password)]
+        //[Compare("Password", ErrorMessage = "Passwords do not match.")]
+        //public string ConfirmPassword { get; set; }
 
         // Foreign Key Property
         public int? AccountId { get; set; }
