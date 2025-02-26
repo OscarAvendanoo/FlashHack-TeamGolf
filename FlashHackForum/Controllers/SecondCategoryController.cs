@@ -77,12 +77,13 @@ namespace FlashHackForum.Controllers
         // GET: CategoryController/EditCategory/5
         public async Task<ActionResult> EditCategory(int id)
         {
+            var subCategory = await secondCategoryRepository.GetByIDAsync(id);
+
             var model = new CreateEditSubCategoryViewModel
             {
-                MainCategoryId = null,
+                MainCategoryId = subCategory.MainCategoryId,
                 MainCategories = await mainCategoryRepository.GetAllAsync()
             };
-            var subCategory = await secondCategoryRepository.GetByIDAsync(id);
             
             
             ViewBag.SubCategoryName = subCategory.Name;
