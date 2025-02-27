@@ -1,31 +1,113 @@
 :root {
-    
-    --dark-blue: #2C3E50; /* För bakgrunder och kontrast.*/
-    --turqouise-blue: #4E8CA3; /* För robotens kropp och detaljer.*/
+    --dark-blue: rgba(44, 62, 80, 1); /* För bakgrunder och kontrast.*/
+    --turqouise-blue: rgba(78, 140, 163, 1); /* För robotens kropp och detaljer.*/
     --orange: #FFA500; /*För de lysande ögonen.*/
     --light-green: #A1C349; /* För detaljer och accenter.*/
     --white: #FFFFFF; /* För text och hög kontrast.*/
 }
 
 html {
-  font-size: 14px;
+    font-size: 14px;
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    html {
+        font-size: 16px;
+        /*#4fa0ab*/
+    }
 }
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
+    color: var(--orange);
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
+    padding-right: 220px;
+    padding-left: 220px;
 }
+
+.main-btn {
+    color: var(--orange);
+    background-color: var(--dark-blue);
+    border-radius: 10px;
+}
+
+    .main-btn:hover {
+        color: var(--dark-blue);
+        background-color: var(--orange);
+    }
+
+
+
+/*TEST NY NAVBAR*/
+
+
+
+/* Navbar utan padding från sidorna */
+.navbar {
+    background-color: var(--turqouise-blue);
+    overflow: hidden;
+    width: 100vw;
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+    padding-top: 0;
+    padding-bottom: 0;
+    
+}
+
+    .navbar ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        margin-left:14%;
+    }
+
+    .navbar li {
+        margin: 0;
+    }
+    .navbar img{
+        
+        margin-left: 12%;
+    }
+
+    .navbar a {
+        display: block;
+        padding: 7px 20px;
+        color: var(--orange);
+        text-decoration: none;
+        font-weight: 500;
+        border-radius: 10px;
+    }
+
+        .navbar a:hover {
+            color: var(--dark-blue);
+            background-color: var(--orange);
+        }
+
+/*Innehåll med padding från sidorna */
+.content-wrapper {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.a {
+    color: white;
+}
+
+
+
+
+

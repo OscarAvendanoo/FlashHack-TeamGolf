@@ -7,35 +7,28 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/FlashHackForum.styles.css" asp-append-version="true" />
+
 </head>
 <body>
+
     <header>
         @{
             var user = Context.Session.GetString("UserName");
             var admin = Context.Session.GetInt32("IsAdmin");
         }
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm border-bottom box-shadow" style="background:var(--dark-blue);">
             <div class="container-fluid">
-                <img src=@Url.Content("~/logga_512x512.png") alt="Compaby logo" width="384" height="108"/>
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">FlashHackForum</a>
+                <img src=@Url.Content("~/faviconNoBG/web-app-manifest-512x512.png") alt="Compaby logo" width="384" height="108" />
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                aria-expanded="false" aria-label="Toggle navigation">
+                        aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between mt-3">
+                    <ul class="navbar-nav flex-grow-1 mt-0">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Hem</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="MainCategory" asp-action="GetAllCategories">Main Categories</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="SecondCategory" asp-action="GetAllCategories">Second Categories</a>
-                        </li>
+
 
                         @*// Logga Ut*@
                         @if (!string.IsNullOrEmpty(user))
@@ -44,7 +37,7 @@
                             @if (admin > 0)
                             {
                                 <li class="nav-item">
-                                    <a class="nav-link text-dark">inloggad som: @user (administratör)</a>
+                                    <a class="nav-link">inloggad som: @user (administratör)</a>
                                 </li>
                                 <li>
                                     <div class="container mt-4">
@@ -55,9 +48,9 @@
                                         <div class="collapse" id="adminMenu">
                                             <div class="card card-body mt-2">
                                                 <ul class="list-unstyled">
-                                                    <li><a href="#" class="text-dark">Dashboard</a></li>
-                                                    <li><a href="#" class="text-dark">Användare</a></li>
-                                                    <li><a href="#" class="text-dark">Inställningar</a></li>
+                                                    <li><a href="#" class="text-light">Dashboard</a></li>
+                                                    <li><a href="#" class="text-light">Användare</a></li>
+                                                    <li><a href="#" class="text-light">Inställningar</a></li>
                                                 </ul>
                                             </div>
                                         </div>
@@ -67,19 +60,19 @@
                             else
                             {
                                 <li class="nav-item">
-                                    <a class="nav-link text-dark">inloggad som: @user</a>
+                                    <a class="nav-link text-light">inloggad som: @user</a>
                                 </li>
                             }
 
 
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Logout">Logga ut</a>
+                                <a class="nav-link main-btn" asp-area="" asp-controller="User" asp-action="Logout">Logga ut</a>
                             </li>
                         }
                         else
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Auth" asp-action="Index">Logga in</a>
+                                <a class="nav-link main-btn" asp-area="" asp-controller="Auth" asp-action="Index">Logga in</a>
                             </li>
                         }
 
@@ -88,6 +81,47 @@
             </div>
         </nav>
     </header>
+
+    <nav class="navbar">
+        <ul class="nav-list">
+            <li class="nav-item">
+                <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Avdelningar ▼</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Favoriter</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Mina trådar</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Karriär och jobb</a>
+            </li>
+        </ul>
+    </nav>
+    <div class="content-wrapper">
+        <h1>Välkommen!</h1>
+        <p>Här kommer innehållet...</p>
+    </div>
+
+
+    @* <nav>
+        <ul class="navbar">
+            <li><a href="#">Hem</a></li>
+            <li>
+                <a href="#">Forum</a>
+                <ul class="dropdown">
+                    <li><a href="#">Underforum 1</a></li>
+                    <li><a href="#">Underforum 2</a></li>
+                    <li><a href="#">Underforum 3</a></li>
+                </ul>
+            </li>
+            <li><a href="#">Aktuella ämnen</a></li>
+            <li><a href="#">Sök</a></li>
+            <li><a href="#">Användare</a></li>
+            <li><a href="#">Regler</a></li>
+        </ul>
+    </nav> *@
+
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
