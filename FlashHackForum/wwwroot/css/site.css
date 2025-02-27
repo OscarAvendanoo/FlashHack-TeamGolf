@@ -1,3 +1,12 @@
+:root {
+    
+    --dark-blue: #2C3E50; /* För bakgrunder och kontrast.*/
+    --turqouise-blue: #4E8CA3; /* För robotens kropp och detaljer.*/
+    --orange: #FFA500; /*För de lysande ögonen.*/
+    --light-green: #A1C349; /* För detaljer och accenter.*/
+    --white: #FFFFFF; /* För text och hög kontrast.*/
+}
+
 html {
   font-size: 14px;
 }
