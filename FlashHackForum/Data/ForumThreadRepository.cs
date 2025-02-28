@@ -2,6 +2,7 @@
 using FlashHackForum.Models;
 using FLashHackForum.Data;
 using Microsoft.EntityFrameworkCore;
+using X.PagedList.Extensions;
 
 namespace FlashHackForum.Data
 {
@@ -19,5 +20,6 @@ namespace FlashHackForum.Data
         {
             return await _context.ForumThreads.Include(ft => ft.ThreadCreator).Include(ft => ft.PostsInThread).ThenInclude(p => p.PostCreator).FirstOrDefaultAsync(ft => ft.ForumThreadID == id);
         }
+
     }
 }

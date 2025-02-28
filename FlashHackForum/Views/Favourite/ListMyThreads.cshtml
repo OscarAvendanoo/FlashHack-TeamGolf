@@ -1,0 +1,44 @@
+﻿@using X.PagedList
+
+@model PagedList<FlashHackForum.Models.ForumThread>
+
+@{
+    ViewData["Title"] = "ListAllFavourites";
+    int currentPage = ViewBag.CurrentPage ?? 1;
+}
+
+<h3>Mina inlägg</h3>
+<br />
+<hr />
+
+<div class="list-group custom-list">
+@foreach (var item in Model)
+{
+        <a href="#" class="list-group-item list-group-item-action">
+            <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1">@Html.DisplayFor(modelItem => item.Title)</h5>
+                <small>@Html.DisplayFor(modelItem => item.CreatedAt)</small>
+                
+            </div>
+            <p>@Html.DisplayFor(modelItem => item.ThreadCreator.Signature)</p>
+            </a>
+}
+</div>
+
+<nav aria-label="Page navigation example" >
+    <ul class="pagination">
+        <li class="page-item">
+            <a class="page-link" href="@Url.Action("ListAllFavourites", new { page = 1 })" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
+        <li class="page-item @(currentPage == 1 ? "active" : "")"><a class="page-link" href="@Url.Action("ListAllFavourites", new { page = 1 })">1</a></li>
+        <li class="page-item @(currentPage == 2 ? "active" : "")"><a class="page-link" href="@Url.Action("ListAllFavourites", new { page = 2 })">2</a></li>
+        <li class="page-item @(currentPage == 3 ? "active" : "")"><a class="page-link" href="@Url.Action("ListAllFavourites", new { page = 3 })">3</a></li>
+        <li class="page-item">
+            <a class="page-link" href="@Url.Action("ListAllFavourites", new { page = 2 })" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+    </ul>
+</nav>
