@@ -11,12 +11,17 @@ namespace FlashHackForum.Controllers
         private readonly IForumThreadRepository forumThreadRepository;
         private readonly IAccountRepository accountRepository;
         private readonly IUserRepository userRepository;
+        private readonly IThreadPostRepository threadPostRepository;
 
-        public FavouriteController(IForumThreadRepository forumThreadRepository, IAccountRepository accountRepository, IUserRepository userRepository)
+        public FavouriteController(IForumThreadRepository forumThreadRepository, 
+                                    IAccountRepository accountRepository, 
+                                    IUserRepository userRepository,
+                                    IThreadPostRepository threadPostRepository)
         {
             this.forumThreadRepository = forumThreadRepository;
             this.accountRepository = accountRepository;
             this.userRepository = userRepository;
+            this.threadPostRepository = threadPostRepository;
         }
 
         /*
@@ -38,23 +43,57 @@ namespace FlashHackForum.Controllers
 
             // Har man inga favoriter lagrat än så hämtar man de som har lagrats i sitt konto efter man har lagrat en favorit.
 
-            if (favourites == null)
-            {
-                var accountId = account.AccountId;
-                var forumthread = forumThreadRepository.GetAllAsync().Result;
-                foreach (var item in forumthread)
-                {
-                    item.ThreadCreator.AccountId = accountId;
-                    account.Favorites.Add(item);
+            //if (favourites == null)
+            //{
+            //    var accountId = account.AccountId;
+            //    var forumthread = forumThreadRepository.GetAllAsync().Result);
+            //    foreach (var item in forumthread)
+            //    {
+            //        item.ThreadCreator.AccountId = accountId;
+            //        account.Favorites.Add(item);
 
-                }
-                accountRepository.SaveChanges();
-            }
+            //    }
+            //    accountRepository.SaveChanges();
+            //}
 
             ViewBag.CurrentPage = pageNumber;
 
             return View(favourites.ToPagedList(pageNumber, pageSize));
 
+        }
+
+        /*En lista av alla threads som användaren har skapat själv*/
+        
+        public async Task<ActionResult> ListMyThreads(int? page)
+        {
+            int pageSize = 4;
+            int pageNumber = page ?? 1;
+
+
+            var userName = HttpContext.Session.GetString("UserName");
+            var user = await userRepository.GetUserByUsername(userName);
+            var account = accountRepository.GetAccountByIDIncludeAll((int)user.AccountId).Result;
+
+            var myThreads = account.ThreadsStarted;
+
+            // Har man inga favoriter lagrat än så hämtar man de som har lagrats i sitt konto efter man har lagrat en favorit.
+
+            //if (myThreads == null)
+            //{
+            //    var accountId = account.AccountId;
+            //    var forumthread = forumThreadRepository.GetAllAsync().Result;
+            //    foreach (var item in forumthread)
+            //    {
+            //        item.ThreadCreator.AccountId = accountId;
+            //        account.Favorites.Add(item);
+
+            //    }
+            //    accountRepository.SaveChanges();
+            //}
+
+            ViewBag.CurrentPage = pageNumber;
+
+            return View(myThreads.ToPagedList(pageNumber, pageSize));
         }
     }
 }
