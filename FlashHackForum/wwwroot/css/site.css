@@ -156,6 +156,17 @@ body {
 }
 
 
+/*LOGIN DROPDOWN CARD*/
+
+.login-card{
+    background-color: var(--dark-blue);
+}
+
+.login-card li a{
+    color: var(--orange);
+}
+
+
 
 
 

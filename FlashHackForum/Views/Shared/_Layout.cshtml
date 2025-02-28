@@ -29,6 +29,7 @@
                             <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Hem</a>
                         </li>
 
+                        
 
                         @*// Logga Ut*@
                         @if (!string.IsNullOrEmpty(user))
@@ -36,31 +37,42 @@
                             @*// If User is logged in as Admin*@
                             @if (admin > 0)
                             {
-                                <li class="nav-item">
-                                    <a class="nav-link">inloggad som: @user (administratör)</a>
+
+                                <div class="dropdown">
+                                    <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Dropdown button
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="#">Action</a></li>
+                                        <li><a class="dropdown-item" href="#">Another action</a></li>
+                                        <li><a class="dropdown-item" href="#">Something else here</a></li>
+                                    </ul>
+                                </div>
+                                @* <li class="nav-item">
+                                    <p class="nav-link">inloggad som: @user (administratör)</p>
                                 </li>
                                 <li>
-                                    <div class="container mt-4">
-                                        <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#adminMenu" aria-expanded="false" aria-controls="adminMenu">
+                                    <div class="container">
+                                        <button class="btn main-btn" type="button" data-bs-toggle="collapse" data-bs-target="#adminMenu" aria-expanded="false" aria-controls="adminMenu">
                                             Administratörs meny
                                         </button>
 
                                         <div class="collapse" id="adminMenu">
-                                            <div class="card card-body mt-2">
+                                            <div class="card card-body mt-2 login-card">
                                                 <ul class="list-unstyled">
-                                                    <li><a href="#" class="text-light">Dashboard</a></li>
-                                                    <li><a href="#" class="text-light">Användare</a></li>
-                                                    <li><a href="#" class="text-light">Inställningar</a></li>
+                                                    <li><a href="#">Dashboard</a></li>
+                                                    <li><a href="#">Användare</a></li>
+                                                    <li><a href="#">Inställningar</a></li>
                                                 </ul>
                                             </div>
                                         </div>
                                     </div>
-                                </li>
+                                </li> *@
                             }
                             else
                             {
                                 <li class="nav-item">
-                                    <a class="nav-link text-light">inloggad som: @user</a>
+                                    <p class="nav-link text-light">inloggad som: @user</p>
                                 </li>
                             }
 
