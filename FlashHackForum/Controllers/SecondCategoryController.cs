@@ -4,6 +4,7 @@ using FlashHackForum.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
 
+
 namespace FlashHackForum.Controllers
 {
 
@@ -12,11 +13,13 @@ namespace FlashHackForum.Controllers
     {
         private readonly ISecondCategoryRepository secondCategoryRepository;
         private readonly IMainCategoryRepository mainCategoryRepository;
+        private readonly IForumThreadRepository forumThreadRepository;
 
-        public SecondCategoryController(ISecondCategoryRepository secondCategoryRepository, IMainCategoryRepository mainCategoryRepository)
+        public SecondCategoryController(ISecondCategoryRepository secondCategoryRepository, IMainCategoryRepository mainCategoryRepository, IForumThreadRepository forumThreadRepository)
         {
             this.secondCategoryRepository = secondCategoryRepository;
             this.mainCategoryRepository = mainCategoryRepository;
+            this.forumThreadRepository = forumThreadRepository;
         }
 
 
@@ -142,5 +145,7 @@ namespace FlashHackForum.Controllers
                 return View();
             }
         }
+
+        
     }
 }

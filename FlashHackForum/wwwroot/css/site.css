@@ -1,8 +1,8 @@
 :root {
     --dark-blue: rgba(44, 62, 80, 1); /* För bakgrunder och kontrast.*/
     --turqouise-blue: rgba(78, 140, 163, 1); /* För robotens kropp och detaljer.*/
-    --orange: #FFA500; /*För de lysande ögonen.*/
-    --light-green: #A1C349; /* För detaljer och accenter.*/
+    --orange: rgba(255, 165, 0, 1); /*För de lysande ögonen.*/
+    --light-green: rgba(161, 195, 73, 1); /* För detaljer och accenter.*/
     --white: #FFFFFF; /* För text och hög kontrast.*/
 }
 
@@ -31,6 +31,7 @@ body {
     margin-bottom: 60px;
     padding-right: 220px;
     padding-left: 220px;
+    background-color: rgba(44, 62, 80, 0.2);
 }
 
 .main-btn {
@@ -48,11 +49,13 @@ body {
 
 /*TEST NY NAVBAR*/
 
-
+/*.box-shadow{
+    color: var(--turqouise-blue);
+}*/
 
 /* Navbar utan padding från sidorna */
 .navbar {
-    background-color: var(--turqouise-blue);
+    background-color: var(--dark-blue);
     overflow: hidden;
     width: 100vw;
     position: relative;
@@ -62,7 +65,14 @@ body {
     margin-right: -50vw;
     padding-top: 0;
     padding-bottom: 0;
+    border-bottom:solid;
+    border-color: var(--turqouise-blue);
     
+}
+
+.navbar-lower{
+    border-bottom: none;
+    margin-bottom: 30px;
 }
 
     .navbar ul {
@@ -105,6 +115,43 @@ body {
 
 .a {
     color: white;
+}
+
+
+/*CUSTOM LIST FAVOURITES*/
+
+.custom-list .list-group-item {
+    margin-bottom: 0.5em;
+    border-radius: 0.5em;
+}
+
+    .custom-list .list-group-item:nth-child(odd) {
+        background-color: rgba(78, 140, 163, 0.3);
+    }
+
+    .custom-list .list-group-item:nth-child(even) {
+        background-color: rgba(78, 140, 163, 0.8); 
+        color: var(--white); 
+    }
+
+
+    /*PAGEINATION*/
+
+.page-link {
+    background-color: rgba(44, 62, 80, 0.8);
+    color: var(--orange);
+    font-weight: 400;
+}
+
+.page-link:hover{
+    color: var(--dark-blue);
+    background-color: var(--orange);
+}
+.pagination .page-item.active .page-link {
+    background-color: var(--dark-blue);
+    border-color: var(--dark-blue);
+    color: var(--orange); 
+    font-weight: bold;
 }
 
 
