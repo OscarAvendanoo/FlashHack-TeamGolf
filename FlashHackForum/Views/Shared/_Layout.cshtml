@@ -29,7 +29,7 @@
                             <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Hem</a>
                         </li>
 
-                        
+
 
                         @*// Logga Ut*@
                         @if (!string.IsNullOrEmpty(user))
@@ -37,23 +37,10 @@
                             @*// If User is logged in as Admin*@
                             @if (admin > 0)
                             {
-
-                                <div class="dropdown">
-                                    <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                        Dropdown button
-                                    </button>
-                                    <ul class="dropdown-menu">
-                                        <li><a class="dropdown-item" href="#">Action</a></li>
-                                        <li><a class="dropdown-item" href="#">Another action</a></li>
-                                        <li><a class="dropdown-item" href="#">Something else here</a></li>
-                                    </ul>
-                                </div>
-                                @* <li class="nav-item">
-                                    <p class="nav-link">inloggad som: @user (administratör)</p>
-                                </li>
+                                /*Implementerade lite styling i dropdown*/
                                 <li>
-                                    <div class="container">
-                                        <button class="btn main-btn" type="button" data-bs-toggle="collapse" data-bs-target="#adminMenu" aria-expanded="false" aria-controls="adminMenu">
+                                    <div class="dropdown">
+                                        <button class="btn main-btn dropdown-toggle" type="button" data-bs-toggle="collapse" data-bs-target="#adminMenu" aria-expanded="false" aria-controls="adminMenu">
                                             Administratörs meny
                                         </button>
 
@@ -67,7 +54,10 @@
                                             </div>
                                         </div>
                                     </div>
-                                </li> *@
+                                    
+                                </li>
+
+
                             }
                             else
                             {
@@ -94,7 +84,7 @@
         </nav>
     </header>
 
-    <nav class="navbar navbar-lower" >
+    <nav class="navbar navbar-lower">
         <ul class="nav-list">
             <li class="nav-item">
                 <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Avdelningar ▼</a>
@@ -128,3 +118,6 @@
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
+
+
+

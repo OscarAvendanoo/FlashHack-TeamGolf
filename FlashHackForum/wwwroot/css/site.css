@@ -100,6 +100,8 @@ body {
         text-decoration: none;
         font-weight: 500;
         border-radius: 10px;
+        margin-right: 1em;
+        margin-left: 1em;
     }
 
         .navbar a:hover {
@@ -158,13 +160,20 @@ body {
 
 /*LOGIN DROPDOWN CARD*/
 
-.login-card{
+.login-card {
     background-color: var(--dark-blue);
+    
 }
 
 .login-card li a{
     color: var(--orange);
+    
 }
+
+
+
+
+
 
 
 
