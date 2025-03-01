@@ -40,6 +40,15 @@ namespace FlashHackForum.Data
         {
             throw new NotImplementedException();
         }
+        public async Task<IEnumerable<Account>> GetAllFavourites()
+        {
+            return await _context.Accounts.Include(f => f.Favorites).ToListAsync();
+        }
+
+        
+
+
+
     }
 
 }

@@ -6,5 +6,7 @@ namespace FlashHackForum.Data.Interfaces
     {
         Task<Account> GetAccountByIDIncludeAll(int id);
 
+        Task<IEnumerable<Account>> GetAllFavourites();
+
     }
 }
