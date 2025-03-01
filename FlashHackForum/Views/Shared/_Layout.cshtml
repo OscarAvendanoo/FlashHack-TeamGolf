@@ -89,9 +89,18 @@
             <li class="nav-item">
                 <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Avdelningar ▼</a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" asp-area="" asp-controller="Favourite" asp-action="ListAllFavourites">Favoriter</a>
-            </li>
+            @if (!string.IsNullOrEmpty(user)){
+                <li class="nav-item">
+                    <a class="nav-link" asp-area="" asp-controller="Favourite" asp-action="ListMyFavourites">Mina Favoriter</a>
+                </li>
+            }
+            else
+            {
+                <li class="nav-item">
+                    <a class="nav-link" asp-area="" asp-controller="Favourite" asp-action="ListAllFavourites">Favoriter</a>
+                </li>
+            }
+            
             <li class="nav-item">
                 <a class="nav-link" asp-area="" asp-controller="Favourite" asp-action="ListMyThreads">Mina trådar</a>
             </li>

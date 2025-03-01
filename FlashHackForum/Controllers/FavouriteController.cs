@@ -1,6 +1,8 @@
 ﻿using FlashHackForum.Data;
 using FlashHackForum.Data.Interfaces;
+using FlashHackForum.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Drawing.Printing;
 using X.PagedList;
 using X.PagedList.Extensions;
 
@@ -13,10 +15,7 @@ namespace FlashHackForum.Controllers
         private readonly IUserRepository userRepository;
         private readonly IThreadPostRepository threadPostRepository;
 
-        public FavouriteController(IForumThreadRepository forumThreadRepository, 
-                                    IAccountRepository accountRepository, 
-                                    IUserRepository userRepository,
-                                    IThreadPostRepository threadPostRepository)
+        public FavouriteController(IForumThreadRepository forumThreadRepository, IAccountRepository accountRepository, IUserRepository userRepository, IThreadPostRepository threadPostRepository)
         {
             this.forumThreadRepository = forumThreadRepository;
             this.accountRepository = accountRepository;
@@ -29,70 +28,67 @@ namespace FlashHackForum.Controllers
         Det är lätt att ändra "pageSize" till så många forumtrådar man vill visa per sida.
          */
 
+        
         public async Task<ActionResult> ListAllFavourites(int? page)
+        {
+            
+            int pageSize = 4;
+            int pageNumber = page ?? 1;
+            ViewBag.CurrentPage = pageNumber;
+
+            var forumThreads = new List<ForumThread>();
+            var accountWithFavourites = await accountRepository.GetAllFavourites();
+
+            foreach (var account in accountWithFavourites)
+            {
+                forumThreads.AddRange(account.Favorites);
+            }
+
+            return View(forumThreads.ToPagedList(pageNumber, pageSize));
+        }
+
+
+        public async Task<ActionResult> ListMyFavourites(int? page, int userId)
         {
             int pageSize = 4;
             int pageNumber = page ?? 1;
-
+            ViewBag.CurrentPage = pageNumber;
 
             var userName = HttpContext.Session.GetString("UserName");
             var user = await userRepository.GetUserByUsername(userName);
-            var account = accountRepository.GetAccountByIDIncludeAll((int)user.AccountId).Result;
+            var account = await accountRepository.GetAccountByIDIncludeAll((int)user.AccountId);
+            //var account = await accountRepository.GetAllAsync();
+
+            if (account == null)
+            {
+                return NotFound();
+            }
 
             var favourites = account.Favorites;
-
-            // Har man inga favoriter lagrat än så hämtar man de som har lagrats i sitt konto efter man har lagrat en favorit.
-
-            //if (favourites == null)
-            //{
-            //    var accountId = account.AccountId;
-            //    var forumthread = forumThreadRepository.GetAllAsync().Result);
-            //    foreach (var item in forumthread)
-            //    {
-            //        item.ThreadCreator.AccountId = accountId;
-            //        account.Favorites.Add(item);
-
-            //    }
-            //    accountRepository.SaveChanges();
-            //}
-
-            ViewBag.CurrentPage = pageNumber;
 
             return View(favourites.ToPagedList(pageNumber, pageSize));
 
         }
 
         /*En lista av alla threads som användaren har skapat själv*/
-        
+
         public async Task<ActionResult> ListMyThreads(int? page)
         {
             int pageSize = 4;
             int pageNumber = page ?? 1;
-
+            ViewBag.CurrentPage = pageNumber;
 
             var userName = HttpContext.Session.GetString("UserName");
             var user = await userRepository.GetUserByUsername(userName);
-            var account = accountRepository.GetAccountByIDIncludeAll((int)user.AccountId).Result;
 
+            if(user == null)
+            {
+                return RedirectToAction("Index", "Auth");
+            }
+
+            var account = await accountRepository.GetAccountByIDIncludeAll((int)user.AccountId);
             var myThreads = account.ThreadsStarted;
-
-            // Har man inga favoriter lagrat än så hämtar man de som har lagrats i sitt konto efter man har lagrat en favorit.
-
-            //if (myThreads == null)
-            //{
-            //    var accountId = account.AccountId;
-            //    var forumthread = forumThreadRepository.GetAllAsync().Result;
-            //    foreach (var item in forumthread)
-            //    {
-            //        item.ThreadCreator.AccountId = accountId;
-            //        account.Favorites.Add(item);
-
-            //    }
-            //    accountRepository.SaveChanges();
-            //}
-
-            ViewBag.CurrentPage = pageNumber;
-
+            
             return View(myThreads.ToPagedList(pageNumber, pageSize));
         }
     }
