@@ -96,5 +96,21 @@ namespace FlashHackForum.Controllers
             return View(registerVM);
 
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Details(int id)
+        {
+            var user = await _userRepository.GetByIDAsync(id);
+            user.Account = await _unitOfWork.AccountRepository.GetByIDAsync((int)user.AccountId!);
+            try
+            {
+                return View(user);
+            }
+            catch(Exception ex)
+            {
+                ModelState.AddModelError("", "Användaren finns inte.");
+                return View();
+            }
+        }
     }
 }
