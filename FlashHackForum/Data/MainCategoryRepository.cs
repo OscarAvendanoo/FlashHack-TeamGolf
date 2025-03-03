@@ -23,5 +23,7 @@ namespace FlashHackForum.Data
         {
             return await _context.MainCategories.Include(m => m.SecondCategories).FirstOrDefaultAsync(m => m.Name == name);
         }
+        
+
     }
 }

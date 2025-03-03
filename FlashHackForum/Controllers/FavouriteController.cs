@@ -95,5 +95,19 @@ namespace FlashHackForum.Controllers
             
             return View(myThreads.ToPagedList(pageNumber, pageSize));
         }
+
+        public async Task<ActionResult> ListAllThreads(int? page, int secondCategoryId)
+        {
+            int pageSize = 4;
+            int pageNumber = page ?? 1;
+            ViewBag.CurrentPage = pageNumber;
+
+            var forumThreads = new List<ForumThread>();
+            var allThreads = await threadPostRepository.GetAllAsync();
+
+            
+
+            return View(allThreads.ToPagedList(pageNumber, pageSize));
+        }
     }
 }
