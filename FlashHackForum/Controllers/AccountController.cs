@@ -43,7 +43,7 @@ namespace FlashHackForum.Controllers
                 await _accountRepository.SaveChanges();
             }
 
-            return RedirectToAction("MinSida");
+            return RedirectToAction("Index", "Home");
         }
     }
 }
