@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FlashHackForum.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250226122644_initial")]
-    partial class initial
+    [Migration("20250302172132_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -215,7 +215,7 @@ namespace FlashHackForum.Migrations
                     b.Property<int>("CreatorId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("SecondCategoryId")
+                    b.Property<int>("SecondCategoryId")
                         .HasColumnType("int");
 
                     b.Property<string>("Title")
@@ -311,10 +311,6 @@ namespace FlashHackForum.Migrations
                     b.Property<int?>("AccountId")
                         .HasColumnType("int");
 
-                    b.Property<string>("ConfirmPassword")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -398,9 +394,13 @@ namespace FlashHackForum.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("FlashHackForum.Models.SecondCategory", null)
+                    b.HasOne("FlashHackForum.Models.SecondCategory", "SecondCategory")
                         .WithMany("Threads")
-                        .HasForeignKey("SecondCategoryId");
+                        .HasForeignKey("SecondCategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("SecondCategory");
 
                     b.Navigation("ThreadCreator");
                 });
