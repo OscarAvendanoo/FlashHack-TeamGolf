@@ -13,5 +13,9 @@ namespace FlashHackForum.Models
         [Required]
         public string PostMessage { get; set; }
         public DateTime PostDate { get; set; } = DateTime.Now;
+
+        [ForeignKey("ForumThread")]
+        public int ForumThreadId { get; set; }
+        public ForumThread ForumThread { get; set; } // Navigationsproperty
     }
 }
