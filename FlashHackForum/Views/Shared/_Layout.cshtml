@@ -13,6 +13,7 @@
 
     <header>
         @{
+            var userId = Context.Session.GetInt32("UserId");
             var user = Context.Session.GetString("UserName");
             var admin = Context.Session.GetInt32("IsAdmin");
         }
@@ -29,46 +30,64 @@
                             <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Hem</a>
                         </li>
 
-
-
-                        @*// Logga Ut*@
                         @if (!string.IsNullOrEmpty(user))
                         {
-                            @*// If User is logged in as Admin*@
+                            <li class="nav-item">
+                                <a>@user</a>
+                            </li>
+                            <li class="nav-item">
+                                <img class="nav-link" src="~/logga_192x54.png" alt="profil bild" width="50" height="50" />
+                            </li>
+
                             @if (admin > 0)
                             {
-                                /*Implementerade lite styling i dropdown*/
-                                <li>
-                                    <div class="dropdown">
-                                        <button class="btn main-btn dropdown-toggle" type="button" data-bs-toggle="collapse" data-bs-target="#adminMenu" aria-expanded="false" aria-controls="adminMenu">
-                                            Administratörs meny
-                                        </button>
 
-                                        <div class="collapse" id="adminMenu">
-                                            <div class="card card-body mt-2 login-card">
-                                                <ul class="list-unstyled">
-                                                    <li><a href="#">Dashboard</a></li>
-                                                    <li><a href="#">Användare</a></li>
-                                                    <li><a href="#">Inställningar</a></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
+                                <!-- Admin Dropdown Menu -->
+                                <li class="nav-item dropdown userMenu">
+                                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false"></a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" asp-controller="" asp-action="">Dashboard</a></li>
+                                        <li><a class="dropdown-item" asp-controller="" asp-action="">Användare</a></li>
+                                        <li><a class="dropdown-item" asp-controller="" asp-action="">Inställningar</a></li>
+
+                                        <li><a class="dropdown-item" asp-controller="User" asp-action="Logout">Logga ut</a></li>
+                                    </ul>
 
                                 </li>
-
-
+                                @*
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" id="adminMenu" data-bs-toggle="collapse" data-bs-target="#adminMenuItems" aria-expanded="false">
+                                        Administratörs meny
+                                    </a>
+                                    <div class="collapse" id="adminMenuItems">
+                                        <ul class="list-unstyled">
+                                            <li><a href="#" class="dropdown-item">Dashboard</a></li>
+                                            <li><a href="#" class="dropdown-item">Användare</a></li>
+                                            <li><a href="#" class="dropdown-item">Inställningar</a></li>
+                                        </ul>
+                                    </div>
+                                </li>*@
                             }
                             else
                             {
-                                <li class="nav-item">
-                                    <p class="nav-link text-light">inloggad som: @user</p>
+                                <li class="nav-item dropdown userMenu">
+                                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false"></a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" asp-controller="" asp-action="" asp-route-id=@userId>Min Profil</a></li>
+                                        <li><a class="dropdown-item" asp-controller="" asp-action="" asp-route-id=@userId>Inställningar</a></li>
+                                        <li><a class="dropdown-item" asp-controller="" asp-action="" asp-route-id=@userId>Skaffa Premium</a></li>
+
+                                        <li><a class="dropdown-item" asp-controller="User" asp-action="Logout">Logga ut</a></li>
+                                    </ul>
                                 </li>
+                               
                             }
+
+                           
 
 
                             <li class="nav-item">
-                                <a class="nav-link main-btn" asp-area="" asp-controller="User" asp-action="Logout">Logga ut</a>
+                                <a class="nav-link main-btn" asp-area="" asp-controller="" asp-action="" asp-route-id=@userId>Mina Sidor (fixa)</a>
                             </li>
                         }
                         else
@@ -77,7 +96,6 @@
                                 <a class="nav-link" asp-area="" asp-controller="Auth" asp-action="Index">Logga in</a>
                             </li>
                         }
-
                     </ul>
                 </div>
             </div>
@@ -85,25 +103,10 @@
     </header>
 
     <nav class="navbar navbar-lower">
-        <ul class="nav-list">
-            <li>
-                <div class="dropdown">
-                    <button class="btn main-btn dropdown-toggle" type="button" data-bs-toggle="collapse" data-bs-target="#adminMenu" aria-expanded="false" aria-controls="adminMenu">
-                        Avdelningar ▼
-                    </button>
 
-                    <div class="collapse dropdown" id="adminMenu">
-                        <div class="card card-body mt-2 login-card">
-                            <ul class="list-unstyled">
-                                @foreach (var item in ViewBag.MainCategories)
-                                {
-                                    <li><a href="#">@item.Name</a></li>
-                                }
-                                
-                            </ul>
-                        </div>
-                    </div>
-                </div>
+        <ul class="nav-list" style="display: flex">
+            <li class="nav-item">
+                <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Avdelningar ▼</a>
 
             </li>
             @* <li class="nav-item">
