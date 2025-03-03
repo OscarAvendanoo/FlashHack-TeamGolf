@@ -15,17 +15,16 @@ namespace FlashHackForum.Controllers
         private readonly IAccountRepository accountRepository;
         private readonly IUserRepository userRepository;
         private readonly IThreadPostRepository threadPostRepository;
+        private readonly ISecondCategoryRepository secondCategoryRepository;
 
-        
-
-        public FavouriteController(IForumThreadRepository forumThreadRepository, IAccountRepository accountRepository, IUserRepository userRepository, IThreadPostRepository threadPostRepository)
+        public FavouriteController(IForumThreadRepository forumThreadRepository, IAccountRepository accountRepository, IUserRepository userRepository, IThreadPostRepository threadPostRepository, ISecondCategoryRepository secondCategoryRepository)
         {
             this.forumThreadRepository = forumThreadRepository;
             this.accountRepository = accountRepository;
             this.userRepository = userRepository;
             this.threadPostRepository = threadPostRepository;
-            //var userName = HttpContext.Session.GetString("UserName");
-            //var user = userRepository.GetUserByUsername(userName);
+            this.secondCategoryRepository = secondCategoryRepository;
+     
         }
 
         /*
@@ -33,10 +32,10 @@ namespace FlashHackForum.Controllers
         Det är lätt att ändra "pageSize" till så många forumtrådar man vill visa per sida.
          */
 
-        
+
         public async Task<ActionResult> ListAllFavourites(int? page)
         {
-            
+
             int pageSize = 4;
             int pageNumber = page ?? 1;
             ViewBag.CurrentPage = pageNumber;
@@ -85,15 +84,35 @@ namespace FlashHackForum.Controllers
             var userName = HttpContext.Session.GetString("UserName");
             var user = await userRepository.GetUserByUsername(userName);
 
-            if(user == null)
+            if (user == null)
             {
                 return RedirectToAction("Index", "Auth");
             }
 
             var account = await accountRepository.GetAccountByIDIncludeAll((int)user.AccountId);
             var myThreads = account.ThreadsStarted;
-            
+
             return View(myThreads.ToPagedList(pageNumber, pageSize));
+        }
+
+        public async Task<ActionResult> ListAllThreads(int? page, int id)
+        {
+            int pageSize = 4;
+            int pageNumber = page ?? 1;
+            ViewBag.CurrentPage = pageNumber;
+
+            var forumThreads = new List<ForumThread>();
+            var secondCategory = await secondCategoryRepository.GetByCategoryIdIncludeThreads(id);
+
+            foreach(var item in secondCategory.Threads)
+            {
+                forumThreads.Add(item);
+            }
+
+            ViewBag.SecondCategory = secondCategory.Name;
+
+
+            return View(forumThreads.ToPagedList(pageNumber, pageSize));
         }
     }
 }

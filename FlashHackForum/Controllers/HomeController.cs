@@ -1,6 +1,7 @@
 using FlashHackForum.Data.Interfaces;
 using FlashHackForum.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Diagnostics;
 
 namespace FlashHackForum.Controllers
@@ -20,9 +21,12 @@ namespace FlashHackForum.Controllers
 
         public async Task<IActionResult> Index()
         {
+            var mainCategories = await mainCategoryRepository.GetAllAsync();
+            ViewBag.MainCategories = mainCategories;
+            var subCateogory = await secondCategoryRepository.GetAllAsync();
+            ViewBag.SecondCategory = subCateogory;
 
-            ViewBag.MainCategories = await mainCategoryRepository.GetAllAsync();
-            ViewBag.SecondCategories = await secondCategoryRepository.GetAllAsync();
+
 
             return View();
         }
