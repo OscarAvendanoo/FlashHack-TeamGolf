@@ -20,5 +20,6 @@ namespace FlashHackForum.Models
         public SecondCategory SecondCategory { get; set; }  // Gör det möjligt att navigera till SecondCategory
         public DateTime CreatedAt { get; set; } = DateTime.Now;
         public virtual List<ThreadPost> PostsInThread { get; set; } = new List<ThreadPost>();
+        public bool IsAnonymous { get; set; } = false;
     }
 }

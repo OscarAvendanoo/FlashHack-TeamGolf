@@ -50,7 +50,14 @@ namespace FlashHackForum.Data
                 .Include(a => a.User)
                 .FirstOrDefaultAsync(a => a.UserId == userId);
         }
-       
+
+        public async Task<Account> GetAccountByUserIDIncludeThreadsStarted(int userId)
+        {
+            return await _context.Accounts
+                .Include(a => a.ThreadsStarted).ThenInclude(ts => ts.PostsInThread)
+                .FirstOrDefaultAsync(a => a.UserId == userId);
+        }
+
         public Task<Account> GetAccountByUserNameAsync(string username)
         {
             throw new NotImplementedException();
