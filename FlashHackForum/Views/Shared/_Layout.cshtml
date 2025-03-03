@@ -54,7 +54,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    
+
                                 </li>
 
 
@@ -86,10 +86,31 @@
 
     <nav class="navbar navbar-lower">
         <ul class="nav-list">
-            <li class="nav-item">
-                <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Avdelningar ▼</a>
+            <li>
+                <div class="dropdown">
+                    <button class="btn main-btn dropdown-toggle" type="button" data-bs-toggle="collapse" data-bs-target="#adminMenu" aria-expanded="false" aria-controls="adminMenu">
+                        Avdelningar ▼
+                    </button>
+
+                    <div class="collapse dropdown" id="adminMenu">
+                        <div class="card card-body mt-2 login-card">
+                            <ul class="list-unstyled">
+                                @foreach (var item in ViewBag.MainCategories)
+                                {
+                                    <li><a href="#">@item.Name</a></li>
+                                }
+                                
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
             </li>
-            @if (!string.IsNullOrEmpty(user)){
+            @* <li class="nav-item">
+                <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Avdelningar ▼</a>
+            </li> *@
+            @if (!string.IsNullOrEmpty(user))
+            {
                 <li class="nav-item">
                     <a class="nav-link" asp-area="" asp-controller="Favourite" asp-action="ListMyFavourites">Mina Favoriter</a>
                 </li>
@@ -100,7 +121,7 @@
                     <a class="nav-link" asp-area="" asp-controller="Favourite" asp-action="ListAllFavourites">Favoriter</a>
                 </li>
             }
-            
+
             <li class="nav-item">
                 <a class="nav-link" asp-area="" asp-controller="Favourite" asp-action="ListMyThreads">Mina trådar</a>
             </li>

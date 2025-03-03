@@ -2,6 +2,7 @@
 using FlashHackForum.Data.Interfaces;
 using FlashHackForum.Models;
 using Microsoft.AspNetCore.Mvc;
+using NuGet.ProjectModel;
 using System.Drawing.Printing;
 using X.PagedList;
 using X.PagedList.Extensions;
@@ -15,12 +16,16 @@ namespace FlashHackForum.Controllers
         private readonly IUserRepository userRepository;
         private readonly IThreadPostRepository threadPostRepository;
 
+        
+
         public FavouriteController(IForumThreadRepository forumThreadRepository, IAccountRepository accountRepository, IUserRepository userRepository, IThreadPostRepository threadPostRepository)
         {
             this.forumThreadRepository = forumThreadRepository;
             this.accountRepository = accountRepository;
             this.userRepository = userRepository;
             this.threadPostRepository = threadPostRepository;
+            //var userName = HttpContext.Session.GetString("UserName");
+            //var user = userRepository.GetUserByUsername(userName);
         }
 
         /*
@@ -56,8 +61,7 @@ namespace FlashHackForum.Controllers
 
             var userName = HttpContext.Session.GetString("UserName");
             var user = await userRepository.GetUserByUsername(userName);
-            var account = await accountRepository.GetAccountByIDIncludeAll((int)user.AccountId);
-            //var account = await accountRepository.GetAllAsync();
+            var account = await accountRepository.GetAccountByIDWithFavorites((int)user.AccountId);
 
             if (account == null)
             {
