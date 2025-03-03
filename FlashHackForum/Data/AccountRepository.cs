@@ -37,11 +37,20 @@ namespace FlashHackForum.Data
             return account;
         }
 
+        
+
         public Task<Account> GetAccountByUserEmailIncludeAllAsync(string email)
         {
             throw new NotImplementedException();
         }
 
+        public async Task<Account> GetAccountByUserID(int userId)
+        {
+            return await _context.Accounts
+                .Include(a => a.User)
+                .FirstOrDefaultAsync(a => a.UserId == userId);
+        }
+       
         public Task<Account> GetAccountByUserNameAsync(string username)
         {
             throw new NotImplementedException();
