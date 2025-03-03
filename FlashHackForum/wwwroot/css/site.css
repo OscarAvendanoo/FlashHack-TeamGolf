@@ -1,9 +1,9 @@
 :root {
-    --dark-blue: rgba(44, 62, 80, 1); /* För bakgrunder och kontrast.*/
-    --turqouise-blue: rgba(78, 140, 163, 1); /* För robotens kropp och detaljer.*/
-    --orange: rgba(255, 165, 0, 1); /*För de lysande ögonen.*/
-    --light-green: rgba(161, 195, 73, 1); /* För detaljer och accenter.*/
-    --white: #FFFFFF; /* För text och hög kontrast.*/
+    --dark-blue: rgba(44, 62, 80, 1); /* FÃ¶r bakgrunder och kontrast.*/
+    --turqouise-blue: rgba(78, 140, 163, 1); /* FÃ¶r robotens kropp och detaljer.*/
+    --orange: rgba(255, 165, 0, 1); /*FÃ¶r de lysande Ã¶gonen.*/
+    --light-green: rgba(161, 195, 73, 1); /* FÃ¶r detaljer och accenter.*/
+    --white: #FFFFFF; /* FÃ¶r text och hÃ¶g kontrast.*/
 }
 
 html {
@@ -54,7 +54,7 @@ body {
     color: var(--turqouise-blue);
 }*/
 
-/* Navbar utan padding från sidorna */
+/* Navbar utan padding frÃ¥n sidorna */
 .navbar {
     background-color: var(--dark-blue);
     /*overflow: hidden;*/
@@ -121,7 +121,7 @@ body {
             background-color: var(--orange);
         }
 
-/*Innehåll med padding från sidorna */
+/*InnehÃ¥ll med padding frÃ¥n sidorna */
 .content-wrapper {
     padding: 20px;
     max-width: 1200px;
@@ -181,7 +181,6 @@ body {
     color: var(--orange);
     
 }
-
 
 
 
