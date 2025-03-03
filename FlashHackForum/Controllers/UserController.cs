@@ -12,7 +12,7 @@ namespace FlashHackForum.Controllers
         private readonly IUserRepository _userRepository;
         private readonly IUnitOfWork _unitOfWork;
 
-        public UserController(IUserRepository userRepository, IAccountRepository accountRepository, IUnitOfWork unitOfWork)
+        public UserController(IUserRepository userRepository, IUnitOfWork unitOfWork)
         {
             _userRepository = userRepository;
             _unitOfWork = unitOfWork;
