@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FlashHackForum.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250302172132_init")]
-    partial class init
+    [Migration("20250303192839_initial")]
+    partial class initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -215,6 +215,9 @@ namespace FlashHackForum.Migrations
                     b.Property<int>("CreatorId")
                         .HasColumnType("int");
 
+                    b.Property<bool>("IsAnonymous")
+                        .HasColumnType("bit");
+
                     b.Property<int>("SecondCategoryId")
                         .HasColumnType("int");
 
@@ -278,7 +281,7 @@ namespace FlashHackForum.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ThreadPostId"));
 
-                    b.Property<int?>("ForumThreadID")
+                    b.Property<int>("ForumThreadId")
                         .HasColumnType("int");
 
                     b.Property<int>("PostCreatorId")
@@ -293,7 +296,7 @@ namespace FlashHackForum.Migrations
 
                     b.HasKey("ThreadPostId");
 
-                    b.HasIndex("ForumThreadID");
+                    b.HasIndex("ForumThreadId");
 
                     b.HasIndex("PostCreatorId");
 
@@ -391,7 +394,7 @@ namespace FlashHackForum.Migrations
                     b.HasOne("FlashHackForum.Models.Account", "ThreadCreator")
                         .WithMany("ThreadsStarted")
                         .HasForeignKey("CreatorId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("FlashHackForum.Models.SecondCategory", "SecondCategory")
@@ -418,15 +421,19 @@ namespace FlashHackForum.Migrations
 
             modelBuilder.Entity("FlashHackForum.Models.ThreadPost", b =>
                 {
-                    b.HasOne("FlashHackForum.Models.ForumThread", null)
+                    b.HasOne("FlashHackForum.Models.ForumThread", "ForumThread")
                         .WithMany("PostsInThread")
-                        .HasForeignKey("ForumThreadID");
+                        .HasForeignKey("ForumThreadId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("FlashHackForum.Models.Account", "PostCreator")
                         .WithMany("ThreadPosts")
                         .HasForeignKey("PostCreatorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("ForumThread");
 
                     b.Navigation("PostCreator");
                 });
