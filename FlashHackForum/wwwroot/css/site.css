@@ -46,9 +46,7 @@ body {
         background-color: var(--orange);
     }
 
-.a {
-    color: var(--orange);
-}
+
 
 
 
@@ -193,24 +191,28 @@ body {
 .dropdown-menu {
     display: none;
 }
-/* Gör att dropdown-menyer visas korrekt vid hover */
+
 .dropdown-submenu {
     position: relative;
 }
 
     .dropdown-submenu > .dropdown-menu {
         top: 0;
-        left: 100%; /* Flyttar submenyn åt höger */
-        margin-top: -1px; /* Justerar så att den linjerar snyggt */
-        display: none; /* Döljer submenyn tills den aktiveras */
+        left: 100%; 
+        margin-top: -1px; 
+        display: none; 
         position: absolute;
-        min-width: 200px; /* Anpassa bredden efter behov */
+        min-width: 200px; 
     }
 
-    /* Visa submenyn när man hovrar över huvudkategorin */
+    
     .dropdown-submenu:hover > .dropdown-menu {
         display: block;
     }
+
+.a-link {
+    color: rgba(204, 133, 0, 1);
+}
 
 
 

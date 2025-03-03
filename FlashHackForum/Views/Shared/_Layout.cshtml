@@ -16,7 +16,6 @@
             var userId = Context.Session.GetInt32("UserId");
             var user = Context.Session.GetString("UserName");
             var admin = Context.Session.GetInt32("IsAdmin");
-            var mainCategories = ViewBag.MainCategories;
 
         }
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm box-shadow" style="background:black;">
@@ -107,37 +106,10 @@
     <nav class="navbar navbar-lower">
 
         <ul class="nav-list" style="display: flex">
-
+            
+            <!--Category Dropdown Menu-->
             @await Component.InvokeAsync("CategoryMenu")
-            @* <li class="nav-item dropdown userMenu">
-                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false" style="color:var(--orange);">Avdelningar</a>
-                <ul class="dropdown-menu">
-                    
-                        @foreach (var item in mainCategories)
-                        {
-                            <li class="dropdown-submenu">
-                                <a class="dropdown-item" asp-controller="" asp-action="" value="@item.MainCategoryId">@item.Name</a>
-
-                                @if (item.SecondCategories != null)
-                                {
-                                    <ul class="dropdown-menu">
-                                        @foreach (var secondItem in item.SecondCategories)
-                                        {
-                                            <li>
-                                                <a class="dropdown-item" asp-controller="ForumThread" asp-action="ListForumThread" asp-route-id="@secondItem.SecondCategoryId">@secondItem.Name</a>
-                                            </li>
-                                        }
-                                    </ul>
-                                }
-                            </li>
-
-                        }
-                    }
-                    
-
-                    <li><a class="dropdown-item" asp-controller="User" asp-action="Logout">Logga ut</a></li>
-                </ul>
-            </li> *@
+            
             @if (!string.IsNullOrEmpty(user))
             {
                 <li class="nav-item">
@@ -168,7 +140,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2025 - FlashHackForum - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &copy; 2025 - FlashHackForum - <a class="a-link" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

@@ -15,17 +15,12 @@
                         @foreach (var secondItem in item.SecondCategories)
                         {
                             <li>
-                                <a class="dropdown-item" asp-controller="ForumThread" asp-action="ListForumThread" asp-route-id="@secondItem.SecondCategoryId">@secondItem.Name</a>
+                                <a class="dropdown-item" asp-controller="Favourite" asp-action="ListAllThreads" asp-route-id="@secondItem.SecondCategoryId">@secondItem.Name</a>
                             </li>
                         }
                     </ul>
                 }
             </li>
-
         }
-        
-
-
-        <li><a class="dropdown-item" asp-controller="User" asp-action="Logout">Logga ut</a></li>
     </ul>
 </li>
