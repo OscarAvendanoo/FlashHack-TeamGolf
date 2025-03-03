@@ -2,7 +2,7 @@
 <div style="width: 10em; height: 10em;"></div>
 <div class="container vh-100">
     <!-- Delete Confirmation Question -->
-    <h3 class="mb-3 text-center">Are you sure you want to delete this thread?</h3>
+    <h3 class="mb-3 text-center">Är du säker på att du vill radera tråden?</h3>
 
     <!-- Confirmation Box -->
     <div class="card shadow-lg text-center p-4 mx-auto w-50">
@@ -14,8 +14,8 @@
                 <input type="hidden" name="ThreadId" value="@Model.ThreadId" />
                 <input type="hidden" name="ThreadName" value="@Model.ThreadName" />
                 <div class="d-flex justify-content-center gap-3 mt-4">
-                    <a href="@Url.Action("ListMyThreads", "Favourite")" class="btn btn-secondary">Go Back</a>
-                    <button type="submit" class="btn btn-danger">Confirm</button>
+                    <a href="@Url.Action("ListMyThreads", "Favourite")" class="btn btn-secondary">Avbryt</a>
+                    <button type="submit" class="btn btn-danger">Ta bort</button>
                 </div>
             </form>
             @if (!ViewData.ModelState.IsValid)
