@@ -10,13 +10,11 @@ namespace FlashHackForum.Controllers
     public class UserController : Controller
     {
         private readonly IUserRepository _userRepository;
-        private readonly IAccountRepository _accountRepository;
         private readonly IUnitOfWork _unitOfWork;
 
         public UserController(IUserRepository userRepository, IAccountRepository accountRepository, IUnitOfWork unitOfWork)
         {
             _userRepository = userRepository;
-            _accountRepository = accountRepository;
             _unitOfWork = unitOfWork;
         }
         // Det är en Mall Controller går justera respectiva methoder
