@@ -3,147 +3,160 @@
 @{
     ViewData["Title"] = "Details";
     var userId = Context.Session.GetInt32("UserId");
+    var errorMessage = TempData["ErrorMessage"] as string;
 }
 
-
+@if (!string.IsNullOrEmpty(errorMessage))
+{
+    <div class="alert alert-danger col-md-4">
+        @errorMessage
+    </div>
+}
+<hr />
 
 @if(userId == Model.UserId)
 {
-    <div>
-        <form class="row g-3 rounded" style="background-color: var(--dark-blue); color: var(--orange)">
-            <div>
-                <h2>
-                    @Model.UserName
-                    @if (!string.IsNullOrEmpty(Model.Account.ProfileImage))
+    <div class="row g-3 rounded" style="background-color: var(--dark-blue); color: var(--orange)">
+        <h2>
+            @Model.UserName
+            @if (!string.IsNullOrEmpty(Model.Account.ProfileImage))
+            {
+                @*<img src="@Model.Account.ProfileImage" class="img-thumbnail" alt="Profil bild"/>*@
+                <img src="~/Images/userId1_image.gif" class="img-fluid rounded-circle" alt="Profil bild" />
+            }
+            else
+            {
+                <a>Bild saknas</a>
+            }
+        </h2>
+        <!-- Lägg till formulär för att redigera användardata -->
+        <h4>Användaruppgifter</h4>
+        <form asp-action="Edit" method="post" class="row g-3">
+            <input type="hidden" asp-for="UserId" />
+            <input type="hidden" asp-for="AccountId" />
+            <input type="hidden" asp-for="Password" />
+            <input type="hidden" asp-for="Account.ProfileImage" />
+
+            <div class="col-md-6 form-group">
+                <label class="form-label" for="FirstName">Förnamn</label>
+                <input type="text" asp-for="FirstName" class="form-control" />
+            </div>
+
+            <div class="col-md-6 form-group">
+                <label class="form-label" for="LastName">Efternamn</label>
+                <input type="text" asp-for="LastName" class="form-control" />
+            </div>
+
+            <div class="col-md-6 form-group">
+                <label for="UserName">Användarnamn</label>
+                <input asp-for="UserName" class="form-control" />
+            </div>
+
+            <div class="col-md-6 form-group">
+                <label for="Email">Email</label>
+                <input asp-for="Email" class="form-control" />
+            </div>
+
+            <div class="col-md-6 form-group">
+                <label for="Password">Lösenord</label>
+                <div class="input-group">
+                    <input for="Password" placeholder=@Model.Password class="form-control" disabled readonly />
+                    <button class="btn btn-primary border-0" style="background-color: var(--orange);" type="button" asp-action="" asp-route-id="@Model?.UserId">Ändra lösenord</button>
+                </div>
+            </div>
+            <div class="col-md-6 form-group">
+                <label for="IsAdmin">Administratör?</label>
+                @if (Model.IsAdmin)
+                {
+                    <input class="form-control" type="text" value="Ja" disabled readonly>
+                }
+                else
+                {
+                    <input class="form-control" type="text" value="nej" disabled readonly>
+                }
+            </div>
+
+            <hr />
+            <!-- Lägg till formulär för att redigera kontodata -->
+            <h4>Konto uppgifter</h4>
+            <div class="col-md-6 form-group">
+                <label for="Account.AccountCreatedAt">Konto skapades</label>
+                <input asp-for="Account.AccountCreatedAt" class="form-control" disabled readonly />
+            </div>
+            <div class="col-md-6 form-group">
+                <label for="Account.DisplayName">Profilnamn</label>
+                <input asp-for="Account.DisplayName" class="form-control" />
+            </div>
+
+            <div class="col-md-6 form-group">
+                <label for="Account.PhoneNumber">Telefonnummer</label>
+                <input asp-for="Account.PhoneNumber" class="form-control" />
+            </div>
+
+            <div class="col-md-6 form-group">
+                <label for="Email">Konto Email</label>
+                <input asp-for="Account.Email" class="form-control" />
+            </div>
+
+            <div class="col-md-6 form-group">
+                <label for="Account.Employer">Arbetsgivare</label>
+                <input asp-for="Account.Employer" class="form-control" />
+            </div>
+            <div class="col-md-6 form-group">
+                <label for="Account.AccountRating">Ranking</label>
+                <input asp-for="Account.AccountRating" class="form-control" disabled readonly />
+            </div>
+            <div class="col-md-6 form-group">
+                <label for="Account.IsPremium">Premium konto?</label>
+                <div class="input-group">
+                    @if (Model.Account.IsPremium)
                     {
-                        @*<img src="@Model.Account.ProfileImage" class="img-thumbnail" alt="Profil bild"/>*@
-                        <img src="~/Images/userId1_image.gif" class="img-fluid rounded-circle" alt="Profil bild" />
+                        <input class="form-control" type="text" value="Ja" disabled readonly>
                     }
                     else
                     {
-                        <a>Bild saknas</a>
+                        <input class="form-control" type="text" value="Nej" disabled readonly>
+                        <button class="btn btn-primary border-0" style="background-color: var(--orange);" type="button" asp-action="" asp-route-id="@Model?.UserId">Skaffa Premium</button>
                     }
-                </h2>
-            </div>
-            <hr />
-            <h4>Användaruppgifter</h4>
-            <div class="col-md-6">
-                <label asp-for="FirstName" class="form-label">Förnamn</label>
-                <input asp-for="FirstName" type="text" class="form-control">
-                <span asp-validation-for="FirstName" class="text-danger"></span>
+                </div>
             </div>
             <div class="col-md-6">
-                <label asp-for="LastName" class="form-label">Efternamn</label>
-                <input asp-for="LastName" type="text" class="form-control">
-                <span asp-validation-for="LastName" class="text-danger"></span>
+                @*Filler*@
             </div>
-            <div class="col-md-6">
-                <label asp-for="UserName" class="form-label">Användarnamn</label>
-                <input asp-for="UserName" type="text" class="form-control">
-                <span asp-validation-for="UserName" class="text-danger"></span>
+            <div class="col-md-6 form-group">
+                <label for="Account.Biography">Om mig</label>
+                <textarea asp-for="Account.Biography" class="form-control" type="text" rows="5">@Model.Account?.Biography</textarea>
             </div>
-            <div class="col-md-6">
-                <label asp-for="Email" class="form-label">Email</label>
-                <input asp-for="Email" type="email" class="form-control">
-                <span asp-validation-for="Email" class="text-danger"></span>
-            </div>
-
-            <div class="col-md-6">
-                <label asp-for="Password" class="form-label">Lösenord</label>
-               <div class="input-group">
-                    <input type="text" class="form-control" placeholder=@Model.Password aria-label="Lösenord" aria-describedby="button-addon2" disabled readonly>
-                    <button class="btn btn-primary border-0" style="background-color: var(--orange);"  type="button" id="button-addon2" asp-action="" asp-route-id="@Model?.UserId">Ändra lösenord</button>
-               </div>
-
-            </div>
-           
-            <div class="col-auto mb-5">
-                <label asp-for="IsAdmin" class="form-label">Administratör?</label>
-                @if(Model.IsAdmin)
-                {
-                    <input class="form-control" type="text" value="Ja" disabled readonly>
-                }
-                else
-                {
-                    <input class="form-control" type="text" value="nej" disabled readonly>
-                }
-            </div>
-
-            <hr />
-            <h4>Konto uppgifter</h4>
-            <div class="col-md-6">
-                <label for=@Model.Account.AccountCreatedAt class="form-label">Konto skapades: </label>
-                <input type="text" class="form-control" placeholder=@Model.Account.AccountCreatedAt disabled readonly>
-            </div>
-
-            <div class="col-auto mb-5">
-                <label asp-for="Account.IsPremium" class="form-label">Premiumkonto?</label>
-                @if (Model.Account.IsPremium)
-                {
-                    <input class="form-control" type="text" value="Ja" disabled readonly>
-                }
-                else
-                {
-                    <input class="form-control" type="text" value="nej" disabled readonly>
-                }
+                <div class="col-md-6 form-group">
+                <label for="Account.Signature">Signatur</label>
+                <textarea asp-for="Account.Signature" class="form-control" type="text" rows="3">@Model.Account?.Signature</textarea>
             </div>
             
-            <div class="col-md-6">
-                <label asp-for="Account.Biography" class="form-label">Om mig:</label>
-                <div class="input-group">
-                    <textarea class="form-control" aria-label="With textarea">@Model.Account.Biography</textarea>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <label asp-for="Account.Signature" class="form-label">Signatur:</label>
-                <div class="input-group">
-                    <textarea class="form-control" aria-label="With textarea">@Model.Account.Signature</textarea>
-                </div>
-            </div>
-
-            <div class="col-md-6">
-                <label asp-for="Account.PhoneNumber" class="form-label">Telefon</label>
-                <input asp-for="Account.PhoneNumber" type="text" class="form-control">
-                <span asp-validation-for="Account.PhoneNumber" class="text-danger"></span>
-            </div>
-            <div class="col-md-6">
-                <label asp-for="Account.Employer" class="form-label">Arbetsgivare</label>
-                <input asp-for="Account.Employer" type="text" class="form-control">
-                <span asp-validation-for="Account.Employer" class="text-danger"></span>
-            </div>
-            <div class="col-auto mb-5">
-                <label for=@Model.Account.AccountRating class="form-label">Ranking: </label>
-                <input type="text" class="form-control" placeholder=@Model.Account.AccountRating disabled readonly>
-            </div>
-            <hr />
+            <!-- Lägg till formulär för att redigera inställningar -->
             <h4>Inställningar: </h4>
             <div>
                 <ul class="list-unstyled">
                     <li>
-                        <div class="form-check form-switch col-md-6">
+                        <div class="form-check form-switch col-md-6 form-group">
                             <label class="form-check-label" for="flexSwitchCheckDefault">Visa annonser?</label>
                             <input asp-for="Account.ShowAdvertisements" class="form-check-input" type="checkbox" role="switch">
                         </div>
-                        <div class="form-check form-switch col-md-6">
+                        <div class="form-check form-switch col-md-6 form-group">
                             <label class="form-check-label" for="flexSwitchCheckDefault">Synlig profil?</label>
                             <input asp-for="Account.ShowContact" class="form-check-input" type="checkbox" role="switch">
                         </div>
-                        <div class="form-check form-switch col-md-6">
+                        <div class="form-check form-switch col-md-6 form-group">
                             <label class="form-check-label" for="flexSwitchCheckDefault">Synlig för företag?</label>
                             <input asp-for="Account.ShowToCompanies" class="form-check-input" type="checkbox" role="switch">
                         </div>
                     </li>
                 </ul>
+
             </div>
-            <div class="visually-hidden">
-                <input asp-for="Account.DisplayName" type="hidden"/>
-                <input asp-for="Account.Email" type="hidden" />
-                <input asp-for="Account.AccountId" type="hidden" />
-                <input asp-for="Account" type="hidden" />
-            </div>
-            <div class="mb-3">
-                <button class="btn btn-primary border-0" type="submit" style="background-color: var(--orange);" asp-action="Edit" asp-route-id="@Model?.UserId">Spara</button>
-            </div>
+           <div class="mb-3">
+                <button type="submit" class="btn btn-primary" style="background-color: var(--orange)">Spara</button>
+           </div>
+            
         </form>
     </div>
 }
@@ -164,109 +177,77 @@ else
 
     <div>
         <h4>Användar uppgifter</h4>
-        <hr />
-        <dl class="row">
-            <dt class="col-sm-2">
-                <a>Förnamn: </a>
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.FirstName)
-            </dd>
-            <dt class="col-sm-2">
-                <a>Efternamn: </a>
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.LastName)
-            </dd>
-            <dt class="col-sm-2">
-                <a>Användarnamn: </a>
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.UserName)
-            </dd>
-            <dt class="col-sm-2 visually-hidden">
-                <a>Administratör? </a>
-            </dt>
-            <dd class="col-sm-10 visually-hidden">
-                @Html.DisplayFor(model => model.IsAdmin)
-            </dd>
-            <dt class="col-sm-2">
-                <a>Email </a>
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Email)
-            </dd>
-
-            <dt class="col-sm-2 visually-hidden">
-                Lösenord:
-            </dt>
-            <dd class="col-sm-10 visually-hidden">
-                @Html.DisplayFor(model => model.Password)
-            </dd>
-            
-            <dd class="col-sm-10 visually-hidden">
-                @Html.DisplayFor(model => model.AccountId)
-            </dd>
-
-            <dd class="col-sm-10 visually-hidden">
-                @Html.DisplayFor(model => model.Account)
-            </dd>
-        </dl>
+        <dt class="col-sm-2">
+            <a>Profilnamn: </a>
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Account.DisplayName)
+        </dd>
 
         <h4>Konto uppgifter</h4>
-        <dl class="row">
-            <dt class="col-sm-2">
-                <a>Konto skapades: </a>
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Account.AccountCreatedAt)
-            </dd>
-            
-            <dt class="col-sm-2">
-                <a>Om @Model.FirstName: </a>
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Account.Biography)
-            </dd>
-            <dt class="col-sm-2">
-                <a>Telefon</a>
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Account.PhoneNumber)
-            </dd>
-            <dt class="col-sm-2">
-                <a>Arbetsgivare: </a>
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Account.Employer)
-            </dd>       
-
-            <dt class="col-sm-2">
-                <a>Ranking: </a>
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Account.AccountRating)
-            </dd>
-            <dt class="col-sm-2">
-                <a>Konto email:  </a>
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Account.Email)
-            </dd>
-            <dt class="col-sm-2">
-                <a>Profilnamn: </a>
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Account.DisplayName)
-            </dd>
-            <dt class="col-sm-2 visually-hidden">
-                @Html.DisplayNameFor(model => model.Account.Email)
-            </dt>
-            <dd class="col-sm-10 visually-hidden">
-                @Html.DisplayFor(model => model.Account.Email)
-            </dd>
+        @if (Model.Account.ShowContact)
+        {
             <hr />
-        </dl>
+           
+            <dl class="row">
+                <dt class="col-sm-2">
+                    <a>Förnamn: </a>
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.FirstName)
+                </dd>
+                <dt class="col-sm-2">
+                    <a>Efternamn: </a>
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.LastName)
+                </dd>
+                <dt class="col-sm-2">
+                    <a>Konto skapades: </a>
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Account.AccountCreatedAt)
+                </dd>
+
+                <dt class="col-sm-2">
+                    <a>Om @Model.FirstName: </a>
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Account.Biography)
+                </dd>
+                <dt class="col-sm-2">
+                    <a>Telefon</a>
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Account.PhoneNumber)
+                </dd>
+                <dt class="col-sm-2">
+                    <a>Arbetsgivare: </a>
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Account.Employer)
+                </dd>
+                <dt class="col-sm-2">
+                    <a>Ranking: </a>
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Account.AccountRating)
+                </dd>
+                <dt class="col-sm-2">
+                    <a>Email: </a>
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Account.Email)
+                </dd>
+                <hr />
+            </dl>
+        }
+        else
+        {
+            <hr />
+            <h5>Denna användare har valt att vara anonym</h5>
+        }
     </div>
 }
+
 

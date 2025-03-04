@@ -1,4 +1,5 @@
-﻿using FlashHackForum.Data.Interfaces;
+﻿using FlashHackForum.Data;
+using FlashHackForum.Data.Interfaces;
 using FlashHackForum.Models;
 using FlashHackForum.ViewModels;
 using Microsoft.AspNetCore.Http;
@@ -97,20 +98,76 @@ namespace FlashHackForum.Controllers
 
         }
 
+
         [HttpGet]
-        public async Task<IActionResult> Details(int id)
+        public async Task<ActionResult> Details(int id)
         {
-            var user = await _userRepository.GetByIDAsync(id);
+            var user = await _unitOfWork.UserRepository.GetByIDAsync(id);
+            if (user == null)
+            {
+                TempData["ErrorMessage"] = "Användare finns inte.";
+                return NotFound();
+            }
             user.Account = await _unitOfWork.AccountRepository.GetByIDAsync((int)user.AccountId!);
+            if (user == null)
+            {
+                TempData["ErrorMessage"] = "Kontot finns inte.";
+                return NotFound();
+            }
+
+            return View(user);
+        }
+
+       
+        // POST: Edit
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Edit(User user)
+        {
             try
             {
-                return View(user);
+                // Hämta användaren och kontot från databasen
+                var existingUser = await _userRepository.GetByIDAsync(user.UserId);
+                var existingAccount = await _unitOfWork.AccountRepository.GetByIDAsync((int)user.AccountId!);
+                               
+                if (existingUser == null || existingAccount == null)
+                {
+                    TempData["ErrorMessage"] = "Användare eller användarkonto finns inte.";
+                    return NotFound();
+                }
+
+                // Uppdatera användardata
+                existingUser.FirstName = user.FirstName;
+                existingUser.LastName = user.LastName;
+                existingUser.UserName = user.UserName;
+                existingUser.Email = user.Email;
+                existingUser.Password = user.Password;
+
+                // Uppdatera kontoinformation
+                existingAccount.DisplayName = user.Account.DisplayName;
+                existingAccount.PhoneNumber = user.Account.PhoneNumber;
+                existingAccount.Email = user.Account.Email;
+                existingAccount.Employer = user.Account.Employer;
+
+                existingAccount.Biography = user.Account.Biography;
+                existingAccount.Signature = user.Account.Signature;
+
+                existingAccount.ShowAdvertisements = user.Account.ShowAdvertisements;
+                existingAccount.ShowContact = user.Account.ShowContact;
+                existingAccount.ShowToCompanies = user.Account.ShowToCompanies;
+
+                // Spara uppdateringarna
+                await _userRepository.UpdateAsync(existingUser);
+                await _unitOfWork.AccountRepository.UpdateAsync(existingAccount);
+
+                // Redirect till Details för att visa de uppdaterade uppgifterna
+                return RedirectToAction("Details", new { id = user.UserId });
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                ModelState.AddModelError("", "Användaren finns inte.");
-                return View();
+                ModelState.AddModelError("", "Det gick inte att uppdatera användardata.");
             }
+            return View("Details", user);  // Om validering misslyckades, visa om användardatan i Details igen
         }
     }
 }
