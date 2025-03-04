@@ -259,17 +259,27 @@ namespace FlashHackForum.Controllers
             threadToEdit.Title = editThreadVM.Desrciption;
             threadToEdit.IsAnonymous = editThreadVM.IsAnonymous;
 
-            //await _threadRepository.UpdateAsync(threadToEdit);
+            
             await _threadPostRepository.SaveChanges();
 
             var firstPostInThread = threadToEdit.PostsInThread.OrderBy(p => p.PostDate).FirstOrDefault();
             firstPostInThread.PostMessage = editThreadVM.FirstPostMessage;
 
-            //await _threadPostRepository.UpdateAsync(firstPostInThread);
+            
             await _threadPostRepository.SaveChanges();
 
             return RedirectToAction("Index");
         }
+        public async Task<IActionResult> ShowThread(int id)
+        {
+            var threadToShow = await _forumThreadRepository.GetByIdIncludePostsAndCreators(id);
+            if(threadToShow == null)
+            {
+                return NotFound();
+            }
+            return View(threadToShow);
+        }
+
 
     }
 }

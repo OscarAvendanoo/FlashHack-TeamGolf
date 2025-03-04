@@ -1,0 +1,92 @@
+﻿@model FlashHackForum.Models.ForumThread
+
+@{
+    ViewData["Title"] = Model.Title;
+
+
+
+    int currentPage = ViewBag.CurrentPage ?? 1;
+}
+
+<h3>@Model.Title</h3>
+<p class="text-muted">Skapad av: @Model.ThreadCreator.DisplayName den @Model.CreatedAt.ToString("yyyy-MM-dd HH:mm")</p>
+<br />
+<a asp-action="CreatePost" asp-controller="ThreadPost" asp-route-threadId="@Model.ForumThreadID" class="btn btn-secondary btn-sm">
+    <i class="bi bi-arrow-return-left"></i> Svara i tråden
+</a>
+<hr />
+<div class="list-group custom-list">
+    @foreach (var post in Model.PostsInThread.OrderBy(p => p.PostDate))
+
+
+
+    {
+        <div class="list-group-item">
+            <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1">@post.PostCreator.DisplayName</h5>
+                <small>@post.PostDate.ToString("yyyy-MM-dd HH:mm")</small>
+            </div>
+            <!-- Checks if the post is a reply to another post -->
+            @if (post.ReplyToPost != null)
+
+            {
+                <div class="bg-light p-2 mt-2" style="font-size: 0.9rem; color: black;">
+                    <p><strong>@post.ReplyToPost.PostCreator.DisplayName</strong> said:</p>
+                    <p>@post.ReplyToPost.PostMessage</p>
+                </div>
+            }
+
+            <p class="mt-2">@post.PostMessage</p>
+
+            <div class="d-flex justify-content-between mt-2">
+                <!-- Reply Button on the Left -->
+                <a asp-action="CreateReplyPost" asp-controller="ThreadPost" asp-route-postId="@post.ThreadPostId" asp-route-threadId="@Model.ForumThreadID" class="btn btn-secondary btn-sm">
+                    <i class="bi bi-arrow-return-left"></i> Citera
+                </a>
+
+                <!-- Edit and Delete Buttons on the Right -->
+                <div class="d-flex justify-content-end">
+                    <a asp-action="UpVote" asp-controller="ThreadPost" asp-route-id="@post.ThreadPostId" class="btn btn-success btn-sm me-2">
+                        <i class="bi bi-pencil"></i> Gilla
+                    </a>
+                    <a asp-action="DownVote" asp-controller="ThreadPost" asp-route-id="@post.ThreadPostId" class="btn btn-danger btn-sm">
+                        <i class="bi bi-trash"></i> Ogilla
+                    </a>
+                </div>
+            </div>
+            <!-- Horizontal ruler and signature (if available) -->
+            @if (!string.IsNullOrEmpty(post.PostCreator.Signature))
+
+            {
+                <hr />
+                <p class="text-muted" style="font-style: italic; margin-top: 10px;">
+                    @post.PostCreator.Signature
+                </p>
+            }
+        </div>
+    }
+</div>
+
+<nav aria-label="Page navigation example">
+    <ul class="pagination">
+        <li class="page-item">
+            <a class="page-link" href="@Url.Action("ShowThread", new { id = Model.ForumThreadID, page = 1 })" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
+        <li class="page-item @(currentPage == 1 ? "active" : "")">
+            <a class="page-link" href="@Url.Action("ShowThread", new { id = Model.ForumThreadID, page = 1 })">1</a>
+        </li>
+        <li class="page-item @(currentPage == 2 ? "active" : "")">
+            <a class="page-link" href="@Url.Action("ShowThread", new { id = Model.ForumThreadID, page = 2 })">2</a>
+        </li>
+        <li class="page-item @(currentPage == 3 ? "active" : "")">
+            <a class="page-link" href="@Url.Action("ShowThread", new { id = Model.ForumThreadID, page = 3 })">3</a>
+        </li>
+        <li class="page-item">
+            <a class="page-link" href="@Url.Action("ShowThread", new { id = Model.ForumThreadID, page = 2 })" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+    </ul>
+</nav>

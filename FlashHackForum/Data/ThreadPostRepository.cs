@@ -20,6 +20,9 @@ namespace FlashHackForum.Data
             return await _context.ThreadPosts.Where(tp => tp.PostCreatorId == id).ToListAsync();
         }
 
-     
+        public async Task<ThreadPost> GetPostByIDIncludePostCreator(int id)
+        {
+            return await _context.ThreadPosts.Include(p => p.PostCreator).FirstOrDefaultAsync(p => p.ThreadPostId == id);
+        }
     }
 }
