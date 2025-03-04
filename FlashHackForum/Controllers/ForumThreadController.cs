@@ -169,5 +169,107 @@ namespace FlashHackForum.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        // GET: ThreadController/Delete/5
+        public async Task<ActionResult> DeleteByOwner(int id)
+        {
+            var threadToDelete = await _forumThreadRepository.GetByIDAsync(id);
+            var deleteThreadVM = new DeleteThreadVM();
+            deleteThreadVM.ThreadId = id;
+            deleteThreadVM.ThreadName = threadToDelete.Title;
+
+            return View(deleteThreadVM);
+        }
+
+        // POST: ThreadController/Delete/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> DeleteByOwner(DeleteThreadVM deleteThreadVM)
+        {
+            var threadToDelete = await _forumThreadRepository.GetByIdIncludePostsAndCreators(deleteThreadVM.ThreadId);
+            if (threadToDelete == null)
+            {
+                ModelState.AddModelError("", "The thread could not be found");
+                return View(deleteThreadVM);
+            }
+            var user = await _userRepository.GetUserByUsername(HttpContext.Session.GetString("UserName"));
+            var userAccount = await _accountRepository.GetAccountByUserID(user.UserId);
+            if (threadToDelete.ThreadCreator != userAccount)
+            {
+                ModelState.AddModelError("", "You can not delete a thread that does not belong to you.");
+                return View(deleteThreadVM);
+            }
+            if (threadToDelete.PostsInThread.Count > 1)
+            {
+                ModelState.AddModelError("", "You can not delete a thread that has replies.");
+                return View(deleteThreadVM);
+            }
+
+            await _forumThreadRepository.DeleteAsync(threadToDelete);
+
+            return RedirectToAction("Index");
+        }
+
+        // GET: ThreadController/Edit/5
+        public async Task<ActionResult> EditByOwner(int id)
+        {
+            var editThreadVM = new EditThreadVM();
+            var threadToEdit = await _forumThreadRepository.GetByIdIncludePostsAndCreators(id);
+            editThreadVM.FirstPostMessage = threadToEdit.PostsInThread.OrderBy(p => p.PostDate).FirstOrDefault().PostMessage;
+            editThreadVM.Desrciption = threadToEdit.Title;
+            editThreadVM.IsAnonymous = threadToEdit.IsAnonymous;
+            editThreadVM.ThreadToEditId = id;
+
+            var user = await _userRepository.GetUserByUsername(HttpContext.Session.GetString("UserName"));
+            if (user.IsAdmin == false)
+            {
+     
+                var userAccount = await _accountRepository.GetAccountByUserID(user.UserId);
+                if (threadToEdit.ThreadCreator != userAccount)
+                {
+                    return NotFound();
+                }
+
+
+                return View(editThreadVM);
+            }
+
+            return View(editThreadVM);
+
+        }
+
+        // POST: ThreadController/Edit/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> EditByOwner(EditThreadVM editThreadVM)
+        {
+            if (!ModelState.IsValid)
+            {
+                ModelState.AddModelError(string.Empty, "All fields need to be filled.");
+                return View(editThreadVM);
+            }
+
+            var threadToEdit = await _forumThreadRepository.GetByIdIncludePostsAndCreators(editThreadVM.ThreadToEditId);
+
+            if (threadToEdit.PostsInThread.Count > 1)
+            {
+                ModelState.AddModelError(string.Empty, "You cannot edit this thread because others have replied.");
+                return View();
+            }
+
+            threadToEdit.Title = editThreadVM.Desrciption;
+            threadToEdit.IsAnonymous = editThreadVM.IsAnonymous;
+
+            //await _threadRepository.UpdateAsync(threadToEdit);
+            await _threadPostRepository.SaveChanges();
+
+            var firstPostInThread = threadToEdit.PostsInThread.OrderBy(p => p.PostDate).FirstOrDefault();
+            firstPostInThread.PostMessage = editThreadVM.FirstPostMessage;
+
+            //await _threadPostRepository.UpdateAsync(firstPostInThread);
+            await _threadPostRepository.SaveChanges();
+
+            return RedirectToAction("Index");
+        }
+
     }
 }

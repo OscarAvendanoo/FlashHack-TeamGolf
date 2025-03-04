@@ -88,8 +88,9 @@ namespace FlashHackForum.Controllers
             {
                 return RedirectToAction("Index", "Auth");
             }
-
-            var account = await accountRepository.GetAccountByIDIncludeAll((int)user.AccountId);
+            var userID = HttpContext.Session.GetInt32("UserId");
+            var account = await accountRepository.GetAccountByUserIDIncludeThreadsStarted(userID.Value);
+           
             var myThreads = account.ThreadsStarted;
 
             return View(myThreads.ToPagedList(pageNumber, pageSize));
