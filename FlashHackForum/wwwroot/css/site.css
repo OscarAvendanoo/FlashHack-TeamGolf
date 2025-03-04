@@ -32,7 +32,7 @@ body {
     padding-right: 220px;
     padding-left: 220px;
     background-color: rgba(44, 62, 80, 0.2);
-    overflow-x:hidden;
+    overflow-x: hidden;
 }
 
 .main-btn {
@@ -68,9 +68,8 @@ body {
     margin-right: -50vw;
     padding-top: 0;
     padding-bottom: 0;
-    border-bottom:solid;
+    border-bottom: solid;
     border-color: var(--turqouise-blue);
-    
 }
 
 .userMenu li {
@@ -78,49 +77,49 @@ body {
     /*padding: 2px 10px;*/
     text-decoration: none;
     font-weight: 500;
-
 }
+
     .userMenu li:hover {
         color: var(--dark-blue);
         background-color: var(--orange);
     }
 
-.navbar-lower{
+.navbar-lower {
     border-bottom: none;
     margin-bottom: 30px;
 }
 
-    .navbar ul {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-        justify-content: center;
-        margin-left:14%;
-    }
+.navbar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    justify-content: center;
+    margin-left: 14%;
+}
 
-    .navbar li {
-        margin: 0;
-    }
-    .navbar img{
-        
-        margin-left: 12%;
-    }
+.navbar li {
+    margin: 0;
+}
 
-    .navbar a {
-        display: block;
-        padding: 7px 20px;
-        color: var(--orange);
-        text-decoration: none;
-        font-weight: 500;
-        border-radius: 10px;
-        margin-right: 1em;
-        margin-left: 1em;
-    }
+.navbar img {
+    margin-left: 12%;
+}
 
-        .navbar a:hover {
-            color: var(--dark-blue);
-            background-color: var(--orange);
-        }
+.navbar a {
+    display: block;
+    padding: 7px 20px;
+    color: var(--orange);
+    text-decoration: none;
+    font-weight: 500;
+    border-radius: 10px;
+    margin-right: 1em;
+    margin-left: 1em;
+}
+
+    .navbar a:hover {
+        color: var(--dark-blue);
+        background-color: var(--orange);
+    }
 
 /*Innehåll med padding från sidorna */
 .content-wrapper {
@@ -144,12 +143,12 @@ body {
     }
 
     .custom-list .list-group-item:nth-child(even) {
-        background-color: rgba(78, 140, 163, 0.8); 
-        color: var(--white); 
+        background-color: rgba(78, 140, 163, 0.8);
+        color: var(--white);
     }
 
 
-    /*PAGEINATION*/
+/*PAGEINATION*/
 
 .page-link {
     background-color: rgba(44, 62, 80, 0.8);
@@ -157,14 +156,15 @@ body {
     font-weight: 400;
 }
 
-.page-link:hover{
-    color: var(--dark-blue);
-    background-color: var(--orange);
-}
+    .page-link:hover {
+        color: var(--dark-blue);
+        background-color: var(--orange);
+    }
+
 .pagination .page-item.active .page-link {
     background-color: var(--dark-blue);
     border-color: var(--dark-blue);
-    color: var(--orange); 
+    color: var(--orange);
     font-weight: bold;
 }
 
@@ -173,13 +173,11 @@ body {
 
 .login-card {
     background-color: var(--dark-blue);
-    
 }
 
-.login-card li a{
-    color: var(--orange);
-    
-}
+    .login-card li a {
+        color: var(--orange);
+    }
 
 
 /*TEST*/
@@ -198,14 +196,14 @@ body {
 
     .dropdown-submenu > .dropdown-menu {
         top: 0;
-        left: 100%; 
-        margin-top: -1px; 
-        display: none; 
+        left: 80%;
+        margin-top: -1px;
+        display: none;
         position: absolute;
-        min-width: 200px; 
+        min-width: 200px;
     }
 
-    
+
     .dropdown-submenu:hover > .dropdown-menu {
         display: block;
     }
@@ -214,15 +212,30 @@ body {
     color: rgba(204, 133, 0, 1);
 }
 
+.custom-card {
+    margin-bottom: 0.5em;
+    border-radius: 0.5em;
+    padding: 1em;
+}
 
+.custom-card-subcategory {
+    background-color: rgba(78, 140, 163, 0.3);
+    color: black;
+}
 
+.custom-card-subcategory a {
+    text-decoration: none;
+    background-color: var(--light-green);
+    
+}
 
+.custom-card-threads {
+    background-color: rgba(78, 140, 163, 0.8);
+    color: #f0f0f0;
+}
 
-
-
-
-
-
-
-
-
+    .custom-card-threads a {
+        text-decoration: none;
+        
+    }
+    

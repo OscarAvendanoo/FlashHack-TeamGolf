@@ -1,0 +1,54 @@
+﻿@using FlashHackForum.ViewModels
+@* Dictionary<string, List<ForumThread>>*@
+@model List<ForumThreadPostVM>
+@{
+    ViewData["Title"] = "ListAllSubcategories";
+}
+
+
+
+<div class="row">
+    @foreach (var mainCategory in Model)
+    {
+        <h3>@mainCategory.MainCategoryName</h3>
+        
+
+        @foreach (var subCategory in mainCategory.SecondCategories)
+        {
+
+            <section class="col-sm-6 mb-3 mb-sm-0 custom-card-subcategory">
+                <a asp-action="#" asp-route-id="@subCategory.SecondCategoryName" class="">
+                    <div class="card custom-card-subcategory">
+                        <div class="card-body">
+                            <p class="card-title fw-bold">@subCategory.SecondCategoryName</p>
+                            <small class="card-text">Trådar i forum: <span style="font-weight:500;">@subCategory.ForumThreads.Count</span></small>
+                        </div>
+                    </div>
+                </a>
+            </section>
+
+
+            @if (subCategory.LatestThread != null)
+            {
+                <!--Last created Post in category-->
+                <section class="custom-card-threads col-sm-6">
+                    <a asp-action="#" asp-route-id="@subCategory.LatestThread.ForumThreadID" class="">
+                        <div class="card custom-card-threads">
+                            <div class="card-body">
+                                <p class="card-title fw-bold">@subCategory.LatestThread.Title</p>
+                                <small class="card-text">Skapad av: @subCategory.LatestThread.ThreadCreator.DisplayName</small>
+                                <small>@subCategory.LatestThread.CreatedAt.ToString(" dd MMMM yyyy")</small>
+                            </div>
+                        </div>
+                    </a>
+                </section>
+            }
+
+        }
+
+    }
+</div>
+
+
+
+
