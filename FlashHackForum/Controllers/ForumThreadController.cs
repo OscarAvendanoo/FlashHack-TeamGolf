@@ -188,19 +188,19 @@ namespace FlashHackForum.Controllers
             var threadToDelete = await _forumThreadRepository.GetByIdIncludePostsAndCreators(deleteThreadVM.ThreadId);
             if (threadToDelete == null)
             {
-                ModelState.AddModelError("", "The thread could not be found");
+                ModelState.AddModelError("", "Tyvärr, tråden kunde inte hittas.");
                 return View(deleteThreadVM);
             }
             var user = await _userRepository.GetUserByUsername(HttpContext.Session.GetString("UserName"));
             var userAccount = await _accountRepository.GetAccountByUserID(user.UserId);
             if (threadToDelete.ThreadCreator != userAccount)
             {
-                ModelState.AddModelError("", "You can not delete a thread that does not belong to you.");
+                ModelState.AddModelError("", "Du kan inte ta bort en tråd som inte är skapad av dig.");
                 return View(deleteThreadVM);
             }
             if (threadToDelete.PostsInThread.Count > 1)
             {
-                ModelState.AddModelError("", "You can not delete a thread that has replies.");
+                ModelState.AddModelError("", "Tyvärr, du kan inte ta bort en tråd som andra användare har svarat i.");
                 return View(deleteThreadVM);
             }
 
