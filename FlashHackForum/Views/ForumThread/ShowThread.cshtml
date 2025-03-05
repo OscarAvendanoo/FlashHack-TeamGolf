@@ -9,7 +9,15 @@
 }
 
 <h3>@Model.Title</h3>
-<p class="text-muted">Skapad av: @Model.ThreadCreator.DisplayName den @Model.CreatedAt.ToString("yyyy-MM-dd HH:mm")</p>
+@if(Model.IsAnonymous == false)
+{
+    <p class="text-muted">Skapad av: @Model.ThreadCreator.DisplayName den @Model.CreatedAt.ToString("yyyy-MM-dd HH:mm")</p>
+}
+else
+{
+    <p class="text-muted">Skapad av: Anonym användare den @Model.CreatedAt.ToString("yyyy-MM-dd HH:mm")</p>
+}
+
 <br />
 <a asp-action="CreatePost" asp-controller="ThreadPost" asp-route-threadId="@Model.ForumThreadID" class="btn btn-secondary btn-sm">
     <i class="bi bi-arrow-return-left"></i> Svara i tråden
@@ -21,6 +29,7 @@
 
 <hr />
 <div class="list-group custom-list">
+    
     @foreach (var post in Model.PostsInThread.OrderBy(p => p.PostDate))
 
 
@@ -34,8 +43,9 @@
                 }
                 else
                 {
-                    <h5 class="mb-1">Anonymous</h5>
+                    <h5 class="mb-1">Anonym användare</h5>
                 }
+               
                 <small>@post.PostDate.ToString("yyyy-MM-dd HH:mm")</small>
             </div>
             <!-- Checks if the post is a reply to another post -->
@@ -50,7 +60,7 @@
                     }
                     else
                     {
-                        <p><strong>Anonymous</strong> citat:</p>
+                        <p><strong>Anonym användare</strong> citat:</p>
                     }
                     
                     

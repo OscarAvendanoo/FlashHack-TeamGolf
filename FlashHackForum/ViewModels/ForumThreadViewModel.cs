@@ -31,7 +31,7 @@ namespace FlashHackForum.ViewModels
 
         public ThreadPostViewModel ThreadPost { get; set; } // Använd en enkel ViewModel för ThreadPost
 
-
+        public bool Anonymous { get; set; }
         //public ThreadPost? ThreadPost { get; set; } // Hela objektet!
     }
     public class ThreadPostViewModel
