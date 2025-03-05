@@ -252,6 +252,13 @@ body {
 .a-link {
     color: rgba(204, 133, 0, 1);
 }
+/* Heart button */
+.heart-button {
+    font-size: 1.5rem;
+    text-decoration: none;
+    transition: transform 0.2s ease-in-out;
+}
+
 
 .custom-card {
     padding: 0.4rem;
@@ -277,6 +284,18 @@ body {
     }
 
     
+
+    /* Fill the heart on hover if it's not already clicked */
+    .heart-button:not(.active) i:hover {
+        font-weight: bold;
+        content: "\f417"; /* Won't work for Bootstrap icons, JS will handle it */
+    }
+
+    /* Optional: Add a slight scale effect on hover */
+    .heart-button:hover {
+        transform: scale(1.2);
+    }
+
 
 /*MainCategory Banner*/
 

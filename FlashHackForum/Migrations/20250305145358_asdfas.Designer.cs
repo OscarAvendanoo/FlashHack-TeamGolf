@@ -4,6 +4,7 @@ using FlashHackForum.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FlashHackForum.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250305145358_asdfas")]
+    partial class asdfas
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -283,6 +286,9 @@ namespace FlashHackForum.Migrations
 
                     b.Property<int>("ForumThreadId")
                         .HasColumnType("int");
+
+                    b.Property<bool>("IsThreadDiscussionStarter")
+                        .HasColumnType("bit");
 
                     b.Property<int>("PostCreatorId")
                         .HasColumnType("int");
