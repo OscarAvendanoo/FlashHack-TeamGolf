@@ -38,13 +38,15 @@ namespace FlashHackForum.Controllers
             }
             var thread = await _forumThreadRepository.GetByIDAsync(createPostReplyVM.ThreadId);
             var userID = HttpContext.Session.GetInt32("UserId");
-            var userAccount = await _accountRepository.GetAccountByUserID(userID.Value); 
+            var userAccount = await _accountRepository.GetAccountByUserID(userID.Value);
             var newPostWithReply = new ThreadPost
             {
                 PostMessage = createPostReplyVM.PostMessage,
                 ReplyToPostId = createPostReplyVM.PostToReplyTo.ThreadPostId,
                 ForumThread = thread,
-                PostCreatorId = userAccount.AccountId
+                PostCreatorId = userAccount.AccountId,
+                Anonymous = createPostReplyVM.Anonymous,
+                
             };
 
             await _threadPostRepository.AddAsync(newPostWithReply);
@@ -75,6 +77,7 @@ namespace FlashHackForum.Controllers
             newPost.PostMessage = createPostVM.PostMessage;
             newPost.PostCreatorId = account.AccountId;
             newPost.ForumThreadId = createPostVM.ThreadId;
+            newPost.Anonymous = createPostVM.Anonymous;
 
             await _threadPostRepository.AddAsync(newPost);
 
