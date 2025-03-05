@@ -32,7 +32,7 @@ namespace FlashHackForum.ViewModels
         
         // Account Model Properties
 
-        public string Biography {  get; set; }
+       
 
         [Required]
         public string PhoneNumber { get; set; }
