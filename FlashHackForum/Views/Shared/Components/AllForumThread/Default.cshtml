@@ -43,7 +43,7 @@
                             {
                                 <div class="custom-card-threads col-sm-6">
                                     <section>
-                                        <a asp-action="#" asp-route-id="@subCategory.LatestThread.ForumThreadID">
+                                        <a asp-controller ="ForumThread" asp-action="ShowThread" asp-route-id="@subCategory.LatestThread.ForumThreadID">
                                             <div class="card custom-card-threads">
                                                 <div class="card-body custom-card">
                                                     <p class="card-title">@subCategory.LatestThread.Title</p>
