@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace FlashHackForum.Migrations
 {
     /// <inheritdoc />
-    public partial class initial : Migration
+    public partial class init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -223,7 +223,8 @@ namespace FlashHackForum.Migrations
                     PostCreatorId = table.Column<int>(type: "int", nullable: false),
                     PostMessage = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PostDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ForumThreadId = table.Column<int>(type: "int", nullable: false)
+                    ForumThreadId = table.Column<int>(type: "int", nullable: false),
+                    ReplyToPostId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -239,7 +240,12 @@ namespace FlashHackForum.Migrations
                         column: x => x.ForumThreadId,
                         principalTable: "ForumThreads",
                         principalColumn: "ForumThreadID",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ThreadPosts_ThreadPosts_ReplyToPostId",
+                        column: x => x.ReplyToPostId,
+                        principalTable: "ThreadPosts",
+                        principalColumn: "ThreadPostId");
                 });
 
             migrationBuilder.CreateIndex(
@@ -292,6 +298,11 @@ namespace FlashHackForum.Migrations
                 name: "IX_ThreadPosts_PostCreatorId",
                 table: "ThreadPosts",
                 column: "PostCreatorId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ThreadPosts_ReplyToPostId",
+                table: "ThreadPosts",
+                column: "ReplyToPostId");
         }
 
         /// <inheritdoc />

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FlashHackForum.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250304100233_third")]
-    partial class third
+    [Migration("20250305092202_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -294,11 +294,16 @@ namespace FlashHackForum.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("ReplyToPostId")
+                        .HasColumnType("int");
+
                     b.HasKey("ThreadPostId");
 
                     b.HasIndex("ForumThreadId");
 
                     b.HasIndex("PostCreatorId");
+
+                    b.HasIndex("ReplyToPostId");
 
                     b.ToTable("ThreadPosts");
                 });
@@ -433,9 +438,15 @@ namespace FlashHackForum.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("FlashHackForum.Models.ThreadPost", "ReplyToPost")
+                        .WithMany()
+                        .HasForeignKey("ReplyToPostId");
+
                     b.Navigation("ForumThread");
 
                     b.Navigation("PostCreator");
+
+                    b.Navigation("ReplyToPost");
                 });
 
             modelBuilder.Entity("FlashHackForum.Models.Account", b =>
