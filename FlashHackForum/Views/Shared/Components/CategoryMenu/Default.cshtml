@@ -7,7 +7,7 @@
         @foreach (var item in Model)
         {
             <li class="dropdown-submenu">
-                <a class="dropdown-item" asp-controller="" asp-action="" value="@item.MainCategoryId">@item.Name</a>
+                <a asp-controller="" asp-action="" value="@item.MainCategoryId">@item.Name</a>
 
                 @if (item.SecondCategories != null)
                 {
@@ -15,7 +15,7 @@
                         @foreach (var secondItem in item.SecondCategories)
                         {
                             <li>
-                                <a class="dropdown-item" asp-controller="Favourite" asp-action="ListAllThreads" asp-route-id="@secondItem.SecondCategoryId">@secondItem.Name</a>
+                                <a asp-controller="Favourite" asp-action="ListAllThreads" asp-route-id="@secondItem.SecondCategoryId">@secondItem.Name</a>
                             </li>
                         }
                     </ul>
