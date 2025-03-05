@@ -52,6 +52,23 @@ body {
         background-color: var(--orange);
     }
 
+    /*CreateThread Button*/
+    .create-thread-btn{
+        padding: 5px;
+        font-size:1rem;
+        color:var(--light-green);
+        background-color: var(--dark-blue);
+        align-items:center;
+        align-content: center;
+        font-weight: 600;
+        border-radius: 5px;
+
+    }
+        .create-thread-btn:hover {
+            
+            color: var(--dark-blue);
+            background-color: var(--light-green);
+        }
 
 
 
@@ -284,9 +301,9 @@ a.nav-link:focus, a.nav-link:active {
     text-decoration: none;
 }
 a.nav-link:hover {
-    color: var(--dark-blue); /* Textfärg vid hover */
-    background-color: var(--orange); /* Bakgrundsfärg vid hover */
-    text-decoration: none; /* Ta bort understrykning på hover */
+    color: var(--dark-blue); 
+    background-color: var(--orange); 
+    text-decoration: none; 
 }
 
 

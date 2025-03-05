@@ -72,60 +72,6 @@
 </div>
 
 
-
-
-@* <div class="row">
-    @foreach (var mainCategory in Model)
-    {
-        var collapseId = "collapse-" + mainCategory.MainCategoryName.Replace(" ", "-");
-
-
-            <h3 class="main-category category-toggle" data-bs-toggle="collapse" data-bs-target="#@collapseId" aria-expanded="false" aria-controls="@collapseId">@mainCategory.MainCategoryName</h3>
-
-
-        <div class="collapse show category-collapse" id="@collapseId">
-            <div class="row">
-                <!-- Bootstrap Grid för att placera sektionerna i rader -->
-                @foreach (var subCategory in mainCategory.SecondCategories)
-                {
-                    <div class="col-sm-6 mb-3 mb-sm-0 custom-card-subcategory">
-                        <!-- Anpassa bredden -->
-                        <section class="custom-card-subcategory">
-                            <a asp-action="#" asp-route-id="@subCategory.SecondCategoryName">
-                                <div class="card custom-card-subcategory">
-                                    <div class="card-body">
-                                        <p class="card-title fw-bold">@subCategory.SecondCategoryName</p>
-                                        <small class="card-text">Trådar i forum: <span style="font-weight:500;">@subCategory.ForumThreads.Count</span></small>
-                                    </div>
-                                </div>
-                            </a>
-                        </section>
-                    </div>
-
-                    @if (subCategory.LatestThread != null)
-                    {
-                        <div class="custom-card-threads col-sm-6">
-                            <section class="custom-card-threads">
-                                <a asp-action="#" asp-route-id="@subCategory.LatestThread.ForumThreadID">
-                                    <div class="card custom-card-threads">
-                                        <div class="card-body">
-                                            <p class="card-title fw-bold">@subCategory.LatestThread.Title</p>
-                                            <small class="card-text">Skapad av: @subCategory.LatestThread.ThreadCreator.DisplayName</small>
-                                            <small>@subCategory.LatestThread.CreatedAt.ToString(" dd MMMM yyyy")</small>
-                                        </div>
-                                    </div>
-                                </a>
-                            </section>
-                        </div>
-                    }
-                }
-            </div>
-        </div> <!-- Collapse slut -->
-    }
-</div> *@
-
-
-
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         var buttons = document.querySelectorAll(".category-toggle");
@@ -134,10 +80,8 @@
             btn.addEventListener("click", function () {
                 var target = document.querySelector(this.getAttribute("data-bs-target"));
 
-                // Om denna redan är öppen, gör inget
                 if (target.classList.contains("show")) return;
 
-                // Stäng alla andra öppna collapses
                 document.querySelectorAll(".category-collapse.show").forEach(function (openCollapse) {
                     new bootstrap.Collapse(openCollapse, { toggle: true });
                 });
@@ -146,49 +90,6 @@
     });
 </script>
 
-@* <div class="row">
-    @foreach (var mainCategory in Model)
-    {
-        <button type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample"><h3 class="mt-4 main-category">@mainCategory.MainCategoryName</h3></button>
-
-
-        @foreach (var subCategory in mainCategory.SecondCategories)
-        {
-
-            <section class="col-sm-6 mb-3 mb-sm-0 custom-card-subcategory collapse" id="collapseExample" >
-                <a asp-action="#" asp-route-id="@subCategory.SecondCategoryName" class="">
-                    <div class="card custom-card-subcategory">
-                        <div class="card-body">
-                            <p class="card-title fw-bold">@subCategory.SecondCategoryName</p>
-                            <small class="card-text">Trådar i forum: <span style="font-weight:500;">@subCategory.ForumThreads.Count</span></small>
-                        </div>
-                    </div>
-                </a>
-            </section>
-
-
-
-            @if (subCategory.LatestThread != null)
-            {
-                <!--Last created Post in category-->
-                <section class="custom-card-threads col-sm-6" id="collapseExample">
-                    <a asp-action="#" asp-route-id="@subCategory.LatestThread.ForumThreadID" class="">
-                        <div class="card custom-card-threads">
-                            <div class="card-body">
-                                <p class="card-title fw-bold">@subCategory.LatestThread.Title</p>
-                                <small class="card-text">Skapad av: @subCategory.LatestThread.ThreadCreator.DisplayName</small>
-                                <small>@subCategory.LatestThread.CreatedAt.ToString(" dd MMMM yyyy")</small>
-                            </div>
-                        </div>
-                    </a>
-                </section>
-            }
-
-
-        }
-
-    }
-</div> *@
 
 
 

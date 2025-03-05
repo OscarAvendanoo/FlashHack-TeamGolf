@@ -1,7 +1,9 @@
 ﻿using FlashHackForum.Data;
 using FlashHackForum.Data.Interfaces;
 using FlashHackForum.Models;
+using FlashHackForum.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.CSharp;
 using NuGet.ProjectModel;
 using System.Drawing.Printing;
 using X.PagedList;
@@ -24,7 +26,7 @@ namespace FlashHackForum.Controllers
             this.userRepository = userRepository;
             this.threadPostRepository = threadPostRepository;
             this.secondCategoryRepository = secondCategoryRepository;
-     
+
         }
 
         /*
@@ -36,7 +38,7 @@ namespace FlashHackForum.Controllers
         public async Task<ActionResult> ListAllFavourites(int? page)
         {
 
-            int pageSize = 4;
+            int pageSize = 10;
             int pageNumber = page ?? 1;
             ViewBag.CurrentPage = pageNumber;
 
@@ -54,7 +56,7 @@ namespace FlashHackForum.Controllers
 
         public async Task<ActionResult> ListMyFavourites(int? page, int userId)
         {
-            int pageSize = 4;
+            int pageSize = 10;
             int pageNumber = page ?? 1;
             ViewBag.CurrentPage = pageNumber;
 
@@ -77,7 +79,7 @@ namespace FlashHackForum.Controllers
 
         public async Task<ActionResult> ListMyThreads(int? page)
         {
-            int pageSize = 4;
+            int pageSize = 10;
             int pageNumber = page ?? 1;
             ViewBag.CurrentPage = pageNumber;
 
@@ -90,7 +92,7 @@ namespace FlashHackForum.Controllers
             }
             var userID = HttpContext.Session.GetInt32("UserId");
             var account = await accountRepository.GetAccountByUserIDIncludeThreadsStarted(userID.Value);
-           
+
             var myThreads = account.ThreadsStarted;
 
             return View(myThreads.ToPagedList(pageNumber, pageSize));
@@ -98,13 +100,13 @@ namespace FlashHackForum.Controllers
 
         public async Task<ActionResult> ListAllThreads(int? page, int? id, string? secondCategoryName)
         {
-            int pageSize = 4;
+            int pageSize = 10;
             int pageNumber = page ?? 1;
             ViewBag.CurrentPage = pageNumber;
 
             var forumThreads = new List<ForumThread>();
 
-            if(id != null)
+            if (id != null)
             {
                 var secondCategory = await secondCategoryRepository.GetByCategoryIdIncludeThreads((int)id);
 
@@ -127,6 +129,32 @@ namespace FlashHackForum.Controllers
 
 
             return View(forumThreads.ToPagedList(pageNumber, pageSize));
+        }
+
+        public async Task<ActionResult> ListAllThreadsByCategory(int? page, int id)
+        {
+            int pageSize = 10;
+            int pageNumber = page ?? 1;
+            ViewBag.CurrentPage = pageNumber;
+
+            var allThreads = await forumThreadRepository.GetAllIncludePostsAndCreators();
+            var secondCategory = await secondCategoryRepository.GetByCategoryIdIncludeThreads(id);
+            List<ListAllThreadsVM> vmList = new List<ListAllThreadsVM>();
+
+            foreach (var forumThread in secondCategory.Threads)
+            {
+                var listAllThreadsVM = new ListAllThreadsVM
+                {
+
+                    LatestThread = secondCategory.Threads.Take(1).OrderByDescending(s => s.CreatedAt).FirstOrDefault(),
+                    ThreadCreator = forumThread.ThreadCreator.DisplayName,
+                    ThreadName = forumThread.Title
+                };
+
+                ViewBag.SecondCategory = secondCategory.Name;
+                vmList.Add(listAllThreadsVM);
+            }
+            return View(vmList.ToPagedList(pageNumber, pageSize));
         }
     }
 }
