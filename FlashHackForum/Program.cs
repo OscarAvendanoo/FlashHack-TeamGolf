@@ -43,6 +43,7 @@ namespace FlashHackForum
             // Annars bara att säga till så visar jag :)
             builder.Services.AddScoped<IRepository<Education>, EducationRepository>();
             builder.Services.AddScoped<IRepository<Competens>, CompetensRepository>();
+            builder.Services.AddScoped<IRepository<UserCompetence>, UserCompetenceRepository>();
 
             //Regitrering av session
             builder.Services.AddSession(options =>
