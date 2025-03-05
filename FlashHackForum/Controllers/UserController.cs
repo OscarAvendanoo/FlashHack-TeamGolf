@@ -12,11 +12,13 @@ namespace FlashHackForum.Controllers
     {
         private readonly IUserRepository _userRepository;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IAccountRepository _accountRepository;
 
-        public UserController(IUserRepository userRepository, IUnitOfWork unitOfWork)
+        public UserController(IUserRepository userRepository, IUnitOfWork unitOfWork, IAccountRepository accountRepository)
         {
             _userRepository = userRepository;
             _unitOfWork = unitOfWork;
+            _accountRepository = accountRepository;
         }
         // Det är en Mall Controller går justera respectiva methoder
 
@@ -110,7 +112,8 @@ namespace FlashHackForum.Controllers
                 TempData["ErrorMessage"] = "Användare finns inte.";
                 return NotFound();
             }
-            user.Account = await _unitOfWork.AccountRepository.GetByIDAsync((int)user.AccountId!);
+            //user.Account = await _unitOfWork.AccountRepository.GetByIDAsync((int)user.AccountId!);
+            user.Account = await _accountRepository.GetAccountByUserID(user.UserId);
             if (user == null)
             {
                 TempData["ErrorMessage"] = "Kontot finns inte.";
