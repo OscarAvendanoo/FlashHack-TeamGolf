@@ -34,68 +34,61 @@
 
                         @if (!string.IsNullOrEmpty(user))
                         {
-                            <li class="nav-item">
-                                <a>@user</a>
-                            </li>
-                            <li class="nav-item">
-                                <img class="nav-link" src="~/logga_192x54.png" alt="profil bild" width="50" height="50" />
-                            </li>
+                            <li>
+                                <div class="card mb-3" style="background-color: var(--orange);">
+                                    <div class="row g-0 d-flex align-items-center">
+                                        <!-- Användarnamn -->
+                                        <div class="col-auto">
+                                            <div class="card-body">
+                                                <h6 class="card-title" style="color: var(--dark-blue);">@user</h6>
+                                            </div>
+                                        </div>
 
-                            @if (admin > 0)
-                            {
+                                        <!-- Bildkolumn -->
+                                        <div class="col-auto p-2">
+                                            <img src="~/Images/userId1_image.gif" alt="profil bild" class="img-fluid rounded-start" style="max-height: 50px;">
+                                        </div>
 
-                                <!-- Admin Dropdown Menu -->
-                                <li class="nav-item dropdown userMenu">
-                                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false"></a>
-                                    <ul class="dropdown-menu">
-                                        <li><a class="dropdown-item" asp-controller="" asp-action="">Dashboard</a></li>
-                                        <li><a class="dropdown-item" asp-controller="" asp-action="">Användare</a></li>
-                                        <li><a class="dropdown-item" asp-controller="" asp-action="">Inställningar</a></li>
-
-                                        <li><a class="dropdown-item" asp-controller="User" asp-action="Logout">Logga ut</a></li>
-                                    </ul>
-
-                                </li>
-                                @*
-                                <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle" href="#" id="adminMenu" data-bs-toggle="collapse" data-bs-target="#adminMenuItems" aria-expanded="false">
-                                        Administratörs meny
-                                    </a>
-                                    <div class="collapse" id="adminMenuItems">
-                                        <ul class="list-unstyled">
-                                            <li><a href="#" class="dropdown-item">Dashboard</a></li>
-                                            <li><a href="#" class="dropdown-item">Användare</a></li>
-                                            <li><a href="#" class="dropdown-item">Inställningar</a></li>
-                                        </ul>
+                                        <!-- Dropdown meny kolumn -->
+                                        <div class="col-auto">
+                                            <ul class="list-unstyled mb-0">
+                                                @if (admin > 0)
+                                                {
+                                                    <!-- Admin Dropdown Menu -->
+                                                    <li class="nav-item dropdown userMenu">
+                                                        <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false"></a>
+                                                        <ul class="dropdown-menu">
+                                                            <li><a class="dropdown-item" asp-controller="User" asp-action="Details" asp-route-id=@userId>Min Profil</a></li>
+                                                            <li><a class="dropdown-item" asp-controller="" asp-action="">Dashboard</a></li>
+                                                            <li><a class="dropdown-item" asp-controller="" asp-action="">Användare</a></li>
+                                                            <li><a class="dropdown-item" asp-controller="" asp-action="">Inställningar</a></li>
+                                                            <li><a class="dropdown-item" asp-controller="User" asp-action="Logout">Logga ut</a></li>
+                                                        </ul>
+                                                    </li>
+                                                }
+                                                else
+                                                {
+                                                    <!-- User Dropdown Menu -->
+                                                    <li class="nav-item dropdown userMenu">
+                                                        <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false"></a>
+                                                        <ul class="dropdown-menu">
+                                                            <li><a class="dropdown-item" asp-controller="User" asp-action="Details" asp-route-id=@userId>Min Profil</a></li>
+                                                            <li><a class="dropdown-item" asp-controller="" asp-action="" asp-route-id=@userId>Inställningar</a></li>
+                                                            <li><a class="dropdown-item" asp-controller="" asp-action="" asp-route-id=@userId>Skaffa Premium</a></li>
+                                                            <li><a class="dropdown-item" asp-controller="User" asp-action="Logout">Logga ut</a></li>
+                                                        </ul>
+                                                    </li>
+                                                }
+                                            </ul>
+                                        </div>
                                     </div>
-                                </li>*@
-                            }
-                            else
-                            {
-                                <li class="nav-item dropdown userMenu">
-                                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false"></a>
-                                    <ul class="dropdown-menu">
-                                        <li><a class="dropdown-item" asp-controller="" asp-action="" asp-route-id=@userId>Min Profil</a></li>
-                                        <li><a class="dropdown-item" asp-controller="" asp-action="" asp-route-id=@userId>Inställningar</a></li>
-                                        <li><a class="dropdown-item" asp-controller="" asp-action="" asp-route-id=@userId>Skaffa Premium</a></li>
-
-                                        <li><a class="dropdown-item" asp-controller="User" asp-action="Logout">Logga ut</a></li>
-                                    </ul>
-                                </li>
-
-                            }
-
-
-
-
-                            <li class="nav-item">
-                                <a class="nav-link main-btn" asp-area="" asp-controller="" asp-action="" asp-route-id=@userId>Mina Sidor (fixa)</a>
+                                </div>
                             </li>
                         }
                         else
                         {
                             <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-controller="Auth" asp-action="Index">Logga in</a>
+                                <a class="nav-link" asp-area="" asp-controller="Auth" asp-action="Index">Logga in/ Nytt konto</a>
                             </li>
                         }
                     </ul>
