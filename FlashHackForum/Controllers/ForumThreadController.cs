@@ -105,7 +105,9 @@ namespace FlashHackForum.Controllers
                 Title = viewModel.Title,
                 ThreadCreator = account,
                 SecondCategoryId = viewModel.SecondCategoryId,  // Här har vi lagt till .Value korrekt
-                CreatedAt = DateTime.Now
+                CreatedAt = DateTime.Now,
+                IsAnonymous = viewModel.Anonymous,
+                
             };
 
             await _forumThreadRepository.AddAsync(forumThread);
@@ -118,7 +120,10 @@ namespace FlashHackForum.Controllers
                 PostDate = DateTime.Now,
                 PostCreator = account,
                 //ForumThread = forumThread,
-                ForumThreadId = forumThread.ForumThreadID
+                ForumThreadId = forumThread.ForumThreadID,
+                Anonymous = viewModel.Anonymous,
+                
+
             };
 
             await _threadPostRepository.AddAsync(threadPost);
