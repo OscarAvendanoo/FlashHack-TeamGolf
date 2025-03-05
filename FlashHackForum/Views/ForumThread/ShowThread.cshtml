@@ -14,6 +14,11 @@
 <a asp-action="CreatePost" asp-controller="ThreadPost" asp-route-threadId="@Model.ForumThreadID" class="btn btn-secondary btn-sm">
     <i class="bi bi-arrow-return-left"></i> Svara i tråden
 </a>
+<a asp-action="AddToFavorites" asp-controller="ThreadPost" asp-route-threadId="@Model.ForumThreadID"
+   class="text-danger float-end me-2 heart-button" onclick="toggleFavorite(this)">
+    <i class="bi bi-heart"></i>
+</a>
+
 <hr />
 <div class="list-group custom-list">
     @foreach (var post in Model.PostsInThread.OrderBy(p => p.PostDate))
