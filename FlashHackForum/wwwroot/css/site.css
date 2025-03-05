@@ -3,7 +3,7 @@
     --turqouise-blue: rgba(78, 140, 163, 1); /* För robotens kropp och detaljer.*/
     --orange: rgba(255, 165, 0, 1); /*För de lysande ögonen.*/
     --light-green: rgba(161, 195, 73, 1); /* För detaljer och accenter.*/
-    --white: #FFFFFF; /* För text och hög kontrast.*/
+    --white-grey: rgba(208, 211, 217, 1); /* För text och hög kontrast.*/
 }
 
 html {
@@ -50,11 +50,7 @@ body {
 
 
 
-/*TEST NY NAVBAR*/
 
-/*.box-shadow{
-    color: var(--turqouise-blue);
-}*/
 
 /* Navbar utan padding från sidorna */
 .navbar {
@@ -213,9 +209,7 @@ body {
 }
 
 .custom-card {
-    margin-bottom: 0.5em;
-    border-radius: 0.5em;
-    padding: 1em;
+    padding: 0.4rem;
 }
 
 .custom-card-subcategory {
@@ -223,11 +217,10 @@ body {
     color: black;
 }
 
-.custom-card-subcategory a {
-    text-decoration: none;
-    background-color: var(--light-green);
-    
-}
+    .custom-card-subcategory a {
+        text-decoration: none;
+        background-color: var(--light-green);
+    }
 
 .custom-card-threads {
     background-color: rgba(78, 140, 163, 0.8);
@@ -236,6 +229,22 @@ body {
 
     .custom-card-threads a {
         text-decoration: none;
-        
     }
+
     
+
+/*MainCategory Banner*/
+
+.main-category {
+    background-color: var(--dark-blue);
+    color: var(--orange);
+    padding: 8px;
+    font-size: 1.3em;
+    margin-bottom: 0;
+    border-bottom: solid;
+    
+}
+.main-page-row {
+    --bs-gutter-x: 0;
+    --bs-gutter-y: 0;
+}

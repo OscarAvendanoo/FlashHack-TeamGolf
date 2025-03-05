@@ -96,21 +96,34 @@ namespace FlashHackForum.Controllers
             return View(myThreads.ToPagedList(pageNumber, pageSize));
         }
 
-        public async Task<ActionResult> ListAllThreads(int? page, int id)
+        public async Task<ActionResult> ListAllThreads(int? page, int? id, string? secondCategoryName)
         {
             int pageSize = 4;
             int pageNumber = page ?? 1;
             ViewBag.CurrentPage = pageNumber;
 
             var forumThreads = new List<ForumThread>();
-            var secondCategory = await secondCategoryRepository.GetByCategoryIdIncludeThreads(id);
 
-            foreach(var item in secondCategory.Threads)
+            if(id != null)
             {
-                forumThreads.Add(item);
-            }
+                var secondCategory = await secondCategoryRepository.GetByCategoryIdIncludeThreads((int)id);
 
-            ViewBag.SecondCategory = secondCategory.Name;
+                foreach (var item in secondCategory.Threads)
+                {
+                    forumThreads.Add(item);
+                }
+                ViewBag.SecondCategory = secondCategory.Name;
+            }
+            else
+            {
+                var secondCategory = await secondCategoryRepository.GetByCategoryNameIncludeThreads(secondCategoryName);
+
+                foreach (var item in secondCategory.Threads)
+                {
+                    forumThreads.Add(item);
+                }
+                ViewBag.SecondCategory = secondCategory.Name;
+            }
 
 
             return View(forumThreads.ToPagedList(pageNumber, pageSize));
