@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FlashHackForum.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250303192839_initial")]
-    partial class initial
+    [Migration("20250304070219_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -424,7 +424,7 @@ namespace FlashHackForum.Migrations
                     b.HasOne("FlashHackForum.Models.ForumThread", "ForumThread")
                         .WithMany("PostsInThread")
                         .HasForeignKey("ForumThreadId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("FlashHackForum.Models.Account", "PostCreator")
