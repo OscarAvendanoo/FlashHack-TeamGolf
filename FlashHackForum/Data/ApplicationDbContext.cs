@@ -18,14 +18,14 @@ namespace FlashHackForum.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // Configure the relationship between User and Account
+            // User to Account (One-to-One)
             modelBuilder.Entity<User>()
-               .HasOne(u => u.Account)
-               .WithOne(a => a.User)
-               .HasForeignKey<Account>(a => a.UserId) // Set UserId as Foreign Key in Account
-               .IsRequired(); // Optional: Enforce every Account must have a User
+                .HasOne(u => u.Account)
+                .WithOne(a => a.User)
+                .HasForeignKey<Account>(a => a.UserId)
+                .IsRequired();
 
-            // Configure the relationship between Account and ForumThread for "Favorites"
+            // Many-to-Many: Account and ForumThread (Favorites)
             modelBuilder.Entity<Account>()
                 .HasMany(a => a.Favorites)
                 .WithMany()
@@ -35,25 +35,34 @@ namespace FlashHackForum.Data
                         .HasOne<ForumThread>()
                         .WithMany()
                         .HasForeignKey("FavoritesForumThreadID")
-                        .OnDelete(DeleteBehavior.Cascade), // Cascade delete when ForumThread is deleted
+                        .OnDelete(DeleteBehavior.Cascade), // Deletes Favorite entry when thread is deleted
                     j => j
                         .HasOne<Account>()
                         .WithMany()
                         .HasForeignKey("AccountUserId")
-                        .OnDelete(DeleteBehavior.NoAction) // Prevent multiple cascade paths
+                        .OnDelete(DeleteBehavior.NoAction) // Prevents cascade conflict
                 );
 
-            // Configure the relationship between Account and ForumThread for "ThreadsStarted"
+            // One-to-Many: Account to ForumThread (Threads Started)
             modelBuilder.Entity<Account>()
                 .HasMany(a => a.ThreadsStarted)
                 .WithOne(ft => ft.ThreadCreator)
-                .HasForeignKey(ft => ft.CreatorId);
+                .HasForeignKey(ft => ft.CreatorId)
+                .OnDelete(DeleteBehavior.Restrict); // Prevents deletion of threads when account is deleted
 
-            // Configure the relationship between Account and ThreadPost
+            // One-to-Many: Account to ThreadPosts
             modelBuilder.Entity<Account>()
                 .HasMany(a => a.ThreadPosts)
                 .WithOne(tp => tp.PostCreator)
-                .HasForeignKey(tp => tp.PostCreatorId);
+                .HasForeignKey(tp => tp.PostCreatorId)
+                .OnDelete(DeleteBehavior.Cascade); // Deletes posts when account is deleted
+
+            // One-to-Many: ForumThread to ThreadPosts
+            modelBuilder.Entity<ThreadPost>()
+                .HasOne(tp => tp.ForumThread)
+                .WithMany(ft => ft.PostsInThread)
+                .HasForeignKey(tp => tp.ForumThreadId)
+                .OnDelete(DeleteBehavior.Cascade); // ✅ Now posts are deleted when thread is deleted
 
             base.OnModelCreating(modelBuilder);
         }

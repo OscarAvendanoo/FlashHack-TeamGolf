@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FlashHackForum.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250226122644_initial")]
-    partial class initial
+    [Migration("20250305132814_blabla")]
+    partial class blabla
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -215,7 +215,10 @@ namespace FlashHackForum.Migrations
                     b.Property<int>("CreatorId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("SecondCategoryId")
+                    b.Property<bool>("IsAnonymous")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("SecondCategoryId")
                         .HasColumnType("int");
 
                     b.Property<string>("Title")
@@ -278,7 +281,7 @@ namespace FlashHackForum.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ThreadPostId"));
 
-                    b.Property<int?>("ForumThreadID")
+                    b.Property<int>("ForumThreadId")
                         .HasColumnType("int");
 
                     b.Property<int>("PostCreatorId")
@@ -291,11 +294,19 @@ namespace FlashHackForum.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("ReplyToPostId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("ShowSignature")
+                        .HasColumnType("bit");
+
                     b.HasKey("ThreadPostId");
 
-                    b.HasIndex("ForumThreadID");
+                    b.HasIndex("ForumThreadId");
 
                     b.HasIndex("PostCreatorId");
+
+                    b.HasIndex("ReplyToPostId");
 
                     b.ToTable("ThreadPosts");
                 });
@@ -310,10 +321,6 @@ namespace FlashHackForum.Migrations
 
                     b.Property<int?>("AccountId")
                         .HasColumnType("int");
-
-                    b.Property<string>("ConfirmPassword")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -395,12 +402,16 @@ namespace FlashHackForum.Migrations
                     b.HasOne("FlashHackForum.Models.Account", "ThreadCreator")
                         .WithMany("ThreadsStarted")
                         .HasForeignKey("CreatorId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("FlashHackForum.Models.SecondCategory", "SecondCategory")
+                        .WithMany("Threads")
+                        .HasForeignKey("SecondCategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("FlashHackForum.Models.SecondCategory", null)
-                        .WithMany("Threads")
-                        .HasForeignKey("SecondCategoryId");
+                    b.Navigation("SecondCategory");
 
                     b.Navigation("ThreadCreator");
                 });
@@ -418,9 +429,11 @@ namespace FlashHackForum.Migrations
 
             modelBuilder.Entity("FlashHackForum.Models.ThreadPost", b =>
                 {
-                    b.HasOne("FlashHackForum.Models.ForumThread", null)
+                    b.HasOne("FlashHackForum.Models.ForumThread", "ForumThread")
                         .WithMany("PostsInThread")
-                        .HasForeignKey("ForumThreadID");
+                        .HasForeignKey("ForumThreadId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("FlashHackForum.Models.Account", "PostCreator")
                         .WithMany("ThreadPosts")
@@ -428,7 +441,15 @@ namespace FlashHackForum.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("FlashHackForum.Models.ThreadPost", "ReplyToPost")
+                        .WithMany()
+                        .HasForeignKey("ReplyToPostId");
+
+                    b.Navigation("ForumThread");
+
                     b.Navigation("PostCreator");
+
+                    b.Navigation("ReplyToPost");
                 });
 
             modelBuilder.Entity("FlashHackForum.Models.Account", b =>

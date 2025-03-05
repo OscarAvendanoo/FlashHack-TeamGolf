@@ -1,9 +1,9 @@
 :root {
-    --dark-blue: rgba(44, 62, 80, 1); /* För bakgrunder och kontrast.*/
-    --turqouise-blue: rgba(78, 140, 163, 1); /* För robotens kropp och detaljer.*/
-    --orange: rgba(255, 165, 0, 1); /*För de lysande ögonen.*/
-    --light-green: rgba(161, 195, 73, 1); /* För detaljer och accenter.*/
-    --white: #FFFFFF; /* För text och hög kontrast.*/
+    --dark-blue: rgba(44, 62, 80, 1); /* FÃ¶r bakgrunder och kontrast.*/
+    --turqouise-blue: rgba(78, 140, 163, 1); /* FÃ¶r robotens kropp och detaljer.*/
+    --orange: rgba(255, 165, 0, 1); /*FÃ¶r de lysande Ã¶gonen.*/
+    --light-green: rgba(161, 195, 73, 1); /* FÃ¶r detaljer och accenter.*/
+    --white: #FFFFFF; /* FÃ¶r text och hÃ¶g kontrast.*/
 }
 
 html {
@@ -48,13 +48,15 @@ body {
 
 
 
+
+
 /*TEST NY NAVBAR*/
 
 /*.box-shadow{
     color: var(--turqouise-blue);
 }*/
 
-/* Navbar utan padding från sidorna */
+/* Navbar utan padding frÃ¥n sidorna */
 .navbar {
     background-color: var(--dark-blue);
     /*overflow: hidden;*/
@@ -92,7 +94,6 @@ body {
         list-style: none;
         padding: 0;
         margin: 0;
-        /*display: flex;*/
         justify-content: center;
         margin-left:14%;
     }
@@ -121,16 +122,14 @@ body {
             background-color: var(--orange);
         }
 
-/*Innehåll med padding från sidorna */
+/*InnehÃ¥ll med padding frÃ¥n sidorna */
 .content-wrapper {
     padding: 20px;
     max-width: 1200px;
     margin: 0 auto;
 }
 
-.a {
-    color: white;
-}
+
 
 
 /*CUSTOM LIST FAVOURITES*/
@@ -181,6 +180,58 @@ body {
     color: var(--orange);
     
 }
+
+
+/*TEST*/
+
+.dropdown-submenu:hover .dropdown-menu {
+    display: block;
+}
+
+.dropdown-menu {
+    display: none;
+}
+
+.dropdown-submenu {
+    position: relative;
+}
+
+    .dropdown-submenu > .dropdown-menu {
+        top: 0;
+        left: 100%; 
+        margin-top: -1px; 
+        display: none; 
+        position: absolute;
+        min-width: 200px; 
+    }
+
+    
+    .dropdown-submenu:hover > .dropdown-menu {
+        display: block;
+    }
+
+.a-link {
+    color: rgba(204, 133, 0, 1);
+}
+/* Heart button */
+.heart-button {
+    font-size: 1.5rem;
+    text-decoration: none;
+    transition: transform 0.2s ease-in-out;
+}
+
+    /* Fill the heart on hover if it's not already clicked */
+    .heart-button:not(.active) i:hover {
+        font-weight: bold;
+        content: "\f417"; /* Won't work for Bootstrap icons, JS will handle it */
+    }
+
+    /* Optional: Add a slight scale effect on hover */
+    .heart-button:hover {
+        transform: scale(1.2);
+    }
+
+
 
 
 

@@ -4,6 +4,7 @@ using FlashHackForum.Models;
 using FlashHackForum.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace FlashHackForum.Controllers
 {
@@ -97,6 +98,7 @@ namespace FlashHackForum.Controllers
             return View(registerVM);
 
         }
+
 
 
         [HttpGet]

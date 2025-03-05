@@ -1,6 +1,7 @@
 using FlashHackForum.Data.Interfaces;
 using FlashHackForum.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Diagnostics;
 
 namespace FlashHackForum.Controllers
@@ -8,15 +9,25 @@ namespace FlashHackForum.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-       
-        public HomeController(ILogger<HomeController> logger)
+        private readonly IMainCategoryRepository mainCategoryRepository;
+        private readonly ISecondCategoryRepository secondCategoryRepository;
+
+        public HomeController(ILogger<HomeController> logger, IMainCategoryRepository mainCategoryRepository, ISecondCategoryRepository secondCategoryRepository)
         {
             _logger = logger;
-           
+            this.mainCategoryRepository = mainCategoryRepository;
+            this.secondCategoryRepository = secondCategoryRepository;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
+            var mainCategories = await mainCategoryRepository.GetAllAsync();
+            ViewBag.MainCategories = mainCategories;
+            var subCateogory = await secondCategoryRepository.GetAllAsync();
+            ViewBag.SecondCategory = subCateogory;
+
+
+
             return View();
         }
 

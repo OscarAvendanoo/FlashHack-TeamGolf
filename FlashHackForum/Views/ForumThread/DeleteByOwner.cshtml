@@ -1,0 +1,29 @@
+﻿@model FlashHackForum.ViewModels.DeleteThreadVM
+<div style="width: 10em; height: 10em;"></div>
+<div class="container vh-100">
+    <!-- Delete Confirmation Question -->
+    <h3 class="mb-3 text-center">Är du säker på att du vill radera tråden?</h3>
+
+    <!-- Confirmation Box -->
+    <div class="card shadow-lg text-center p-4 mx-auto w-50">
+        <div class="card-body">
+            <p class="h4 fw-bold">@Model.ThreadName</p>
+
+            <!-- Buttons -->
+            <form asp-action="DeleteByOwner" method="post">
+                <input type="hidden" name="ThreadId" value="@Model.ThreadId" />
+                <input type="hidden" name="ThreadName" value="@Model.ThreadName" />
+                <div class="d-flex justify-content-center gap-3 mt-4">
+                    <a href="@Url.Action("ListMyThreads", "Favourite")" class="btn btn-secondary">Avbryt</a>
+                    <button type="submit" class="btn btn-danger">Ta bort</button>
+                </div>
+            </form>
+            @if (!ViewData.ModelState.IsValid)
+            {
+                <div class="alert alert-danger mt-3">
+                    @Html.ValidationSummary(false)
+                </div>
+            }
+        </div>
+    </div>
+</div>

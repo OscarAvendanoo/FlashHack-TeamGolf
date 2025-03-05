@@ -1,0 +1,15 @@
+﻿@model FlashHackForum.Models.Account
+
+@{
+    ViewData["Title"] = "UpdateSignature";
+}
+
+<h1 class="mb-4">Uppdatera Signatur</h1>
+
+<form asp-action="UpdateSignature" method="post" class="card p-4 col-5 shadow-sm">
+    <div class="mb-3">
+        <label for="signature" class="form-label fw-bold">Signatur:</label>
+        <textarea id="signature" name="signature" rows="3" class="form-control">@Model.Signature</textarea>
+    </div>
+        <button type="submit" class="btn btn-primary col-3">Spara</button>
+</form>
