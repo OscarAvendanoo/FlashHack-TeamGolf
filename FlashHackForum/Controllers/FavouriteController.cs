@@ -148,7 +148,9 @@ namespace FlashHackForum.Controllers
 
                     LatestThread = secondCategory.Threads.Take(1).OrderByDescending(s => s.CreatedAt).FirstOrDefault(),
                     ThreadCreator = forumThread.ThreadCreator.DisplayName,
-                    ThreadName = forumThread.Title
+                    ThreadName = forumThread.Title,
+                    ThreadId = forumThread.ForumThreadID,
+                    
                 };
 
                 ViewBag.SecondCategory = secondCategory.Name;

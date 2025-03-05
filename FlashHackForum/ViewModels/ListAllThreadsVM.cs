@@ -7,6 +7,8 @@ namespace FlashHackForum.ViewModels
         public string ThreadName { get; set; }
         public string ThreadCreator { get; set; }
         public ForumThread LatestThread { get; set; }
+
+        public int ThreadId { get; set; }
         
 
     }
