@@ -7,27 +7,38 @@
 
     int currentPage = ViewBag.CurrentPage ?? 1;
 }
+<div class="main-category mb-2 d-flex align-items-center justify-content-between">
+    <div>
+        <h3>@Model.Title</h3>
+        @if (Model.IsAnonymous == false)
+        {
+            <p class="text-muted d-inline">Skapad av: @Model.ThreadCreator.DisplayName den @Model.CreatedAt.ToString("yyyy-MM-dd HH:mm")</p>
+        }
+        else
+        {
+            <p class="text-muted d-inline">Skapad av: Anonym användare den @Model.CreatedAt.ToString("yyyy-MM-dd HH:mm")</p>
+        }
+    </div>
 
-<h3>@Model.Title</h3>
-@if(Model.IsAnonymous == false)
-{
-    <p class="text-muted">Skapad av: @Model.ThreadCreator.DisplayName den @Model.CreatedAt.ToString("yyyy-MM-dd HH:mm")</p>
-}
-else
-{
-    <p class="text-muted">Skapad av: Anonym användare den @Model.CreatedAt.ToString("yyyy-MM-dd HH:mm")</p>
-}
+    <!-- Buttons aligned to the left -->
+    <div class="ms-auto">
+        <a asp-action="CreatePost" asp-controller="ThreadPost" asp-route-threadId="@Model.ForumThreadID"
+           class="create-thread-btn text-decoration-none btn btn-sm">
+            <i class="bi bi-arrow-return-left"></i> Svara i tråden
+        </a>
+        <a asp-action="AddToFavorites" asp-controller="ThreadPost" asp-route-threadId="@Model.ForumThreadID"
+           class="text-danger heart-button me-3 btn btn-sm" onclick="toggleFavorite(this)">
+            <i class="bi bi-heart"></i>
+        </a>
+    </div>
+</div>
+
 
 <br />
-<a asp-action="CreatePost" asp-controller="ThreadPost" asp-route-threadId="@Model.ForumThreadID" class="btn btn-secondary btn-sm">
-    <i class="bi bi-arrow-return-left"></i> Svara i tråden
-</a>
-<a asp-action="AddToFavorites" asp-controller="ThreadPost" asp-route-threadId="@Model.ForumThreadID"
-   class="text-danger float-end me-2 heart-button" onclick="toggleFavorite(this)">
-    <i class="bi bi-heart"></i>
-</a>
 
-<hr />
+
+
+@* <hr /> *@
 <div class="list-group custom-list">
 
     @foreach (var post in Model.PostsInThread.OrderBy(p => p.PostDate))
@@ -111,7 +122,7 @@ else
         </div>
     }
 </div>
-
+<br />
 <nav aria-label="Page navigation example">
     <ul class="pagination">
         <li class="page-item">
