@@ -121,11 +121,11 @@ namespace FlashHackForum.Controllers
                 PostCreator = account,
                 //ForumThread = forumThread,
                 ForumThreadId = forumThread.ForumThreadID,
+                ShowSignature = viewModel.ShowSignature,
                 Anonymous = viewModel.Anonymous,
                 
 
-                ForumThreadId = forumThread.ForumThreadID,
-                ShowSignature = viewModel.ShowSignature
+
             };
 
             await _threadPostRepository.AddAsync(threadPost);
