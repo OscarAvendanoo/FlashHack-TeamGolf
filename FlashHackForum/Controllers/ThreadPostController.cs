@@ -54,7 +54,10 @@ namespace FlashHackForum.Controllers
                 PostMessage = createPostReplyVM.PostMessage,
                 ReplyToPostId = createPostReplyVM.PostToReplyTo.ThreadPostId,
                 ForumThread = thread,
-                PostCreatorId = userAccount.AccountId
+                PostCreatorId = userAccount.AccountId,
+                Anonymous = createPostReplyVM.Anonymous,
+                ShowSignature = createPostReplyVM.ShowSignature
+
             };
 
             await _threadPostRepository.AddAsync(newPostWithReply);
@@ -85,6 +88,8 @@ namespace FlashHackForum.Controllers
             newPost.PostMessage = createPostVM.PostMessage;
             newPost.PostCreatorId = account.AccountId;
             newPost.ForumThreadId = createPostVM.ThreadId;
+            newPost.Anonymous = createPostVM.Anonymous;
+            newPost.ShowSignature = createPostVM.ShowSignature;
 
             await _threadPostRepository.AddAsync(newPost);
 

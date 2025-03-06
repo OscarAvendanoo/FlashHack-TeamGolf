@@ -105,7 +105,9 @@ namespace FlashHackForum.Controllers
                 Title = viewModel.Title,
                 ThreadCreator = account,
                 SecondCategoryId = viewModel.SecondCategoryId,  // Här har vi lagt till .Value korrekt
-                CreatedAt = DateTime.Now
+                CreatedAt = DateTime.Now,
+                IsAnonymous = viewModel.Anonymous,
+                
             };
 
             await _forumThreadRepository.AddAsync(forumThread);
@@ -118,7 +120,12 @@ namespace FlashHackForum.Controllers
                 PostDate = DateTime.Now,
                 PostCreator = account,
                 //ForumThread = forumThread,
-                ForumThreadId = forumThread.ForumThreadID
+                ForumThreadId = forumThread.ForumThreadID,
+                ShowSignature = viewModel.ShowSignature,
+                Anonymous = viewModel.Anonymous,
+                
+
+
             };
 
             await _threadPostRepository.AddAsync(threadPost);
@@ -217,6 +224,7 @@ namespace FlashHackForum.Controllers
             editThreadVM.FirstPostMessage = threadToEdit.PostsInThread.OrderBy(p => p.PostDate).FirstOrDefault().PostMessage;
             editThreadVM.Desrciption = threadToEdit.Title;
             editThreadVM.IsAnonymous = threadToEdit.IsAnonymous;
+            editThreadVM.IsShowSignature = threadToEdit.IsShowSignature;
             editThreadVM.ThreadToEditId = id;
 
             var user = await _userRepository.GetUserByUsername(HttpContext.Session.GetString("UserName"));
@@ -258,8 +266,9 @@ namespace FlashHackForum.Controllers
 
             threadToEdit.Title = editThreadVM.Desrciption;
             threadToEdit.IsAnonymous = editThreadVM.IsAnonymous;
+            threadToEdit.IsShowSignature = editThreadVM.IsShowSignature;
 
-            
+
             await _threadPostRepository.SaveChanges();
 
             var firstPostInThread = threadToEdit.PostsInThread.OrderBy(p => p.PostDate).FirstOrDefault();
