@@ -72,11 +72,11 @@ namespace FlashHackForum.Data
             return await _context.Accounts.Include(f => f.Favorites).ToListAsync();
         }
 
-        public async Task<Account> GetAccountByUserIDWithFavorites(int id)
+        public async Task<Account> GetAccountByIDWithFavorites(int id)
         {
             return await _context.Accounts
                 .Include(a => a.Favorites)
-                .FirstOrDefaultAsync(a => a.UserId == id);
+                .FirstOrDefaultAsync(a => a.AccountId == id);
         }
 
 

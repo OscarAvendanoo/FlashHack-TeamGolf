@@ -6,7 +6,5 @@ namespace FlashHackForum.ViewModels
     {
         public string PostMessage { get; set; }
         public int ThreadId { get; set; }
-        public bool ShowSignature { get; set; }
-        public bool Anonymous { get; set; }
     }
 }

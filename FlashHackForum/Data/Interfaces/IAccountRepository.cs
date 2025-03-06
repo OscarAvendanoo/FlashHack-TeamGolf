@@ -14,7 +14,7 @@ namespace FlashHackForum.Data.Interfaces
         
         Task<IEnumerable<Account>> GetAllFavourites();
 
-        Task<Account> GetAccountByUserIDWithFavorites(int id);
+        Task<Account> GetAccountByIDWithFavorites(int id);
         Task<Account> GetAccountByUserIDIncludeThreadsStarted(int userId);
 
     }

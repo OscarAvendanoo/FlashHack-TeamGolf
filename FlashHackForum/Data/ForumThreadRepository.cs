@@ -20,10 +20,6 @@ namespace FlashHackForum.Data
         {
             return await _context.ForumThreads.Include(ft => ft.ThreadCreator).Include(ft => ft.PostsInThread).ThenInclude(p => p.PostCreator).FirstOrDefaultAsync(ft => ft.ForumThreadID == id);
         }
-        public async Task<IEnumerable<ForumThread>> GetAllIncludePostsAndCreators()
-        {
-            return await _context.ForumThreads.Include(ft => ft.ThreadCreator).Include(ft => ft.PostsInThread).ThenInclude(p => p.PostCreator).ToListAsync();
-        }
 
     }
 }
