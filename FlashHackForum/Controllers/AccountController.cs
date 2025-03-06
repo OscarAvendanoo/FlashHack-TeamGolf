@@ -1,15 +1,20 @@
 ﻿using FlashHackForum.Data.Interfaces;
+using FlashHackForum.Models;
+using FlashHackForum.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace FlashHackForum.Controllers
 {
     public class AccountController : Controller
     {
         private readonly IAccountRepository _accountRepository;
+        private readonly IRepository<Competens> _competensRepository;
 
-        public AccountController(IAccountRepository accountRepository)
+        public AccountController(IAccountRepository accountRepository, IRepository<Competens> competensRepository )
         {
             _accountRepository = accountRepository;
+            _competensRepository = competensRepository;
         }
         public IActionResult Index()
         {
@@ -45,5 +50,24 @@ namespace FlashHackForum.Controllers
 
             return RedirectToAction("Index", "Home");
         }
+
+        [HttpGet]
+        public async Task<IActionResult> AddCompetences(int id)
+        {
+            var account = await _accountRepository.GetByIDAsync(id);
+
+            var getCompetenses = await _competensRepository.GetAllAsync();
+            
+            var viewModel = new AddCompetenceViewModel
+            {
+                AccountId = id,
+                Account = account,
+                Competenses = getCompetenses,
+                UserCompetences = new List<UserCompetence>()
+            };
+            
+            return View(viewModel);
+        }
     }
 }
+

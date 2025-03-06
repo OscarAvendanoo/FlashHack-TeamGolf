@@ -1,5 +1,7 @@
 ﻿using FlashHackForum.Models;
 using FLashHackForum.Data;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 
 namespace FlashHackForum.Data
 {
@@ -10,6 +12,6 @@ namespace FlashHackForum.Data
         public CompetensRepository(ApplicationDbContext applicationDbContext) : base(applicationDbContext)
         {
             _context = applicationDbContext;
-        }
+        }       
     }
 }

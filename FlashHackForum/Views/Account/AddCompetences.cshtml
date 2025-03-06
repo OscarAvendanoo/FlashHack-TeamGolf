@@ -1,0 +1,96 @@
+﻿@model FlashHackForum.ViewModels.AddCompetenceViewModel
+
+@{
+	ViewData["Title"] = "UpdateSignature";
+	var userId = Context.Session.GetInt32("UserId");
+	var errorMessage = TempData["ErrorMessage"] as string;
+}
+
+@if (!string.IsNullOrEmpty(errorMessage))
+{
+	<div class="alert alert-danger col-md-4">
+		@errorMessage
+	</div>
+	<hr />
+}
+<div class="list-group custom-list">
+	<h5>Kompetenser:</h5>
+	@if (Model.Account.UserCompetences.Count > 0)
+	{
+		@foreach (var competence in Model.Account.UserCompetences)
+		{
+			<a href="#" class="list-group-item list-group-item-action">
+				<div class="d-flex w-100 justify-content-between">
+					<h6 class="mb-1">@Html.DisplayFor(modelItem => competence.Competens.Title)</h6>
+					<a>@Html.DisplayFor(modelItem => competence.Grade)</a>
+				</div>
+			</a>
+		}
+	}
+	else
+	{
+		<a href="#" class="list-group-item list-group-item-action">
+			<div class="d-flex w-100 justify-content-between">
+				<h6 class="mb-1">Inga valda kompetenser)</h6>
+				
+			</div>
+		</a>
+	}
+</div>
+<form asp-action="SaveCompetences" method="post">
+	@foreach (var competence in Model.Competenses)
+	{
+
+
+		<div class="form-group">
+			<label>@competence.Title</label>
+			<input type="hidden" name="UserCompetences[@competence.CompetensId].CompetenceId" value="@competence.CompetensId" />
+			<label>@competence.Description</label>
+			<input type="hidden" name="UserCompetences[@competence.Description].CompetenceId" value="@competence.Description" />
+
+			<select name="UserCompetences[@competence.CompetensId].Ranking" class="form-control">
+				<option value="1">1</option>
+				<option value="2">2</option>
+				<option value="3">3</option>
+				<option value="4">4</option>
+				<option value="5">5</option>
+			</select>
+		</div>
+
+
+
+	}
+	<div>
+		<button type="submit" class="btn main-btn">Spara</button>
+	</div>
+
+</form>
+	@*
+	<form asp-action="SaveCompetences" method="post">
+		<div class="list-group custom-list">
+        <h6>Välj kompetenser och ange ranking</h6>
+			<!-- Dropdown för att välja kategori -->
+			<div class="form-group">
+				<label for="categoryDropdown">Välj kategori</label>
+				<select id="categoryDropdown" class="form-control">
+					<option value="">Välj kategori</option>
+					@foreach (var category in ViewBag.Categories)
+					{
+						<option value="@category">@category</option>
+					}
+				</select>
+			</div>
+
+			<!-- Dropdown för att välja kompetens -->
+			<div class="form-group">
+				<label for="competenceDropdown">Välj kompetens</label>
+				<select id="competenceDropdown" class="form-control" disabled>
+					<option value="">Välj kompetens</option>
+				</select>
+			</div>
+			</div>
+		<button type="submit" class="btn main-btn">Spara</button>
+	</form>
+
+</div>*@
+
