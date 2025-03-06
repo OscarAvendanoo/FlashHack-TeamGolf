@@ -3,6 +3,8 @@ using FlashHackForum.Models;
 using FlashHackForum.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.DotNet.Scaffolding.Shared.Messaging;
+using System.Data.SqlTypes;
 
 namespace FlashHackForum.Controllers
 {
@@ -11,14 +13,20 @@ namespace FlashHackForum.Controllers
         private readonly IThreadPostRepository _threadPostRepository;
         private readonly IAccountRepository _accountRepository;
         private readonly IForumThreadRepository _forumThreadRepository;
-        public ThreadPostController(IThreadPostRepository threadPostRepository,IAccountRepository accountRepository, IForumThreadRepository forumThreadRepository )
+        private readonly IUserPostReaction _userPostReactionRepository;
+
+        public ThreadPostController(IThreadPostRepository threadPostRepository,
+                                    IAccountRepository accountRepository,
+                                    IForumThreadRepository forumThreadRepository,
+                                    IUserPostReaction userPostReactionRepository)
         {
             _threadPostRepository = threadPostRepository;
             _accountRepository = accountRepository;
             _forumThreadRepository = forumThreadRepository;
+            _userPostReactionRepository = userPostReactionRepository;
         }
 
-        public async Task<ActionResult> CreateReplyPost(int postId,int threadId)
+        public async Task<ActionResult> CreateReplyPost(int postId, int threadId)
         {
             var postToReplyTo = await _threadPostRepository.GetPostByIDIncludePostCreator(postId);
             var createPostReplyVM = new CreatePostReplyVM();
@@ -38,7 +46,7 @@ namespace FlashHackForum.Controllers
             }
             var thread = await _forumThreadRepository.GetByIDAsync(createPostReplyVM.ThreadId);
             var userID = HttpContext.Session.GetInt32("UserId");
-            var userAccount = await _accountRepository.GetAccountByUserID(userID.Value); 
+            var userAccount = await _accountRepository.GetAccountByUserID(userID.Value);
             var newPostWithReply = new ThreadPost
             {
                 PostMessage = createPostReplyVM.PostMessage,
@@ -56,7 +64,7 @@ namespace FlashHackForum.Controllers
         {
             var thread = await _forumThreadRepository.GetByIdIncludePostsAndCreators(threadId);
             var firstPostInThread = thread.PostsInThread.OrderBy(p => p.PostDate).FirstOrDefault();
-            var createPostVM = new CreatePostVM(); 
+            var createPostVM = new CreatePostVM();
             createPostVM.ThreadId = threadId;
             return View(createPostVM);
         }
@@ -80,6 +88,86 @@ namespace FlashHackForum.Controllers
 
             return RedirectToAction("ShowThread", "ForumThread", new { id = createPostVM.ThreadId });
         }
+
+        // Endpoint to Like a ThreadPost
+        [HttpPost("{id}/like")]
+        public async Task<IActionResult> LikePost(int postId)
+        {
+            var userId = HttpContext.Session.GetInt32("UserId");
+            if (userId == null) return Unauthorized();
+            var post = await _threadPostRepository.GetByIDAsync(postId);
+
+            if (post == null) return NotFound();
+
+            var existingReaction = await _userPostReactionRepository.GetUserPostReaction((int)userId, post.ThreadPostId);
+            if (existingReaction != null)
+            {
+                if (existingReaction.ReactionType == ReactionType.Like)
+                {
+                    return Ok(new { message = "Already liked." });
+                }
+                else
+                {
+                    existingReaction.ReactionType = ReactionType.Like;
+                    post.DislikeCount--;
+                    post.LikeCount++;
+                    await _threadPostRepository.SaveChanges();
+                }
+            }
+            else
+            {
+                var reaction = new UserPostReaction
+                {
+                    ThreadPostId = postId,
+                    UserId = (int)userId,
+                    ReactionType = ReactionType.Like
+                };
+                await _userPostReactionRepository.AddNewPostReaction(reaction);
+                post.LikeCount++;
+                await _threadPostRepository.SaveChanges();
+            }
+            return Ok(new { LikeCount = post.LikeCount, DislikeCount = post.DislikeCount });
+        }
+
+        // Endpoint to Like a ThreadPost
+        [HttpPost("{id}/dislike")]
+        public async Task<IActionResult> DislikePost(int postId)
+        {
+            var userId = HttpContext.Session.GetInt32("UserId");
+            if (userId == null) return Unauthorized();
+            var post = await _threadPostRepository.GetByIDAsync(postId);
+            if (post == null) return NotFound();
+            var existingReaction = await _userPostReactionRepository.GetUserPostReaction((int)userId, postId);
+            if (existingReaction != null)
+            {
+                if (existingReaction.ReactionType == ReactionType.Dislike)
+                {
+                    return Ok(new { message = "Already Disliked." });
+                }
+                else
+                {
+                    existingReaction.ReactionType = ReactionType.Dislike;
+                    post.DislikeCount++;
+                    post.LikeCount--;
+                    await _threadPostRepository.SaveChanges();
+                }
+            }
+            else
+            {
+                var reaction = new UserPostReaction
+                {
+                    UserId = (int)userId,
+                    ThreadPostId = postId,
+                    ReactionType = ReactionType.Dislike
+                };
+                await _userPostReactionRepository.AddNewPostReaction(reaction);
+                post.DislikeCount++;
+                await _threadPostRepository.SaveChanges();
+            }
+            return Ok(new { LikeCount = post.LikeCount, DislikeCount = post.DislikeCount });
+
+        }
+
 
 
     }

@@ -278,7 +278,13 @@ namespace FlashHackForum.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ThreadPostId"));
 
+                    b.Property<int>("DislikeCount")
+                        .HasColumnType("int");
+
                     b.Property<int>("ForumThreadId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("LikeCount")
                         .HasColumnType("int");
 
                     b.Property<int>("PostCreatorId")
@@ -346,6 +352,32 @@ namespace FlashHackForum.Migrations
                     b.HasKey("UserId");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("FlashHackForum.Models.UserPostReaction", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ReactionType")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ThreadPostId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ThreadPostId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserPostReactions");
                 });
 
             modelBuilder.Entity("AccountFavorites", b =>
@@ -446,6 +478,25 @@ namespace FlashHackForum.Migrations
                     b.Navigation("ReplyToPost");
                 });
 
+            modelBuilder.Entity("FlashHackForum.Models.UserPostReaction", b =>
+                {
+                    b.HasOne("FlashHackForum.Models.ThreadPost", "ThreadPost")
+                        .WithMany("Reactions")
+                        .HasForeignKey("ThreadPostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("FlashHackForum.Models.User", "User")
+                        .WithMany("Reactions")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("ThreadPost");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("FlashHackForum.Models.Account", b =>
                 {
                     b.Navigation("Competenses");
@@ -475,9 +526,16 @@ namespace FlashHackForum.Migrations
                     b.Navigation("Threads");
                 });
 
+            modelBuilder.Entity("FlashHackForum.Models.ThreadPost", b =>
+                {
+                    b.Navigation("Reactions");
+                });
+
             modelBuilder.Entity("FlashHackForum.Models.User", b =>
                 {
                     b.Navigation("Account");
+
+                    b.Navigation("Reactions");
                 });
 #pragma warning restore 612, 618
         }

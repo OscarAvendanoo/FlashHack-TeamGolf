@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace FlashHackForum.Migrations
 {
     /// <inheritdoc />
-    public partial class initial : Migration
+    public partial class init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -223,7 +223,10 @@ namespace FlashHackForum.Migrations
                     PostCreatorId = table.Column<int>(type: "int", nullable: false),
                     PostMessage = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PostDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ForumThreadId = table.Column<int>(type: "int", nullable: false)
+                    ForumThreadId = table.Column<int>(type: "int", nullable: false),
+                    ReplyToPostId = table.Column<int>(type: "int", nullable: true),
+                    LikeCount = table.Column<int>(type: "int", nullable: false),
+                    DislikeCount = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -239,6 +242,38 @@ namespace FlashHackForum.Migrations
                         column: x => x.ForumThreadId,
                         principalTable: "ForumThreads",
                         principalColumn: "ForumThreadID",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ThreadPosts_ThreadPosts_ReplyToPostId",
+                        column: x => x.ReplyToPostId,
+                        principalTable: "ThreadPosts",
+                        principalColumn: "ThreadPostId");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserPostReactions",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    ThreadPostId = table.Column<int>(type: "int", nullable: false),
+                    ReactionType = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserPostReactions", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_UserPostReactions_ThreadPosts_ThreadPostId",
+                        column: x => x.ThreadPostId,
+                        principalTable: "ThreadPosts",
+                        principalColumn: "ThreadPostId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_UserPostReactions_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "UserId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -292,6 +327,21 @@ namespace FlashHackForum.Migrations
                 name: "IX_ThreadPosts_PostCreatorId",
                 table: "ThreadPosts",
                 column: "PostCreatorId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ThreadPosts_ReplyToPostId",
+                table: "ThreadPosts",
+                column: "ReplyToPostId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserPostReactions_ThreadPostId",
+                table: "UserPostReactions",
+                column: "ThreadPostId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserPostReactions_UserId",
+                table: "UserPostReactions",
+                column: "UserId");
         }
 
         /// <inheritdoc />
@@ -304,13 +354,16 @@ namespace FlashHackForum.Migrations
                 name: "Competenses");
 
             migrationBuilder.DropTable(
-                name: "ThreadPosts");
+                name: "UserPostReactions");
 
             migrationBuilder.DropTable(
                 name: "Companies");
 
             migrationBuilder.DropTable(
                 name: "Educations");
+
+            migrationBuilder.DropTable(
+                name: "ThreadPosts");
 
             migrationBuilder.DropTable(
                 name: "ForumThreads");

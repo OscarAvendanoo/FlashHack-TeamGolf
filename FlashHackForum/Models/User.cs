@@ -44,5 +44,8 @@ namespace FlashHackForum.Models
         [ForeignKey("AccountId")]
         public Account? Account { get; set; }
 
+       
+        public ICollection<UserPostReaction> Reactions { get; set; } = new List<UserPostReaction>();
+
     }
 }
