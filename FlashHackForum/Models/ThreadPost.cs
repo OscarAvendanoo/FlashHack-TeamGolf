@@ -21,9 +21,11 @@ namespace FlashHackForum.Models
                                                      
         public int? ReplyToPostId { get; set; }  // Foreign key (nullable)
         public ThreadPost ReplyToPost { get; set; }    // Navigation property to the post being replied to
+
         public bool ShowSignature { get; set; } = false;
 
         public bool Anonymous { get; set; } = false;
+
 
     }
 }

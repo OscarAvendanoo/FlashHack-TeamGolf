@@ -4,6 +4,7 @@ using FlashHackForum.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FlashHackForum.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250305212120_init")]
+    partial class init
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -215,9 +218,6 @@ namespace FlashHackForum.Migrations
                     b.Property<bool>("IsAnonymous")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("IsShowSignature")
-                        .HasColumnType("bit");
-
                     b.Property<int>("SecondCategoryId")
                         .HasColumnType("int");
 
@@ -281,10 +281,8 @@ namespace FlashHackForum.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ThreadPostId"));
 
-
-                    b.Property<bool>("Anonymous")
-                        .HasColumnType("bit");
-
+                    b.Property<int>("DislikeCount")
+                        .HasColumnType("int");
 
                     b.Property<int>("ForumThreadId")
                         .HasColumnType("int");
@@ -304,9 +302,6 @@ namespace FlashHackForum.Migrations
 
                     b.Property<int?>("ReplyToPostId")
                         .HasColumnType("int");
-
-                    b.Property<bool>("ShowSignature")
-                        .HasColumnType("bit");
 
                     b.HasKey("ThreadPostId");
 
@@ -370,7 +365,7 @@ namespace FlashHackForum.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("ReactionType")
+                    b.Property<int>("ReactionType")
                         .HasColumnType("int");
 
                     b.Property<int>("ThreadPostId")
