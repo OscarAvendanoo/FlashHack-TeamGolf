@@ -21,5 +21,6 @@ namespace FlashHackForum.Models
         public DateTime CreatedAt { get; set; } = DateTime.Now;
         public virtual List<ThreadPost> PostsInThread { get; set; } = new List<ThreadPost>();
         public bool IsAnonymous { get; set; } = false;
+        public bool IsShowSignature { get; set; } = false;
     }
 }

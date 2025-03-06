@@ -215,6 +215,9 @@ namespace FlashHackForum.Migrations
                     b.Property<bool>("IsAnonymous")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsShowSignature")
+                        .HasColumnType("bit");
+
                     b.Property<int>("SecondCategoryId")
                         .HasColumnType("int");
 
