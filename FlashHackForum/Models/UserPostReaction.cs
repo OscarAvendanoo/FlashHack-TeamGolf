@@ -2,6 +2,7 @@
 {
     public enum ReactionType
     {
+        None,
         Like,
         Dislike
     }
@@ -12,6 +13,6 @@
         public User User { get; set; }
         public int ThreadPostId { get; set; }
         public ThreadPost ThreadPost { get; set; }
-        public ReactionType ReactionType { get; set; }
+        public ReactionType? ReactionType { get; set; }
     }
 }

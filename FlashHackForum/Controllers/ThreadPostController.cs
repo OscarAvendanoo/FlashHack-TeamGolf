@@ -8,6 +8,8 @@ using System.Data.SqlTypes;
 
 namespace FlashHackForum.Controllers
 {
+    [ApiController]
+    [Route("api/threadposts")]
     public class ThreadPostController : Controller
     {
         private readonly IThreadPostRepository _threadPostRepository;
@@ -90,7 +92,7 @@ namespace FlashHackForum.Controllers
         }
 
         // Endpoint to Like a ThreadPost
-        [HttpPost("{id}/like")]
+        [HttpPost("{PostId}/like")]
         public async Task<IActionResult> LikePost(int postId)
         {
             var userId = HttpContext.Session.GetInt32("UserId");
@@ -104,9 +106,20 @@ namespace FlashHackForum.Controllers
             {
                 if (existingReaction.ReactionType == ReactionType.Like)
                 {
-                    return Ok(new { message = "Already liked." });
+                    existingReaction.ReactionType = ReactionType.None;
+                    post.LikeCount--;
+                    await _threadPostRepository.SaveChanges();
+
+                    //return Ok(new { message = "Already liked." });
+                }
+                else if (existingReaction.ReactionType == ReactionType.None)
+                {
+                    existingReaction.ReactionType = ReactionType.Like;
+                    post.LikeCount++;
+                    await _threadPostRepository.SaveChanges();
                 }
                 else
+                
                 {
                     existingReaction.ReactionType = ReactionType.Like;
                     post.DislikeCount--;
@@ -129,8 +142,8 @@ namespace FlashHackForum.Controllers
             return Ok(new { LikeCount = post.LikeCount, DislikeCount = post.DislikeCount });
         }
 
-        // Endpoint to Like a ThreadPost
-        [HttpPost("{id}/dislike")]
+        // Endpoint to Dislike a ThreadPost
+        [HttpPost("{PostId}/dislike")]
         public async Task<IActionResult> DislikePost(int postId)
         {
             var userId = HttpContext.Session.GetInt32("UserId");
@@ -142,7 +155,15 @@ namespace FlashHackForum.Controllers
             {
                 if (existingReaction.ReactionType == ReactionType.Dislike)
                 {
-                    return Ok(new { message = "Already Disliked." });
+                    existingReaction.ReactionType = ReactionType.None;
+                    post.DislikeCount--;
+                    await _threadPostRepository.SaveChanges();
+                }
+                else if (existingReaction.ReactionType == ReactionType.None)
+                {
+                    existingReaction.ReactionType = ReactionType.Dislike;
+                    post.DislikeCount++;
+                    await _threadPostRepository.SaveChanges();
                 }
                 else
                 {
@@ -164,11 +185,9 @@ namespace FlashHackForum.Controllers
                 post.DislikeCount++;
                 await _threadPostRepository.SaveChanges();
             }
-            return Ok(new { LikeCount = post.LikeCount, DislikeCount = post.DislikeCount });
+            return Ok(new { post.LikeCount, post.DislikeCount });
 
         }
-
-
 
     }
 }
