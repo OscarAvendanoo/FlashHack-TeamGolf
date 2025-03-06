@@ -68,10 +68,12 @@ namespace FlashHackForum.Controllers
                     {
                         Biography = registerVM.Biography,
                         PhoneNumber = registerVM.PhoneNumber,
+                        Email = registerVM.AccountEmail,
                         DisplayName = registerVM.DisplayName,
                         IsPremium = registerVM.IsPremium,
                         UserId = user.UserId,
                         User = user,
+                        Employer = registerVM.Employer,
                         AccountCreatedAt = DateTime.UtcNow
                     };
                     await _unitOfWork.AccountRepository.AddAsync(account);

@@ -22,12 +22,14 @@
             @Model.UserName
             @if (!string.IsNullOrEmpty(Model.Account.ProfileImage))
             {
-                @*<img src="@Model.Account.ProfileImage" class="img-thumbnail" alt="Profil bild"/>*@
-                <img src="~/Images/userId1_image.gif" class="img-fluid rounded-circle" alt="Profil bild" />
+                <img src="@Model.Account.ProfileImage" class="img-thumbnail" alt="Profil bild" />
+                @*<img src="~/Images/userId1_image.gif" class="img-fluid rounded-circle" alt="Profil bild" />*@
             }
             else
             {
-                <a>Bild saknas</a>
+                @*<a>Bild saknas</a>
+            Nedanstående rad ska tas bort senare*@
+                <img src="~/Images/userId1_image.gif" class="img-fluid rounded-circle" alt="Profil bild" />
             }
         </h2>
         <!-- Lägg till formulär för att redigera användardata -->
@@ -213,19 +215,21 @@
         </form>
     </div>
 }
-<!-- Följande data visas om någon annan besöker användarens profilsida -->
 else
 {
+    <!-- Följande data visas om någon annan besöker användarens profilsida -->
     <h2>
         @Model.UserName
         @if (!string.IsNullOrEmpty(Model.Account.ProfileImage))
         {
-            @*<img src="@Model.Account.ProfileImage" class="img-thumbnail" alt="Profil bild"/>*@
-            <img src="~/Images/userId1_image.gif" class="img-fluid rounded-circle" alt="Profil bild" />
+            <img src="@Model.Account.ProfileImage" class="img-thumbnail" alt="Profil bild"/>
+            @*<img src="~/Images/userId1_image.gif" class="img-fluid rounded-circle" alt="Profil bild" />*@
         }
         else
         {
-            <a>Bild saknas</a>
+            @*<a>Bild saknas</a>
+            Nedanstående rad ska tas bort senare*@
+            <img src="~/Images/userId1_image.gif" class="img-fluid rounded-circle" alt="Profil bild" />
         }
     </h2>
 
@@ -282,12 +286,41 @@ else
             <dd class="col-sm-10">
                 @Html.DisplayFor(model => model.Account.Biography)
             </dd>
-
+            
             <dt class="col-sm-2">
-                <a>Kompetenser:</a>
+                <a>Kompetenser</a>
             </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Account.UserCompetences)
+            <dd>
+            <!-- Kompetenser Sektion -->
+            <div class="row mt-3 col-md-12">
+                <div class="col-auto form-group">
+                    <table class="table table-borderless">
+                        <thead>
+                            <tr>
+                                <th>Typ</th>
+                                <th>Kunskapsnivå</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.Account.UserCompetences.Count > 0)
+                            {
+                                foreach (var competence in Model.Account.UserCompetences)
+                                {
+                                    <tr>
+                                        <td>@Html.DisplayFor(modelItem => competence.Competens.Title)</td>
+                                        <td>@Html.DisplayFor(modelItem => competence.Grade)</td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="2">Inga valda kompetenser</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
             </dd>
         </dl>
     </div>

@@ -37,6 +37,11 @@ namespace FlashHackForum.ViewModels
         [Required]
         public string PhoneNumber { get; set; }
 
+        [EmailAddress]
+        public string AccountEmail { get; set; }
+
+        public string? Employer { get; set; }
+
         [Required]
         public string DisplayName { get; set; }
 
