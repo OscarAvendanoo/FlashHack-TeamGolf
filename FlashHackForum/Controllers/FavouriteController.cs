@@ -62,7 +62,8 @@ namespace FlashHackForum.Controllers
 
             var userName = HttpContext.Session.GetString("UserName");
             var user = await userRepository.GetUserByUsername(userName);
-            var account = await accountRepository.GetAccountByIDWithFavorites((int)user.AccountId);
+            var account = await accountRepository.GetAccountByUserIDWithFavorites(user.UserId);
+            
 
             if (account == null)
             {
