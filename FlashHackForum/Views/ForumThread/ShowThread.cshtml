@@ -7,72 +7,106 @@
 
     int currentPage = ViewBag.CurrentPage ?? 1;
 }
+<div class="main-category mb-2 d-flex align-items-center justify-content-between">
+    <div>
+        <h3>@Model.Title</h3>
+        @if (Model.IsAnonymous == false)
+        {
+            <p class="text-muted d-inline">Skapad av: @Model.ThreadCreator.DisplayName den @Model.CreatedAt.ToString("yyyy-MM-dd HH:mm")</p>
+        }
+        else
+        {
+            <p class="text-muted d-inline">Skapad av: Anonym användare den @Model.CreatedAt.ToString("yyyy-MM-dd HH:mm")</p>
+        }
+    </div>
+    <div></div>
+    <!-- Buttons aligned to the left -->
+    <div class="ms-auto">
+        <a asp-action="CreatePost" asp-controller="ThreadPost" asp-route-threadId="@Model.ForumThreadID"
+           class="create-thread-btn text-decoration-none btn btn-sm">
+            <i class="bi bi-arrow-return-left"></i> Svara i tråden
+        </a>
+        <a asp-action="AddToFavorites" asp-controller="ThreadPost" asp-route-threadId="@Model.ForumThreadID"
+           class="text-danger heart-button me-3 btn btn-sm" onclick="toggleFavorite(this)">
+            <i class="bi bi-heart"></i>
+        </a>
+    </div>
+</div>
 
-<h3>@Model.Title</h3>
-<p class="text-muted">Skapad av: @Model.ThreadCreator.DisplayName den @Model.CreatedAt.ToString("yyyy-MM-dd HH:mm")</p>
+
 <br />
-<a asp-action="CreatePost" asp-controller="ThreadPost" asp-route-threadId="@Model.ForumThreadID" class="btn btn-secondary btn-sm">
-    <i class="bi bi-arrow-return-left"></i> Svara i tråden
-</a>
-<a asp-action="AddToFavorites" asp-controller="ThreadPost" asp-route-threadId="@Model.ForumThreadID"
-   class="text-danger float-end me-2 heart-button" onclick="toggleFavorite(this)">
-    <i class="bi bi-heart"></i>
-</a>
 
-<hr />
+
+
+@* <hr /> *@
 <div class="list-group custom-list">
+
     @foreach (var post in Model.PostsInThread.OrderBy(p => p.PostDate))
-
-
-
     {
         <div class="list-group-item">
-            <div class="d-flex w-100 justify-content-between">
-                @if(post.Anonymous == false)
+            <div class="d-flex">
+                <!-- Profile Picture -->
+                @if (!string.IsNullOrEmpty(post.PostCreator.ProfileImage) && post.Anonymous != true)
                 {
-                    <h5 class="mb-1">@post.PostCreator.DisplayName</h5>
+                    <img src="@post.PostCreator.ProfileImage" alt="Profile Picture"
+                    class="rounded-circle me-3" style="width: 100px; height: 100px; object-fit: cover;">  
                 }
                 else
                 {
-                    <h5 class="mb-1">Anonymous</h5>
+                    <img src="@Url.Content($"~/images/NoProfileImage.jpeg")"
+                         class="rounded-circle me-3" style="width: 100px; height: 100px; object-fit: cover;">
                 }
-                <small>@post.PostDate.ToString("yyyy-MM-dd HH:mm")</small>
-            </div>
-            <!-- Checks if the post is a reply to another post -->
-            @if (post.ReplyToPost != null)
 
-            {
-                <div class="bg-light p-2 rounded-3 mt-2" style="font-size: 0.9rem; color: black;">
-                    @if(post.ReplyToPost.Anonymous == false)
+                <!-- Username -->
+                <div>
+                    @if (post.Anonymous == false)
                     {
-                        <p><strong>@post.ReplyToPost.PostCreator.DisplayName
-                            </strong> citat:</p>
+                        <h5 class="mb-1">@post.PostCreator.DisplayName</h5>
                     }
                     else
                     {
-                        <p><strong>Anonymous</strong> citat:</p>
+                        <h5 class="mb-1">Anonym användare</h5>
                     }
-                    
-                    
-                    <p>@post.ReplyToPost.PostMessage</p>
+                    @if (post.ReplyToPost != null)
+                    {
+                        <div class="bg-light p-2 rounded-3 mt-2" style="font-size: 0.9rem; color: black;">
+                            @if (post.ReplyToPost.Anonymous == false)
+                            {
+                                <p><strong>@post.ReplyToPost.PostCreator.DisplayName</strong> citat:</p>
+                            }
+                            else
+                            {
+                                <p><strong>Anonym användare</strong> citat:</p>
+                            }
+                            <p>@post.ReplyToPost.PostMessage</p>
+                        </div>
+                    }
+                    else
+                    {
+                        <p class="mt-2">@post.PostMessage</p>
+                    }
                 </div>
+                <!-- Checks if the post is a reply to another post -->
+                
+            </div>
+            @if (post.ReplyToPost != null)
+            {
+                <p class="mt-3" style="margin-left: 115px;">@post.PostMessage</p>
             }
-
-            <p class="mt-2">@post.PostMessage</p>
-
+            
             <div class="d-flex justify-content-between mt-2">
                 <!-- Reply Button on the Left -->
-                <a asp-action="CreateReplyPost" asp-controller="ThreadPost" asp-route-postId="@post.ThreadPostId" asp-route-threadId="@Model.ForumThreadID" class="btn btn-secondary btn-sm">
+                <a asp-action="CreateReplyPost" asp-controller="ThreadPost" asp-route-postId="@post.ThreadPostId" asp-route-threadId="@Model.ForumThreadID" class="btn btn-secondary btn-sm ms-1">
                     <i class="bi bi-arrow-return-left"></i> Citera
                 </a>
 
                 <!-- Edit and Delete Buttons on the Right -->
                 <div class="d-flex justify-content-end">
                     <a asp-action="UpVote" asp-controller="ThreadPost" asp-route-id="@post.ThreadPostId" class="btn btn-success btn-sm me-2">
-                        <i class="bi bi-pencil"></i> Gilla
+                        <i class="bi bi-hand-thumbs-up"></i> Gilla
                     </a>
                     <a asp-action="DownVote" asp-controller="ThreadPost" asp-route-id="@post.ThreadPostId" class="btn btn-danger btn-sm">
-                        <i class="bi bi-trash"></i> Ogilla
+                        <i class="bi bi-hand-thumbs-down"></i> Ogilla
                     </a>
                 </div>
             </div>
@@ -94,7 +128,7 @@
         </div>
     }
 </div>
-
+<br />
 <nav aria-label="Page navigation example">
     <ul class="pagination">
         <li class="page-item">

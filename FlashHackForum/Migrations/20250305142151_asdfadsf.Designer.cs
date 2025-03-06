@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FlashHackForum.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250305092202_init")]
-    partial class init
+    [Migration("20250305142151_asdfadsf")]
+    partial class asdfadsf
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -281,6 +281,9 @@ namespace FlashHackForum.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ThreadPostId"));
 
+                    b.Property<bool>("Anonymous")
+                        .HasColumnType("bit");
+
                     b.Property<int>("ForumThreadId")
                         .HasColumnType("int");
 
@@ -296,6 +299,9 @@ namespace FlashHackForum.Migrations
 
                     b.Property<int?>("ReplyToPostId")
                         .HasColumnType("int");
+
+                    b.Property<bool>("ShowSignature")
+                        .HasColumnType("bit");
 
                     b.HasKey("ThreadPostId");
 

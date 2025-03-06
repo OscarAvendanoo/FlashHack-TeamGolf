@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FlashHackForum.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250305142208_second")]
-    partial class second
+    [Migration("20250305145358_asdfas")]
+    partial class asdfas
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -286,6 +286,9 @@ namespace FlashHackForum.Migrations
 
                     b.Property<int>("ForumThreadId")
                         .HasColumnType("int");
+
+                    b.Property<bool>("IsThreadDiscussionStarter")
+                        .HasColumnType("bit");
 
                     b.Property<int>("PostCreatorId")
                         .HasColumnType("int");

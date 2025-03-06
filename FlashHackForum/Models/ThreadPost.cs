@@ -24,5 +24,6 @@ namespace FlashHackForum.Models
         public bool ShowSignature { get; set; } = false;
 
         public bool Anonymous { get; set; } = false;
+
     }
 }
