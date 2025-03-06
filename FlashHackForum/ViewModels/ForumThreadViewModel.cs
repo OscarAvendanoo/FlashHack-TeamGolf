@@ -24,6 +24,9 @@ namespace FlashHackForum.ViewModels
         [Display(Name = "Second Category")]
         public int SecondCategoryId { get; set; }
 
+        public bool ShowSignature { get; set; }
+        public bool Anonymous { get; set; }
+
         // Lägg till CreatedAt här, om du vill ha den som ett dold fält (den kan sättas i controller)
         [HiddenInput(DisplayValue = false)]
         public DateTime CreatedAt { get; set; } = DateTime.Now; // Sätt ett standardvärde här om du vill

@@ -8,6 +8,7 @@ namespace FlashHackForum.ViewModels
         public int ThreadToEditId { get; set; }
         public string Desrciption { get; set; }
         public bool IsAnonymous { get; set; }
+        public bool IsShowSignature { get; set; }
         public string FirstPostMessage { get; set; }
     }
 }

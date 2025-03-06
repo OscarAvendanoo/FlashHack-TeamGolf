@@ -77,12 +77,18 @@
                 </div>
             </div>
             <!-- Horizontal ruler and signature (if available) --> <!-- Här behövs ett till condition för att kolla om checkboxen är iclickad (&&) -->
-            @if (!string.IsNullOrEmpty(post.PostCreator.Signature))
+            @if (!string.IsNullOrEmpty(post.PostCreator.Signature) && post.ShowSignature)
 
             {
                 <hr />
                 <p class="text-muted" style="font-style: italic; margin-top: 10px;">
                     @post.PostCreator.Signature
+                </p>
+            }
+            else if (!string.IsNullOrEmpty(post.PostCreator.Signature) && !post.ShowSignature)
+            {
+                <p class="text-muted" style="font-style: italic; margin-top: 10px;">
+                    (Signatur gömd)
                 </p>
             }
         </div>
