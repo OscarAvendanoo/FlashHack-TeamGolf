@@ -83,6 +83,7 @@ namespace FlashHackForum.Migrations
                 {
                     CompetensId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    Category = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CompanyId = table.Column<int>(type: "int", nullable: true)
@@ -159,7 +160,8 @@ namespace FlashHackForum.Migrations
                     CreatorId = table.Column<int>(type: "int", nullable: false),
                     SecondCategoryId = table.Column<int>(type: "int", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    IsAnonymous = table.Column<bool>(type: "bit", nullable: false)
+                    IsAnonymous = table.Column<bool>(type: "bit", nullable: false),
+                    IsShowSignature = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -246,7 +248,9 @@ namespace FlashHackForum.Migrations
                     ForumThreadId = table.Column<int>(type: "int", nullable: false),
                     ReplyToPostId = table.Column<int>(type: "int", nullable: true),
                     ShowSignature = table.Column<bool>(type: "bit", nullable: false),
-                    Anonymous = table.Column<bool>(type: "bit", nullable: false)
+                    Anonymous = table.Column<bool>(type: "bit", nullable: false),
+                    LikeCount = table.Column<int>(type: "int", nullable: false),
+                    DislikeCount = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -268,6 +272,33 @@ namespace FlashHackForum.Migrations
                         column: x => x.ReplyToPostId,
                         principalTable: "ThreadPosts",
                         principalColumn: "ThreadPostId");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserPostReactions",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    ThreadPostId = table.Column<int>(type: "int", nullable: false),
+                    ReactionType = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserPostReactions", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_UserPostReactions_ThreadPosts_ThreadPostId",
+                        column: x => x.ThreadPostId,
+                        principalTable: "ThreadPosts",
+                        principalColumn: "ThreadPostId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_UserPostReactions_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "UserId",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
@@ -330,6 +361,16 @@ namespace FlashHackForum.Migrations
                 name: "IX_UserCompetences_EducationId",
                 table: "UserCompetences",
                 column: "EducationId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserPostReactions_ThreadPostId",
+                table: "UserPostReactions",
+                column: "ThreadPostId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserPostReactions_UserId",
+                table: "UserPostReactions",
+                column: "UserId");
         }
 
         /// <inheritdoc />
@@ -339,13 +380,10 @@ namespace FlashHackForum.Migrations
                 name: "AccountFavorites");
 
             migrationBuilder.DropTable(
-                name: "ThreadPosts");
-
-            migrationBuilder.DropTable(
                 name: "UserCompetences");
 
             migrationBuilder.DropTable(
-                name: "ForumThreads");
+                name: "UserPostReactions");
 
             migrationBuilder.DropTable(
                 name: "Competenses");
@@ -354,13 +392,19 @@ namespace FlashHackForum.Migrations
                 name: "Educations");
 
             migrationBuilder.DropTable(
+                name: "ThreadPosts");
+
+            migrationBuilder.DropTable(
+                name: "Companies");
+
+            migrationBuilder.DropTable(
+                name: "ForumThreads");
+
+            migrationBuilder.DropTable(
                 name: "Accounts");
 
             migrationBuilder.DropTable(
                 name: "SecondCategories");
-
-            migrationBuilder.DropTable(
-                name: "Companies");
 
             migrationBuilder.DropTable(
                 name: "Users");
