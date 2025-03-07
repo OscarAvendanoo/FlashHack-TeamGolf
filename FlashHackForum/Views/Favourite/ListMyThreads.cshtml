@@ -11,32 +11,35 @@
 <br />
 <hr />
 
-<div class="list-group custom-list">
-@foreach (var item in Model)
-{
-    <a asp-action="ShowThread" asp-controller="ForumThread" asp-route-id="@item.ForumThreadID">
+<div class="custom-list">
+    @foreach (var item in Model)
+    {
         <div class="list-group-item">
-            <div class="d-flex w-100 justify-content-between">
-                <h5 class="mb-1">@Html.DisplayFor(modelItem => item.Title)</h5>
-                <small>@Html.DisplayFor(modelItem => item.CreatedAt)</small>
-            </div>
-            <p>@Html.DisplayFor(modelItem => item.ThreadCreator.Signature)</p>
+            <a asp-action="ShowThread" asp-controller="ForumThread" asp-route-id="@item.ForumThreadID">
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1">@item.Title</h5>
+                    <small>Skapad: @item.CreatedAt.ToString("dddd, dd MMMM")</small>
+                </div>
+                
+                
 
-            <!-- Button Container (Floating Right) -->
-            <div class="d-flex justify-content-end mt-2">
-                <a asp-action="EditByOwner" asp-controller="ForumThread" asp-route-id="@item.ForumThreadID" class="btn btn-primary btn-sm me-2">
-                    <i class="bi bi-pencil"></i> Ändra
-                </a>
-                <a asp-action="DeleteByOwner" asp-controller="ForumThread" asp-route-id="@item.ForumThreadID" class="btn btn-danger btn-sm">
-                    <i class="bi bi-trash"></i> Ta bort
-                </a>
-            </div>
+                <!-- Button Container (Floating Right) -->
+                <div class="d-flex justify-content-end mt-2">
+                    <a asp-action="EditByOwner" asp-controller="ForumThread" asp-route-id="@item.ForumThreadID" class="btn btn-primary btn-sm me-2 text-light">
+                        <i class="bi bi-pencil"></i> Ändra
+                    </a>
+                    <a asp-action="DeleteByOwner" asp-controller="ForumThread" asp-route-id="@item.ForumThreadID" class="btn btn-danger btn-sm text-light">
+                        <i class="bi bi-trash"></i> Ta bort
+                    </a>
+                </div>
+
+            </a>
+
         </div>
-    </a>
-}
+    }
 </div>
 
-<nav aria-label="Page navigation example" >
+<nav aria-label="Page navigation example">
     <ul class="pagination">
         <li class="page-item">
             <a class="page-link" href="@Url.Action("ListAllFavourites", new { page = 1 })" aria-label="Previous">

@@ -36,6 +36,7 @@ namespace FlashHackForum
             builder.Services.AddScoped<IUserRepository, UserRepository>();
             builder.Services.AddScoped<IThreadPostRepository, ThreadPostRepository>();
             builder.Services.AddScoped<IUnitOfWork, UnitOfWorkRepository>();
+            builder.Services.AddScoped<IUserPostReaction, UserPostReactionRepository>();
 
 
             // Services här under har endast det generiska repositoryt "IRepository", alltså inga "Include" metoder.

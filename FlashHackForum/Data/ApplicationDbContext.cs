@@ -10,11 +10,12 @@ namespace FlashHackForum.Data
         public DbSet<Company> Companies { get; set; }
         public DbSet<MainCategory> MainCategories { get; set; }
         public DbSet<SecondCategory> SecondCategories { get; set; }
-        public DbSet<Education> Educations { get; set; } 
-        public DbSet<Competens> Competenses { get; set; } 
-        public DbSet<ForumThread> ForumThreads { get; set; } 
-        public DbSet<ThreadPost> ThreadPosts {  get; set; }
+        public DbSet<Education> Educations { get; set; }
+        public DbSet<Competens> Competenses { get; set; }
+        public DbSet<ForumThread> ForumThreads { get; set; }
+        public DbSet<ThreadPost> ThreadPosts { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<UserPostReaction> UserPostReactions { get; set; }
         public DbSet<UserCompetence> UserCompetences { get; set; }
 
 
@@ -66,13 +67,28 @@ namespace FlashHackForum.Data
                 .HasForeignKey(tp => tp.ForumThreadId)
                 .OnDelete(DeleteBehavior.Cascade); // ✅ Now posts are deleted when thread is deleted
 
+            // One-to-Many: ThreadPost to UserPostReaction
+            modelBuilder.Entity<UserPostReaction>()
+                .HasOne(tp => tp.ThreadPost)
+                .WithMany(r => r.Reactions)
+                .HasForeignKey(upr => upr.ThreadPostId)
+                .OnDelete(DeleteBehavior.Cascade); // Reaction also deleted when ThreadPost is Deleted
+
+            // One-to-Many: User to UserPostReaction
+            modelBuilder.Entity<UserPostReaction>()
+                .HasOne(u => u.User)
+                .WithMany(r => r.Reactions)
+                .HasForeignKey(uid => uid.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+
             base.OnModelCreating(modelBuilder);
         }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
-            
+
         }
-       
+
     }
 }

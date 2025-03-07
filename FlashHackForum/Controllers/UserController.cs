@@ -66,7 +66,7 @@ namespace FlashHackForum.Controllers
 
                     var account = new Account
                     {
-                        Biography = registerVM.Biography,
+                        
                         PhoneNumber = registerVM.PhoneNumber,
                         Email = registerVM.AccountEmail,
                         DisplayName = registerVM.DisplayName,
@@ -115,8 +115,9 @@ namespace FlashHackForum.Controllers
                 TempData["ErrorMessage"] = "Användare finns inte.";
                 return NotFound();
             }
-            //user.Account = await _unitOfWork.AccountRepository.GetByIDAsync((int)user.AccountId!);
+
             user.Account = await _accountRepository.GetAccountByUserID(user.UserId);
+
             if (user == null)
             {
                 TempData["ErrorMessage"] = "Kontot finns inte.";

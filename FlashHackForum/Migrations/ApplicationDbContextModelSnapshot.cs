@@ -206,6 +206,9 @@ namespace FlashHackForum.Migrations
                     b.Property<bool>("IsAnonymous")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsShowSignature")
+                        .HasColumnType("bit");
+
                     b.Property<int>("SecondCategoryId")
                         .HasColumnType("int");
 
@@ -269,10 +272,15 @@ namespace FlashHackForum.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ThreadPostId"));
 
+
                     b.Property<bool>("Anonymous")
                         .HasColumnType("bit");
 
+
                     b.Property<int>("ForumThreadId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("LikeCount")
                         .HasColumnType("int");
 
                     b.Property<int>("PostCreatorId")
@@ -345,7 +353,7 @@ namespace FlashHackForum.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("FlashHackForum.Models.UserCompetence", b =>
+            modelBuilder.Entity("FlashHackForum.Models.UserPostReaction", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -353,27 +361,22 @@ namespace FlashHackForum.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("AccountId")
+                    b.Property<int?>("ReactionType")
                         .HasColumnType("int");
 
-                    b.Property<int>("CompetensId")
+                    b.Property<int>("ThreadPostId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("EducationId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Grade")
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AccountId");
+                    b.HasIndex("ThreadPostId");
 
-                    b.HasIndex("CompetensId");
+                    b.HasIndex("UserId");
 
-                    b.HasIndex("EducationId");
-
-                    b.ToTable("UserCompetences");
+                    b.ToTable("UserPostReactions");
                 });
 
             modelBuilder.Entity("AccountFavorites", b =>
@@ -464,29 +467,23 @@ namespace FlashHackForum.Migrations
                     b.Navigation("ReplyToPost");
                 });
 
-            modelBuilder.Entity("FlashHackForum.Models.UserCompetence", b =>
+            modelBuilder.Entity("FlashHackForum.Models.UserPostReaction", b =>
                 {
-                    b.HasOne("FlashHackForum.Models.Account", "Account")
-                        .WithMany("UserCompetences")
-                        .HasForeignKey("AccountId")
+                    b.HasOne("FlashHackForum.Models.ThreadPost", "ThreadPost")
+                        .WithMany("Reactions")
+                        .HasForeignKey("ThreadPostId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("FlashHackForum.Models.Competens", "Competens")
-                        .WithMany()
-                        .HasForeignKey("CompetensId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                    b.HasOne("FlashHackForum.Models.User", "User")
+                        .WithMany("Reactions")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("FlashHackForum.Models.Education", "Education")
-                        .WithMany()
-                        .HasForeignKey("EducationId");
+                    b.Navigation("ThreadPost");
 
-                    b.Navigation("Account");
-
-                    b.Navigation("Competens");
-
-                    b.Navigation("Education");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("FlashHackForum.Models.Account", b =>
@@ -518,9 +515,16 @@ namespace FlashHackForum.Migrations
                     b.Navigation("Threads");
                 });
 
+            modelBuilder.Entity("FlashHackForum.Models.ThreadPost", b =>
+                {
+                    b.Navigation("Reactions");
+                });
+
             modelBuilder.Entity("FlashHackForum.Models.User", b =>
                 {
                     b.Navigation("Account");
+
+                    b.Navigation("Reactions");
                 });
 #pragma warning restore 612, 618
         }
