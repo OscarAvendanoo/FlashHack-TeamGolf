@@ -185,9 +185,9 @@ body {
         color: white;
     }
 
-        .custom-list .list-group-item:nth-child(even) a {
+        /*.custom-list .list-group-item:nth-child(even) a {
             color: white;
-        }
+        }*/
 
     .custom-list .list-group-item a {
         text-decoration: none;
