@@ -24,7 +24,7 @@ namespace FlashHackForum
 
             builder.Services.AddControllersWithViews();
 
-            builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("Oscar")));
+            builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("Kevin")));
 
             // Services här under ärver det generiska interfacet, så dessa kan man säga är två kombinerade interface, ett generiskt och ett med "include" metoder i ett och samma interface
             // Tänk på att lägga till dem på samma sätt i i era controllers :)

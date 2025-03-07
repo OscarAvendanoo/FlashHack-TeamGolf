@@ -281,10 +281,11 @@ namespace FlashHackForum.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ThreadPostId"));
 
-
                     b.Property<bool>("Anonymous")
                         .HasColumnType("bit");
 
+                    b.Property<int>("DislikeCount")
+                        .HasColumnType("int");
 
                     b.Property<int>("ForumThreadId")
                         .HasColumnType("int");
