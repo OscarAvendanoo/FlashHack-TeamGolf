@@ -215,9 +215,6 @@ namespace FlashHackForum.Migrations
                     b.Property<bool>("IsAnonymous")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("IsShowSignature")
-                        .HasColumnType("bit");
-
                     b.Property<int>("SecondCategoryId")
                         .HasColumnType("int");
 
@@ -281,10 +278,8 @@ namespace FlashHackForum.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ThreadPostId"));
 
-
-                    b.Property<bool>("Anonymous")
-                        .HasColumnType("bit");
-
+                    b.Property<int>("DislikeCount")
+                        .HasColumnType("int");
 
                     b.Property<int>("ForumThreadId")
                         .HasColumnType("int");
@@ -304,9 +299,6 @@ namespace FlashHackForum.Migrations
 
                     b.Property<int?>("ReplyToPostId")
                         .HasColumnType("int");
-
-                    b.Property<bool>("ShowSignature")
-                        .HasColumnType("bit");
 
                     b.HasKey("ThreadPostId");
 

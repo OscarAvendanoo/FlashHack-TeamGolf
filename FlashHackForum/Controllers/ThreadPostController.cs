@@ -54,10 +54,7 @@ namespace FlashHackForum.Controllers
                 PostMessage = createPostReplyVM.PostMessage,
                 ReplyToPostId = createPostReplyVM.PostToReplyTo.ThreadPostId,
                 ForumThread = thread,
-                PostCreatorId = userAccount.AccountId,
-                Anonymous = createPostReplyVM.Anonymous,
-                ShowSignature = createPostReplyVM.ShowSignature
-
+                PostCreatorId = userAccount.AccountId
             };
 
             await _threadPostRepository.AddAsync(newPostWithReply);
@@ -88,13 +85,12 @@ namespace FlashHackForum.Controllers
             newPost.PostMessage = createPostVM.PostMessage;
             newPost.PostCreatorId = account.AccountId;
             newPost.ForumThreadId = createPostVM.ThreadId;
-            newPost.Anonymous = createPostVM.Anonymous;
-            newPost.ShowSignature = createPostVM.ShowSignature;
 
             await _threadPostRepository.AddAsync(newPost);
 
             return RedirectToAction("ShowThread", "ForumThread", new { id = createPostVM.ThreadId });
         }
+
 
         // Endpoint to Like a ThreadPost
         [HttpPost("{PostId}/like")]

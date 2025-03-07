@@ -37,14 +37,6 @@
                 <textarea asp-for="ThreadPost.PostMessage" class="form-control"></textarea>
                 <span asp-validation-for="ThreadPost.PostMessage" class="text-danger"></span>
             </div>
-            <div class="form-check mb-4 mt-4">
-                <input type="checkbox" asp-for="Anonymous" class="form-check-input" />
-                <label class="form-check-label" asp-for="Anonymous">Post Anonymously</label>
-            </div>
-            <div class="form-check mb-4 mt-4">
-                <input type="checkbox" asp-for="ShowSignature" class="form-check-input" />
-                <label class="form-check-label" asp-for="ShowSignature">Post Signature</label>
-            </div>
 
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
