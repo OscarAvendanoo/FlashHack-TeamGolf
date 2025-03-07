@@ -13,12 +13,14 @@ namespace FlashHackForum.Controllers
         private readonly IUserRepository _userRepository;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IAccountRepository _accountRepository;
+        private readonly IRepository<Competens> _competenseRepository; // endast för mockdata. radera senare
 
-        public UserController(IUserRepository userRepository, IUnitOfWork unitOfWork, IAccountRepository accountRepository)
+        public UserController(IUserRepository userRepository, IUnitOfWork unitOfWork, IAccountRepository accountRepository, IRepository<Competens> competenseRepository)
         {
             _userRepository = userRepository;
             _unitOfWork = unitOfWork;
             _accountRepository = accountRepository;
+            _competenseRepository = competenseRepository; // endast för mockdata. radera senare
         }
         // Det är en Mall Controller går justera respectiva methoder
 
@@ -66,10 +68,12 @@ namespace FlashHackForum.Controllers
                     {
                         
                         PhoneNumber = registerVM.PhoneNumber,
+                        Email = registerVM.AccountEmail,
                         DisplayName = registerVM.DisplayName,
                         IsPremium = registerVM.IsPremium,
                         UserId = user.UserId,
                         User = user,
+                        Employer = registerVM.Employer,
                         AccountCreatedAt = DateTime.UtcNow
                     };
                     await _unitOfWork.AccountRepository.AddAsync(account);
@@ -87,8 +91,6 @@ namespace FlashHackForum.Controllers
                         HttpContext.Session.SetInt32("IsAdmin", 1);
                     }
                     return RedirectToAction("Index", "Home");
-
-                    //return RedirectToAction("Index","Auth");
                 }
                 catch (Exception ex)
                 {
@@ -107,6 +109,7 @@ namespace FlashHackForum.Controllers
         public async Task<ActionResult> Details(int id)
         {
             var user = await _unitOfWork.UserRepository.GetByIDAsync(id);
+
             if (user == null)
             {
                 TempData["ErrorMessage"] = "Användare finns inte.";
@@ -120,6 +123,18 @@ namespace FlashHackForum.Controllers
                 TempData["ErrorMessage"] = "Kontot finns inte.";
                 return NotFound();
             }
+
+            // mockad data för att lägga till kompetenser i profilsidan. Radera senare när
+            // funktionaliteten finns för att lägga till sådana till kontot.
+            var getCompetenses = await _competenseRepository.GetAllAsync();
+            var mockCompetences = new List<UserCompetence>
+            {
+                new UserCompetence { Id = 1, Account = user.Account, CompetensId = 1, Competens= getCompetenses.FirstOrDefault(c => c.CompetensId == 1),Grade = 2, Education = null },
+                new UserCompetence { Id = 2, Account = user.Account, CompetensId = 2, Competens= getCompetenses.FirstOrDefault(c => c.CompetensId == 2),Grade = 1, Education = null },
+                new UserCompetence { Id = 3, Account = user.Account, CompetensId = 3, Competens= getCompetenses.FirstOrDefault(c => c.CompetensId == 3),Grade = 4, Education = null },
+                new UserCompetence { Id = 4, Account = user.Account, CompetensId = 4, Competens= getCompetenses.FirstOrDefault(c => c.CompetensId == 4),Grade = 3, Education = null },
+            };
+            user.Account.UserCompetences = mockCompetences;
 
             return View(user);
         }

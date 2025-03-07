@@ -133,32 +133,73 @@ namespace FlashHackForum.Controllers
             return View(forumThreads.ToPagedList(pageNumber, pageSize));
         }
 
-        public async Task<ActionResult> ListAllThreadsByCategory(int? page, int id)
+        public async Task<ActionResult> ListAllThreadsByCategory(int? page, int? id, string? secondCategoryName)
         {
+
             int pageSize = 10;
             int pageNumber = page ?? 1;
             ViewBag.CurrentPage = pageNumber;
 
+            // Hämta kategorin baserat på id eller namn
+            var secondCategory = id.HasValue
+                ? await secondCategoryRepository.GetByCategoryIdIncludeThreads(id.Value)
+                : await secondCategoryRepository.GetByCategoryNameIncludeThreads(secondCategoryName);
             var allThreads = await forumThreadRepository.GetAllIncludePostsAndCreators();
-            var secondCategory = await secondCategoryRepository.GetByCategoryIdIncludeThreads(id);
-            List<ListAllThreadsVM> vmList = new List<ListAllThreadsVM>();
 
-            foreach (var forumThread in secondCategory.Threads)
+            if (secondCategory == null || secondCategory.Threads == null)
             {
-                var listAllThreadsVM = new ListAllThreadsVM
-                {
+                return NotFound(); 
+            }
 
-                    LatestThread = secondCategory.Threads.Take(1).OrderByDescending(s => s.CreatedAt).FirstOrDefault(),
+            
+            ViewBag.SecondCategory = secondCategory.Name;
+
+           
+            var vmList = secondCategory.Threads
+                .OrderByDescending(t => t.CreatedAt)
+                .Select(forumThread => new ListAllThreadsVM
+                {
+                    LatestThread = secondCategory.Threads.FirstOrDefault(),
                     ThreadCreator = forumThread.ThreadCreator.DisplayName,
                     ThreadName = forumThread.Title,
-                    ThreadId = forumThread.ForumThreadID,
 
-                };
+                    ThreadId = forumThread.ForumThreadID
+                })
+                .ToList();
 
-                ViewBag.SecondCategory = secondCategory.Name;
-                vmList.Add(listAllThreadsVM);
-            }
+
             return View(vmList.ToPagedList(pageNumber, pageSize));
+
+
+            //    int pageSize = 10;
+            //    int pageNumber = page ?? 1;
+            //    ViewBag.CurrentPage = pageNumber;
+
+
+            //    var secondCategory = id.HasValue
+            //? await secondCategoryRepository.GetByCategoryIdIncludeThreads(id.Value)
+            //: await secondCategoryRepository.GetByCategoryNameIncludeThreads(secondCategoryName);
+
+
+            //    var allThreads = await forumThreadRepository.GetAllIncludePostsAndCreators();
+            //    List<ListAllThreadsVM> vmList = new List<ListAllThreadsVM>();
+
+            //    foreach (var forumThread in secondCategory.Threads)
+            //    {
+            //        var listAllThreadsVM = new ListAllThreadsVM
+            //        {
+
+            //            LatestThread = secondCategory.Threads.Take(1).OrderByDescending(s => s.CreatedAt).FirstOrDefault(),
+            //            ThreadCreator = forumThread.ThreadCreator.DisplayName,
+            //            ThreadName = forumThread.Title,
+            //            ThreadId = forumThread.ForumThreadID,
+
+            //        };
+
+            //        ViewBag.SecondCategory = secondCategory.Name;
+            //        vmList.Add(listAllThreadsVM);
+            //    }
+            //    return View(vmList.ToPagedList(pageNumber, pageSize));
         }
         
         [HttpGet("thread/{threadId}/is-favorite")]

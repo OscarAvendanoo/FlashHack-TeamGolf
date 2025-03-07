@@ -14,7 +14,7 @@ namespace FlashHackForum.Models
         public virtual ICollection<ForumThread> Favorites { get; set; } = new List<ForumThread>();
         public virtual ICollection<ForumThread> ThreadsStarted { get; set; } = new List<ForumThread>();
         public virtual ICollection<ThreadPost> ThreadPosts { get; set; } = new List<ThreadPost>();
-        public virtual ICollection<Competens> Competenses { get; set; } = new List<Competens>();
+        public virtual ICollection<UserCompetence> UserCompetences { get; set; } = new List<UserCompetence>();
         [Required]
         public string? PhoneNumber { get; set; }
         public string? Employer { get; set; }

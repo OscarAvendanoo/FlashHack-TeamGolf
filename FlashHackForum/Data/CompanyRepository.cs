@@ -17,12 +17,14 @@ namespace FlashHackForum.Data
         // Hämtar företaget via företagets namn, inkluderar listan med kompetenser dom letar efter samt education som tillhör kompetensen
         public async Task<Company> GetCompanyByIdIncludeCompetenses(int CompanyId)
         {
-            return await _context.Companies.Include(c => c.CompetensesToLookFor).ThenInclude(clf => clf.Education).FirstOrDefaultAsync(c => c.CompanyId == CompanyId);
+            //return await _context.Companies.Include(c => c.CompetensesToLookFor).ThenInclude(clf => clf.Education).FirstOrDefaultAsync(c => c.CompanyId == CompanyId);
+            return await _context.Companies.Include(c => c.CompetensesToLookFor).FirstOrDefaultAsync(c => c.CompanyId == CompanyId);
         }
         // Hämtar företaget via företagets ID, inkluderar listan med kompetenser dom letar efter samt education som tillhör kompetensen
         public async Task<Company> GetCompanyByNameIncludeCompetenses(string CompanyName)
         {
-            return await _context.Companies.Include(c => c.CompetensesToLookFor).ThenInclude(clf => clf.Education).FirstOrDefaultAsync(c => c.Name == CompanyName);
+            //return await _context.Companies.Include(c => c.CompetensesToLookFor).ThenInclude(clf => clf.Education).FirstOrDefaultAsync(c => c.Name == CompanyName);
+            return await _context.Companies.Include(c => c.CompetensesToLookFor).FirstOrDefaultAsync(c => c.Name == CompanyName);
         }
     }
 }
