@@ -121,8 +121,10 @@ namespace FlashHackForum.Controllers
                 PostCreator = account,
                 //ForumThread = forumThread,
                 ForumThreadId = forumThread.ForumThreadID,
+                ShowSignature = viewModel.ShowSignature,
                 Anonymous = viewModel.Anonymous,
                 
+
 
             };
 
@@ -222,6 +224,7 @@ namespace FlashHackForum.Controllers
             editThreadVM.FirstPostMessage = threadToEdit.PostsInThread.OrderBy(p => p.PostDate).FirstOrDefault().PostMessage;
             editThreadVM.Desrciption = threadToEdit.Title;
             editThreadVM.IsAnonymous = threadToEdit.IsAnonymous;
+            editThreadVM.IsShowSignature = threadToEdit.IsShowSignature;
             editThreadVM.ThreadToEditId = id;
 
             var user = await _userRepository.GetUserByUsername(HttpContext.Session.GetString("UserName"));
@@ -263,8 +266,9 @@ namespace FlashHackForum.Controllers
 
             threadToEdit.Title = editThreadVM.Desrciption;
             threadToEdit.IsAnonymous = editThreadVM.IsAnonymous;
+            threadToEdit.IsShowSignature = editThreadVM.IsShowSignature;
 
-            
+
             await _threadPostRepository.SaveChanges();
 
             var firstPostInThread = threadToEdit.PostsInThread.OrderBy(p => p.PostDate).FirstOrDefault();

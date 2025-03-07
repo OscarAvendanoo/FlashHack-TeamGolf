@@ -1,0 +1,58 @@
+﻿@using FlashHackForum.ViewModels
+@using X.PagedList
+
+
+@model IPagedList<ListAllThreadsVM>
+
+@{
+    ViewData["Title"] = "ListAllThreads";
+    int currentPage = ViewBag.CurrentPage ?? 1;
+}
+<div class="main-category mb-2 d-flex justify-content-between">
+    <h3 style="margin-bottom: 0;">
+        @ViewBag.SecondCategory
+    </h3>
+    <a asp-action="Create" asp-controller="ForumThread" class="create-thread-btn text-end text-decoration-none">
+         Skapa tråd
+    </a>
+</div>
+
+
+<div class="custom-list">
+    @foreach (var item in Model)
+    {
+        <div class="list-group-item">
+        <a asp-controller="ForumThread" asp-action="ShowThread" asp-route-id="@item.ThreadId" class="list-group-item-action">
+            <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1">@item.ThreadName</h5>
+                <small>Skapad av: @item.ThreadCreator</small>
+
+
+            </div>
+                <div class="d-flex w-100 justify-content-end">
+                <small>@item.LatestThread.CreatedAt.ToString("dddd, dd MMMM")</small>
+                
+                </div>
+        </a>
+        </div>
+        
+    }
+</div>
+
+<nav aria-label="Page navigation example">
+    <ul class="pagination">
+        <li class="page-item">
+            <a class="page-link" href="@Url.Action("ListAllThreadsByCategory", new { page = 1 })" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
+        <li class="page-item @(currentPage == 1 ? "active" : "")"><a class="page-link" href="@Url.Action("ListAllThreadsByCategory", new { page = 1 })">1</a></li>
+        <li class="page-item @(currentPage == 2 ? "active" : "")"><a class="page-link" href="@Url.Action("ListAllThreadsByCategory", new { page = 2 })">2</a></li>
+        <li class="page-item @(currentPage == 3 ? "active" : "")"><a class="page-link" href="@Url.Action("ListAllThreadsByCategory", new { page = 3 })">3</a></li>
+        <li class="page-item">
+            <a class="page-link" href="@Url.Action("ListAllThreadsByCategory", new { page = 2 })" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+    </ul>
+</nav>

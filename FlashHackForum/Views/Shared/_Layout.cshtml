@@ -4,10 +4,17 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - FlashHackForum</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Oxygen:wght@300;400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/FlashHackForum.styles.css" asp-append-version="true" />
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 
 </head>
 <body>
@@ -74,6 +81,7 @@
                                                         <ul class="dropdown-menu">
                                                             <li><a class="dropdown-item" asp-controller="User" asp-action="Details" asp-route-id=@userId>Min Profil</a></li>
                                                             <li><a class="dropdown-item" asp-controller="" asp-action="" asp-route-id=@userId>Inställningar</a></li>
+                                                            <li><a class="dropdown-item" asp-area="" asp-controller="Favourite" asp-action="ListMyFavourites">Mina Favoriter</a></li>
                                                             <li><a class="dropdown-item" asp-controller="" asp-action="" asp-route-id=@userId>Skaffa Premium</a></li>
                                                             <li><a class="dropdown-item" asp-controller="User" asp-action="Logout">Logga ut</a></li>
                                                         </ul>
@@ -104,18 +112,18 @@
             <!--Category Dropdown Menu-->
             @await Component.InvokeAsync("CategoryMenu")
             
-            @if (!string.IsNullOrEmpty(user))
+            @* @if (!string.IsNullOrEmpty(user))
             {
                 <li class="nav-item">
                     <a class="nav-link" asp-area="" asp-controller="Favourite" asp-action="ListMyFavourites">Mina Favoriter</a>
                 </li>
             }
             else
-            {
+            { *@
                 <li class="nav-item">
                     <a class="nav-link" asp-area="" asp-controller="Favourite" asp-action="ListAllFavourites">Favoriter</a>
                 </li>
-            }
+            
 
             <li class="nav-item">
                 <a class="nav-link" asp-area="" asp-controller="Favourite" asp-action="ListMyThreads">Mina trådar</a>
@@ -123,9 +131,7 @@
             <li class="nav-item">
                 <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Karriär och jobb</a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" asp-area="" asp-controller="ForumThread" asp-action="Index">Trådar</a>
-            </li>
+            
         </ul>
     </nav>
 

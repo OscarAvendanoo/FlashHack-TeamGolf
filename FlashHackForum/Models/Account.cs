@@ -17,7 +17,7 @@ namespace FlashHackForum.Models
         [Required]
         public string? PhoneNumber { get; set; }
         public string? Employer { get; set; }
-        public string? ProfileImage { get; set; }
+        public string ?ProfileImage { get; set; }
         public int AccountRating { get; set; } = 0;
         public string? Email { get; set; }
         [Required]

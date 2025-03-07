@@ -1,0 +1,96 @@
+﻿@using FlashHackForum.ViewModels
+@model List<ForumThreadPostVM>
+@{
+    ViewData["Title"] = "ListAllSubcategories";
+}
+
+@* <iframe width="100%" height="315" src="https://www.youtube.com/embed/wAmbDCJocJM?autoplay=1&mute=1&si=6Kfk17g-UrHFz_6w" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe> *@
+
+
+<div class="accordion" id="mainCategoryAccordion">
+    @foreach (var mainCategory in Model)
+    {
+        var collapseId = "collapse-" + mainCategory.MainCategoryName.Replace(" ", "-");
+        var headingId = "heading-" + mainCategory.MainCategoryName.Replace(" ", "-");
+
+        <div class="accordion-item">
+            
+
+            <h3 class="main-category category-toggle d-flex justify-content-between" id="@headingId" type="button" data-bs-toggle="collapse" data-bs-target="#@collapseId" aria-expanded="true" aria-controls="@collapseId">
+                @mainCategory.MainCategoryName <span>-</span>
+
+            </h3>
+
+            <div id="@collapseId" class="accordion-collapse collapse show" aria-labelledby="@headingId" data-bs-parent="accordion-collapse">
+                <div>
+                    <div class="row main-page-row">
+                        @foreach (var subCategory in mainCategory.SecondCategories)
+                        {
+                            <div class="custom-card-subcategory col-sm-6 mb-3 mb-sm-0">
+                                <section>
+                                    <a asp-action="ListAllThreadsByCategory" asp-controller="Favourite" asp-route-secondCategoryName="@subCategory.SecondCategoryName">
+                                        <div class="card custom-card-subcategory">
+                                            <div class="card-body custom-card">
+                                                <p class="card-title fw-bold">@subCategory.SecondCategoryName</p>
+                                                <small class="card-text">Trådar i forum: <span style="font-weight:500;">@subCategory.ForumThreads.Count</span></small>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </section>
+                            </div>
+
+                            @if (subCategory.LatestThread != null)
+                            {
+                                <div class="custom-card-threads col-sm-6">
+                                    <section>
+                                        <a asp-controller ="ForumThread" asp-action="ShowThread" asp-route-id="@subCategory.LatestThread.ForumThreadID">
+                                            <div class="card custom-card-threads">
+                                                <div class="card-body custom-card">
+                                                    <p class="card-title">@subCategory.LatestThread.Title</p>
+                                                    
+                                                    <div class="d-flex justify-content-between mt-auto">
+                                                        <small class="card-text">
+                                                            <span class="fw-bold" style="color:var(--white-grey);">Skapad av:</span> @subCategory.LatestThread.ThreadCreator.DisplayName
+                                                        </small>
+                                                        <small class="card-text text-end">
+                                                            <span class="fw-bold" style="color:var(--dark-blue);">Datum:</span>@subCategory.LatestThread.CreatedAt.ToString(" dd MMMM yyyy")
+                                                        </small>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </section>
+                                </div>
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var buttons = document.querySelectorAll(".category-toggle");
+
+        buttons.forEach(function (btn) {
+            btn.addEventListener("click", function () {
+                var target = document.querySelector(this.getAttribute("data-bs-target"));
+
+                if (target.classList.contains("show")) return;
+
+                document.querySelectorAll(".category-collapse.show").forEach(function (openCollapse) {
+                    new bootstrap.Collapse(openCollapse, { toggle: true });
+                });
+            });
+        });
+    });
+</script>
+
+
+
+
+

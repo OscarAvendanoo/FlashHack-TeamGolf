@@ -4,6 +4,7 @@ using FlashHackForum.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FlashHackForum.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250306115955_addNullReactionType")]
+    partial class addNullReactionType
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -133,9 +136,8 @@ namespace FlashHackForum.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CompetensId"));
 
-                    b.Property<string>("Category")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int?>("AccountId")
+                        .HasColumnType("int");
 
                     b.Property<int?>("CompanyId")
                         .HasColumnType("int");
@@ -144,13 +146,23 @@ namespace FlashHackForum.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("EducationId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Grade")
+                        .HasColumnType("int");
+
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("CompetensId");
 
+                    b.HasIndex("AccountId");
+
                     b.HasIndex("CompanyId");
+
+                    b.HasIndex("EducationId");
 
                     b.ToTable("Competenses");
                 });
@@ -204,9 +216,6 @@ namespace FlashHackForum.Migrations
                         .HasColumnType("int");
 
                     b.Property<bool>("IsAnonymous")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsShowSignature")
                         .HasColumnType("bit");
 
                     b.Property<int>("SecondCategoryId")
@@ -272,10 +281,8 @@ namespace FlashHackForum.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ThreadPostId"));
 
-
-                    b.Property<bool>("Anonymous")
-                        .HasColumnType("bit");
-
+                    b.Property<int>("DislikeCount")
+                        .HasColumnType("int");
 
                     b.Property<int>("ForumThreadId")
                         .HasColumnType("int");
@@ -295,9 +302,6 @@ namespace FlashHackForum.Migrations
 
                     b.Property<int?>("ReplyToPostId")
                         .HasColumnType("int");
-
-                    b.Property<bool>("ShowSignature")
-                        .HasColumnType("bit");
 
                     b.HasKey("ThreadPostId");
 
@@ -353,8 +357,6 @@ namespace FlashHackForum.Migrations
                     b.ToTable("Users");
                 });
 
-
-            modelBuilder.Entity("FlashHackForum.Models.UserCompetence", b =>
             modelBuilder.Entity("FlashHackForum.Models.UserPostReaction", b =>
                 {
                     b.Property<int>("Id")
@@ -363,17 +365,6 @@ namespace FlashHackForum.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("AccountId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("CompetensId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("EducationId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Grade")
-=======
                     b.Property<int?>("ReactionType")
                         .HasColumnType("int");
 
@@ -384,15 +375,6 @@ namespace FlashHackForum.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-
-                    b.HasIndex("AccountId");
-
-                    b.HasIndex("CompetensId");
-
-                    b.HasIndex("EducationId");
-
-                    b.ToTable("UserCompetences");
 
                     b.HasIndex("ThreadPostId");
 
@@ -429,9 +411,19 @@ namespace FlashHackForum.Migrations
 
             modelBuilder.Entity("FlashHackForum.Models.Competens", b =>
                 {
+                    b.HasOne("FlashHackForum.Models.Account", null)
+                        .WithMany("Competenses")
+                        .HasForeignKey("AccountId");
+
                     b.HasOne("FlashHackForum.Models.Company", null)
                         .WithMany("CompetensesToLookFor")
                         .HasForeignKey("CompanyId");
+
+                    b.HasOne("FlashHackForum.Models.Education", "Education")
+                        .WithMany()
+                        .HasForeignKey("EducationId");
+
+                    b.Navigation("Education");
                 });
 
             modelBuilder.Entity("FlashHackForum.Models.ForumThread", b =>
@@ -489,10 +481,7 @@ namespace FlashHackForum.Migrations
                     b.Navigation("ReplyToPost");
                 });
 
-
-            modelBuilder.Entity("FlashHackForum.Models.UserCompetence", b =>
-           
-           modelBuilder.Entity("FlashHackForum.Models.UserPostReaction", b =>
+            modelBuilder.Entity("FlashHackForum.Models.UserPostReaction", b =>
                 {
                     b.HasOne("FlashHackForum.Models.ThreadPost", "ThreadPost")
                         .WithMany("Reactions")
@@ -513,36 +502,11 @@ namespace FlashHackForum.Migrations
 
             modelBuilder.Entity("FlashHackForum.Models.Account", b =>
                 {
-                    b.HasOne("FlashHackForum.Models.Account", "Account")
-                        .WithMany("UserCompetences")
-                        .HasForeignKey("AccountId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("Competenses");
 
-                    b.HasOne("FlashHackForum.Models.Competens", "Competens")
-                        .WithMany()
-                        .HasForeignKey("CompetensId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("FlashHackForum.Models.Education", "Education")
-                        .WithMany()
-                        .HasForeignKey("EducationId");
-
-                    b.Navigation("Account");
-
-                    b.Navigation("Competens");
-
-                    b.Navigation("Education");
-                });
-
-            modelBuilder.Entity("FlashHackForum.Models.Account", b =>
-                {
                     b.Navigation("ThreadPosts");
 
                     b.Navigation("ThreadsStarted");
-
-                    b.Navigation("UserCompetences");
                 });
 
             modelBuilder.Entity("FlashHackForum.Models.Company", b =>
