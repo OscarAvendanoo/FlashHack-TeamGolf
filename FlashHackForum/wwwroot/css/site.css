@@ -8,13 +8,11 @@
 
 html {
     font-size: 14px;
-    
 }
 
 @media (min-width: 768px) {
     html {
         font-size: 16px;
-        
         /*#4fa0ab*/
     }
 }
@@ -27,7 +25,6 @@ html {
     position: relative;
     min-height: 100%;
     color: var(--orange);
-    
 }
 
 body {
@@ -52,23 +49,22 @@ body {
         background-color: var(--orange);
     }
 
-    /*CreateThread Button*/
-    .create-thread-btn{
-        padding: 5px;
-        font-size:1rem;
-        color:var(--light-green);
-        background-color: var(--dark-blue);
-        align-items:center;
-        align-content: center;
-        font-weight: 600;
-        border-radius: 5px;
+/*CreateThread Button*/
+.create-thread-btn {
+    padding: 5px;
+    font-size: 1rem;
+    color: var(--light-green);
+    background-color: var(--dark-blue);
+    align-items: center;
+    align-content: center;
+    font-weight: 600;
+    border-radius: 5px;
+}
 
+    .create-thread-btn:hover {
+        color: var(--dark-blue);
+        background-color: var(--light-green);
     }
-        .create-thread-btn:hover {
-            
-            color: var(--dark-blue);
-            background-color: var(--light-green);
-        }
 
 
 
@@ -119,10 +115,12 @@ body {
 .navbar li {
     margin: 0;
 }
+
     .navbar li a:hover {
         color: var(--dark-blue);
         background-color: var(--orange);
     }
+
     .navbar li a:active {
         color: var(--dark-blue);
         background-color: var(--orange);
@@ -131,6 +129,8 @@ body {
 .navbar img {
     margin-left: 12%;
 }
+
+
 
 .navbar a {
     display: block;
@@ -143,14 +143,23 @@ body {
     margin-left: 1em;
 }
 
+
+
     .navbar a:hover {
         color: var(--dark-blue);
         background-color: var(--orange);
     }
+
     .navbar a:active {
         color: var(--dark-blue);
         background-color: var(--orange);
     }
+
+
+.navbar a.no-hover:hover{
+    background-color: transparent !important;
+    color: inherit !important;
+}
 
 /*Innehåll med padding från sidorna */
 .content-wrapper {
@@ -159,38 +168,31 @@ body {
     margin: 0 auto;
 }
 
-
-
-
 /*CUSTOM LIST FAVOURITES*/
 
 .custom-list .list-group-item {
     margin-bottom: 0.5em;
     border-radius: 0.5em;
-    
 }
 
     .custom-list .list-group-item:nth-child(odd) {
         background-color: rgba(78, 140, 163, 0.3);
-        
     }
 
 
     .custom-list .list-group-item:nth-child(even) {
         background-color: rgba(78, 140, 163, 0.8);
         color: white;
-        
     }
-    
-    .custom-list .list-group-item:nth-child(even) a {
-        
-        color: white;
+
+        .custom-list .list-group-item:nth-child(even) a {
+            color: white;
+        }
+
+    .custom-list .list-group-item a {
+        text-decoration: none;
+        color: black;
     }
-    
-.custom-list .list-group-item a {
-    text-decoration:none;
-    color: black;
-}
 
 
 /*PAGEINATION*/
@@ -239,12 +241,13 @@ body {
     position: relative;
     color: var(--orange);
 }
+
     .dropdown-submenu:hover > a {
-        color: inherit; 
+        color: inherit;
     }
 
     .dropdown-submenu > a {
-        color: inherit; 
+        color: inherit;
     }
 
     .dropdown-submenu > .dropdown-menu {
@@ -261,7 +264,7 @@ body {
         display: block;
     }
 
-    
+
 
 .a-link {
     color: rgba(204, 133, 0, 1);
@@ -297,18 +300,18 @@ body {
         text-decoration: none;
     }
 
-    
 
-    /* Fill the heart on hover if it's not already clicked */
-    .heart-button:not(.active) i:hover {
-        font-weight: bold;
-        content: "\f417"; /* Won't work for Bootstrap icons, JS will handle it */
-    }
 
-    /* Optional: Add a slight scale effect on hover */
-    .heart-button:hover {
-        transform: scale(1.2);
-    }
+/* Fill the heart on hover if it's not already clicked */
+.heart-button:not(.active) i:hover {
+    font-weight: bold;
+    content: "\f417"; /* Won't work for Bootstrap icons, JS will handle it */
+}
+
+/* Optional: Add a slight scale effect on hover */
+.heart-button:hover {
+    transform: scale(1.2);
+}
 
 
 /*MainCategory Banner*/
@@ -320,8 +323,8 @@ body {
     font-size: 1.3rem;
     margin-bottom: 0;
     border-bottom: solid;
-    
 }
+
 .main-page-row {
     --bs-gutter-x: 0;
     --bs-gutter-y: 0;
@@ -333,16 +336,9 @@ a.nav-link:focus, a.nav-link:active {
     background-color: var(--dark-blue);
     text-decoration: none;
 }
+
 a.nav-link:hover {
-    color: var(--dark-blue); 
-    background-color: var(--orange); 
-    text-decoration: none; 
+    color: var(--dark-blue);
+    background-color: var(--orange);
+    text-decoration: none;
 }
-
-
-
-
-
-
-
-
