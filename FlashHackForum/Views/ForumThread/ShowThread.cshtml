@@ -111,19 +111,19 @@
             </div> *@
                 <div class="d-flex justify-content-end">
 
-                    @*<a asp-action="UpVote" asp-controller="ThreadPost" asp-route-id="@post.ThreadPostId" class="btn btn-success btn-sm me-2">
+                    @* <a asp-action="UpVote" asp-controller="ThreadPost" asp-route-id="@post.ThreadPostId" class="btn btn-success btn-sm me-2">
                         <i class="bi bi-hand-thumbs-up"></i> Gilla
                     </a>
                     <a asp-action="DownVote" asp-controller="ThreadPost" asp-route-id="@post.ThreadPostId" class="btn btn-danger btn-sm">
                         <i class="bi bi-hand-thumbs-down"></i> Ogilla
-                    </a>*@
+                    </a> *@
 
                     <button class="btn btn-success btn-sm me-2" id="likeButton-@post.ThreadPostId" onclick="reactToPost(@post.ThreadPostId, true)">
-                        👍 Gilla <span id="like-count-@post.ThreadPostId">@post.LikeCount</span>
+                        <i class="bi bi-hand-thumbs-up"></i> Gilla <span id="like-count-@post.ThreadPostId">@post.LikeCount</span>
                     </button>
 
                     <button class="btn btn-danger btn-sm" id="dislikeButton-@post.ThreadPostId" onclick="reactToPost(@post.ThreadPostId, false)">
-                        👎 Ogilla <span id="dislike-count-@post.ThreadPostId">@post.DislikeCount</span>
+                        <i class="bi bi-hand-thumbs-down"></i> Ogilla <span id="dislike-count-@post.ThreadPostId">@post.DislikeCount</span>
                     </button>
 
                 </div>
