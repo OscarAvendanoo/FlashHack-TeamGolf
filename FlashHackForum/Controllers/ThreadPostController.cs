@@ -91,5 +91,6 @@ namespace FlashHackForum.Controllers
 
             return RedirectToAction("ShowThread", "ForumThread", new { id = createPostVM.ThreadId });
         }
+
     }
 }
