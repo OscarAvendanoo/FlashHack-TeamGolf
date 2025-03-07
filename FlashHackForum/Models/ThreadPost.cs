@@ -25,6 +25,9 @@ namespace FlashHackForum.Models
         public bool ShowSignature { get; set; } = false;
 
         public bool Anonymous { get; set; } = false;
+        public int LikeCount { get; set; }
+        public int DislikeCount { get; set; }
+        public ICollection<UserPostReaction> Reactions { get; set; } = new List<UserPostReaction>();
 
 
     }
