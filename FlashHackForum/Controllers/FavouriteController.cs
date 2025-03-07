@@ -160,28 +160,7 @@ namespace FlashHackForum.Controllers
             }
             return View(vmList.ToPagedList(pageNumber, pageSize));
         }
-        //[HttpGet("thread/{threadId}/isFavorite")]
-        //public async Task<IActionResult> IsFavorite(int threadId)
-        //{
-        //    var userId = HttpContext.Session.GetInt32("UserId");
-        //    if (userId == null)
-        //    {
-        //        return Unauthorized();
-        //    }
-
-        //    var account = await accountRepository.GetAccountByUserID((int)userId);
-        //    var thread = await forumThreadRepository.GetByIDAsync(threadId);
-
-        //    if (thread == null || account == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    // Check if the thread is in the user's favorites
-        //    bool isFavorite = true; /*account.Favorites.Any(f => f.ForumThreadID == threadId);*/
-
-        //    return Ok(new { isFavorite });
-        //}
+        
         [HttpGet("thread/{threadId}/is-favorite")]
         public async Task<IActionResult> IsFavorite(int threadId)
         {
@@ -223,32 +202,6 @@ namespace FlashHackForum.Controllers
             return Ok();
 
         }
-        //[Route("thread/{threadId}/favorite")]
-        //[HttpPost]
-        //public IActionResult AddToFavorites(int threadId)
-        //{
-        //    Console.WriteLine($"Received favorite request for ThreadId: {threadId}"); // Debug log
-
-        //    var accountId = 1; // Replace with actual logged-in user ID
-        //    var account = accountRepository.GetAccountByUserID((int)userId);
-
-        //    var thread = _context.Threads.Find(threadId);
-
-        //    if (account == null || thread == null)
-        //        return BadRequest("Invalid account or thread.");
-
-        //    if (account.FavouriteThreads.Contains(thread))
-        //    {
-        //        account.FavouriteThreads.Remove(thread);
-        //    }
-        //    else
-        //    {
-        //        account.FavouriteThreads.Add(thread);
-        //    }
-
-        //    _context.SaveChanges();
-
-        //    return Ok(); // Return success response
-        //}
+        
     }
 }

@@ -31,7 +31,7 @@
             <i class="bi bi-heart"></i>
         </a> *@
         <a href="javascript:void(0);"
-           id="hIcon"
+           id="hIcon1"
            class="text-danger heart-button me-3 btn btn-sm"
            onclick="toggleFavorite('@Model.ForumThreadID', this, event)">
             <i class="bi bi-heart"></i>
@@ -161,8 +161,14 @@
        class="create-thread-btn text-decoration-none btn btn-sm">
         <i class="bi bi-arrow-return-left"></i> Svara i tråden
     </a>
-    <a asp-action="AddToFavorites" asp-controller="ThreadPost" asp-route-threadId="@Model.ForumThreadID"
+    @* <a asp-action="AddToFavorites" asp-controller="ThreadPost" asp-route-threadId="@Model.ForumThreadID"
        class="text-danger heart-button me-3 btn btn-sm" onclick="toggleFavorite(this)">
+        <i class="bi bi-heart"></i>
+    </a> *@
+    <a href="javascript:void(0);"
+       id="hIcon2"
+       class="text-danger heart-button me-3 btn btn-sm"
+       onclick="toggleFavorite('@Model.ForumThreadID', this, event)">
         <i class="bi bi-heart"></i>
     </a>
 </div>
@@ -194,10 +200,10 @@
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         console.log("DOM is fully loaded!");
-        CheckFavStatus("@Model.ForumThreadID", document.getElementById('hIcon'))
+        CheckFavStatus("@Model.ForumThreadID", document.getElementById('hIcon1'), document.getElementById('hIcon2'))
     });
 
-    function CheckFavStatus(threadId, element) {
+    function CheckFavStatus(threadId, element1, element2) {
         fetch(`/thread/${threadId}/is-favorite`, {
             method: "GET",
             headers: {
@@ -213,11 +219,14 @@
             
             .then(data => {
                 console.log("Thread is favorite:", data);
-                let icon = element.querySelector("i");
+                let icon1 = element1.querySelector("i");
+                let icon2 = element2.querySelector("i");
                 if (data.isFavorite) {
-                    icon.classList.replace("bi-heart", "bi-heart-fill");
+                    icon1.classList.replace("bi-heart", "bi-heart-fill");
+                    icon2.classList.replace("bi-heart", "bi-heart-fill");
                 } else {
-                    icon.classList.replace("bi-heart-fill", "bi-heart");
+                    icon1.classList.replace("bi-heart-fill", "bi-heart");
+                    icon2.classList.replace("bi-heart-fill", "bi-heart");
                 }
             })
             
