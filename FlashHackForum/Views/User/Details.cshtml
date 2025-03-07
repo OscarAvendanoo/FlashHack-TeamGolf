@@ -14,6 +14,7 @@
 }
 <hr />
 
+<!-- Följande data visas om användaren besöker sin profilsida -->
 @if(userId == Model.UserId)
 {
     <div class="row g-3 rounded" style="background-color: var(--dark-blue); color: var(--orange)">
@@ -21,12 +22,14 @@
             @Model.UserName
             @if (!string.IsNullOrEmpty(Model.Account.ProfileImage))
             {
-                @*<img src="@Model.Account.ProfileImage" class="img-thumbnail" alt="Profil bild"/>*@
-                <img src="~/Images/userId1_image.gif" class="img-fluid rounded-circle" alt="Profil bild" />
+                <img src="@Model.Account.ProfileImage" class="img-thumbnail" alt="Profil bild" />
+                @*<img src="~/Images/userId1_image.gif" class="img-fluid rounded-circle" alt="Profil bild" />*@
             }
             else
             {
-                <a>Bild saknas</a>
+                @*<a>Bild saknas</a>
+            Nedanstående rad ska tas bort senare*@
+                <img src="~/Images/userId1_image.gif" class="img-fluid rounded-circle" alt="Profil bild" />
             }
         </h2>
         <!-- Lägg till formulär för att redigera användardata -->
@@ -103,7 +106,7 @@
                 <input asp-for="Account.Employer" class="form-control" />
             </div>
 
-            <!-- Premium Konto Rubrik och Ja om Premium -->
+            <!-- Premium Konto Rubrik -->
             <div class="col-md-6 form-group">
                 <div class="row">
                     <div class="col-md-3">
@@ -112,15 +115,15 @@
 
                     @if (Model.Account.IsPremium)
                     {
-                        <!-- Premium konto Rubrik -->
+                        <!-- Ja om Premium -->
                         <div class="col-md-3">
                             <input class="form-control" type="text" value="Ja" disabled readonly>
                         </div>
-                        <!-- Ranking Rubrik -->
+                        <!-- Konto Ranking -->
                         <div class="col-md-3">
                             <label for="Account.AccountRating">Ranking</label>
                         </div>
-                        <!-- Ranking fält -->
+                        <!-- Ranking värde -->
                         <div class="col-md-3">
                             <input asp-for="Account.AccountRating" class="form-control" disabled readonly />
                         </div>
@@ -136,23 +139,41 @@
             </div>
 
             <!-- Kompetenser Sektion -->
-            <div class="row mt-3">
+            <div class="row mt-3 col-md-12">
                 <div class="col-auto form-group">
                     <h5>Kompetenser</h5>
+                    <table class="table table-borderless" style="color: var(--orange);">
+                        <thead>
+                            <tr>
+                                <th>Typ</th>
+                                <th>Kunskapsnivå</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.Account.UserCompetences.Count > 0)
+                            {
+                                foreach (var competence in Model.Account.UserCompetences)
+                                {
+                                    <tr>
+                                        <td>@Html.DisplayFor(modelItem => competence.Competens.Title)</td>
+                                        <td>@Html.DisplayFor(modelItem => competence.Grade)</td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="2">Inga valda kompetenser</td>
+                                </tr>
+                            }
+                        </tbody>
 
-                    @if (Model.Account.Competenses.Count <= 0)
-                    {
-                        <div>
-                            <p>Lägg till kompetenser</p>
-                        </div>
-                    }
-                    else
-                    {
-                        <textarea asp-for="Account.Competenses" class="form-control" type="text" rows="10">@Model.Account?.Biography</textarea>
-                    }
+                    </table>
+                    <!-- Knapp för att lägga till fler kompetenser -->
+                    <a class="btn btn-primary border-0" style="background-color: var(--orange);" type="button" asp-controller="Account" asp-action="AddCompetences" asp-route-id="@Model?.AccountId">Lägg till kompetens</a>
                 </div>
             </div>
-                
+
             <div class="col-md-6 form-group">
                 <label for="Account.Biography">Om mig</label>
                 <textarea asp-for="Account.Biography" class="form-control" type="text" rows="5">@Model.Account?.Biography</textarea>
@@ -162,7 +183,7 @@
                 <textarea asp-for="Account.Signature" class="form-control" type="text" rows="3">@Model.Account?.Signature</textarea>
             </div>
 
-            <!-- Lägg till formulär för att redigera inställningar -->
+            <!-- Formulär för att redigera inställningar -->
             @if (Model.Account.IsPremium)
             {
                 <h4>Inställningar: </h4>
@@ -186,26 +207,29 @@
 
                 </div>
             }
-            
-           <div class="mb-3">
+
+            <div class="mb-3">
                 <button type="submit" class="btn btn-primary" style="background-color: var(--orange)">Spara</button>
-           </div>
-            
+            </div>
+
         </form>
     </div>
 }
 else
 {
+    <!-- Följande data visas om någon annan besöker användarens profilsida -->
     <h2>
         @Model.UserName
         @if (!string.IsNullOrEmpty(Model.Account.ProfileImage))
         {
-            @*<img src="@Model.Account.ProfileImage" class="img-thumbnail" alt="Profil bild"/>*@
-            <img src="~/Images/userId1_image.gif" class="img-fluid rounded-circle" alt="Profil bild" />
+            <img src="@Model.Account.ProfileImage" class="img-thumbnail" alt="Profil bild"/>
+            @*<img src="~/Images/userId1_image.gif" class="img-fluid rounded-circle" alt="Profil bild" />*@
         }
         else
         {
-            <a>Bild saknas</a>
+            @*<a>Bild saknas</a>
+            Nedanstående rad ska tas bort senare*@
+            <img src="~/Images/userId1_image.gif" class="img-fluid rounded-circle" alt="Profil bild" />
         }
     </h2>
 
@@ -236,6 +260,17 @@ else
             <dd class="col-sm-10">
                 @Html.DisplayFor(model => model.Account.AccountCreatedAt)
             </dd>
+
+            @if(Model.Account.ShowContact)
+            {
+                <dt class="col-sm-2">
+                    Ranking:
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Account.AccountRating)
+                </dd>
+            }
+
             <dt class="col-sm-2">
                 <a>Arbetsgivare: </a>
             </dt>
@@ -262,12 +297,41 @@ else
             <dd class="col-sm-10">
                 @Html.DisplayFor(model => model.Account.Biography)
             </dd>
-
+            
             <dt class="col-sm-2">
-                <a>Kompetenser:</a>
+                <a>Kompetenser</a>
             </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Account.Competenses)
+            <dd>
+            <!-- Kompetenser Sektion -->
+            <div class="row mt-3 col-md-12">
+                <div class="col-auto form-group">
+                    <table class="table table-borderless">
+                        <thead>
+                            <tr>
+                                <th>Typ</th>
+                                <th>Kunskapsnivå</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.Account.UserCompetences.Count > 0)
+                            {
+                                foreach (var competence in Model.Account.UserCompetences)
+                                {
+                                    <tr>
+                                        <td>@Html.DisplayFor(modelItem => competence.Competens.Title)</td>
+                                        <td>@Html.DisplayFor(modelItem => competence.Grade)</td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="2">Inga valda kompetenser</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
             </dd>
         </dl>
     </div>

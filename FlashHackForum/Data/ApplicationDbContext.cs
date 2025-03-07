@@ -15,7 +15,10 @@ namespace FlashHackForum.Data
         public DbSet<ForumThread> ForumThreads { get; set; }
         public DbSet<ThreadPost> ThreadPosts { get; set; }
         public DbSet<User> Users { get; set; }
+
+        public DbSet<UserCompetence> UserCompetences { get; set; }
         public DbSet<UserPostReaction> UserPostReactions { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

@@ -61,12 +61,24 @@
   
 
         <div class="mb-3 col-md-4">
+            <label class="form-label">Arbetsgivare</label>
+            <input asp-for="Employer" type="tel" class="form-control" required />
+            <span asp-validation-for="Employer" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3 col-md-4">
         <label class="form-label">Telefonnummer</label>
         <input asp-for="PhoneNumber" type="tel" class="form-control" required />
         <span asp-validation-for="PhoneNumber" class="text-danger"></span>
     </div>
 
-        <div class="mb-3 col-md-4 ">
+        <div class="mb-3 col-md-4">
+            <label class="form-label">Konto E-post</label>
+            <input asp-for="AccountEmail" type="email" class="form-control" required />
+            <span asp-validation-for="AccountEmail" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3 col-md-4 ">
         <label class="form-label">Visningsnamn</label>
         <input asp-for="DisplayName" class="form-control" required />
         <span asp-validation-for="DisplayName" class="text-danger"></span>

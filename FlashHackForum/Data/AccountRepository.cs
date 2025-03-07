@@ -17,7 +17,7 @@ namespace FlashHackForum.Data
 
         public async Task<Account> GetAccountByIDIncludeAll(int id)
         {
-            return await _context.Accounts.Include(u => u.Competenses).ThenInclude(a => a.Education).Include(a => a.Favorites).
+            return await _context.Accounts.Include(u => u.UserCompetences).ThenInclude(a => a.Education).Include(a => a.Favorites).
                 Include(a => a.ThreadsStarted).Include(a => a.ThreadPosts).FirstOrDefaultAsync(u => u.AccountId == id);
         }
 

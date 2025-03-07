@@ -5,25 +5,25 @@
 namespace FlashHackForum.Migrations
 {
     /// <inheritdoc />
-    public partial class askdfjasf : Migration
+    public partial class competensupdate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<bool>(
-                name: "Anonymous",
-                table: "ThreadPosts",
-                type: "bit",
+            migrationBuilder.AddColumn<string>(
+                name: "Category",
+                table: "Competenses",
+                type: "nvarchar(max)",
                 nullable: false,
-                defaultValue: false);
+                defaultValue: "");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "Anonymous",
-                table: "ThreadPosts");
+                name: "Category",
+                table: "Competenses");
         }
     }
 }
