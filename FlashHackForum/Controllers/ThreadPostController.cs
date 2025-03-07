@@ -148,7 +148,9 @@ namespace FlashHackForum.Controllers
         }
 
         // Endpoint to Dislike a ThreadPost
-        [HttpPost("{PostId}/dislike")]
+        [Route("thread/{threadId}/favorite")]
+
+        [HttpPost]
         public async Task<IActionResult> DislikePost(int postId)
         {
             var userId = HttpContext.Session.GetInt32("UserId");

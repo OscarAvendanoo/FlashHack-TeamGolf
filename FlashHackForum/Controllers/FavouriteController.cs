@@ -4,6 +4,7 @@ using FlashHackForum.Models;
 using FlashHackForum.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.EntityFrameworkCore;
 using NuGet.ProjectModel;
 using System.Drawing.Printing;
 using X.PagedList;
@@ -63,7 +64,7 @@ namespace FlashHackForum.Controllers
             var userName = HttpContext.Session.GetString("UserName");
             var user = await userRepository.GetUserByUsername(userName);
             var account = await accountRepository.GetAccountByUserIDWithFavorites(user.UserId);
-            
+
 
             if (account == null)
             {
@@ -151,7 +152,7 @@ namespace FlashHackForum.Controllers
                     ThreadCreator = forumThread.ThreadCreator.DisplayName,
                     ThreadName = forumThread.Title,
                     ThreadId = forumThread.ForumThreadID,
-                    
+
                 };
 
                 ViewBag.SecondCategory = secondCategory.Name;
@@ -159,5 +160,95 @@ namespace FlashHackForum.Controllers
             }
             return View(vmList.ToPagedList(pageNumber, pageSize));
         }
+        //[HttpGet("thread/{threadId}/isFavorite")]
+        //public async Task<IActionResult> IsFavorite(int threadId)
+        //{
+        //    var userId = HttpContext.Session.GetInt32("UserId");
+        //    if (userId == null)
+        //    {
+        //        return Unauthorized();
+        //    }
+
+        //    var account = await accountRepository.GetAccountByUserID((int)userId);
+        //    var thread = await forumThreadRepository.GetByIDAsync(threadId);
+
+        //    if (thread == null || account == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    // Check if the thread is in the user's favorites
+        //    bool isFavorite = true; /*account.Favorites.Any(f => f.ForumThreadID == threadId);*/
+
+        //    return Ok(new { isFavorite });
+        //}
+        [HttpGet("thread/{threadId}/is-favorite")]
+        public async Task<IActionResult> IsFavorite(int threadId)
+        {
+            var userId = HttpContext.Session.GetInt32("UserId");
+            if (userId == null)
+            {
+                return Unauthorized();
+            }
+
+            var account = await accountRepository.GetAccountByUserIDWithFavorites((int)userId);
+            var thread = await forumThreadRepository.GetByIDAsync(threadId);
+
+            if (account == null || thread == null)
+            {
+                return NotFound();
+            }
+
+            bool isFavorite = account.Favorites.Contains(thread);
+            return Ok(new { isFavorite });
+        }
+
+        [HttpPost("thread/{threadId}/favorite")]
+        public async Task<IActionResult> ChangeFavStatus(int threadId)
+        {
+            var userId = HttpContext.Session.GetInt32("UserId");
+            var account = await accountRepository.GetAccountByUserIDWithFavorites((int)userId);
+            var thread = await forumThreadRepository.GetByIDAsync(threadId);
+            if (account.Favorites.Contains(thread))
+            {
+                account.Favorites.Remove(thread);
+            }
+            
+            else
+            {
+                account.Favorites.Add(thread);
+
+            }
+            await accountRepository.SaveChanges();
+            return Ok();
+
+        }
+        //[Route("thread/{threadId}/favorite")]
+        //[HttpPost]
+        //public IActionResult AddToFavorites(int threadId)
+        //{
+        //    Console.WriteLine($"Received favorite request for ThreadId: {threadId}"); // Debug log
+
+        //    var accountId = 1; // Replace with actual logged-in user ID
+        //    var account = accountRepository.GetAccountByUserID((int)userId);
+
+        //    var thread = _context.Threads.Find(threadId);
+
+        //    if (account == null || thread == null)
+        //        return BadRequest("Invalid account or thread.");
+
+        //    if (account.FavouriteThreads.Contains(thread))
+        //    {
+        //        account.FavouriteThreads.Remove(thread);
+        //    }
+        //    else
+        //    {
+        //        account.FavouriteThreads.Add(thread);
+        //    }
+
+        //    _context.SaveChanges();
+
+        //    return Ok(); // Return success response
+        //}
     }
 }

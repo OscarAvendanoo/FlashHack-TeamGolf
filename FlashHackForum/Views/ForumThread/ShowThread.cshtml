@@ -26,13 +26,20 @@
            class="create-thread-btn text-decoration-none btn btn-sm">
             <i class="bi bi-arrow-return-left"></i> Svara i tråden
         </a>
-        <a asp-action="AddToFavorites" asp-controller="ThreadPost" asp-route-threadId="@Model.ForumThreadID"
-           class="text-danger heart-button me-3 btn btn-sm" onclick="toggleFavorite(this)">
+        @* <a asp-action="AddToFavorites" 
+           class="text-danger heart-button me-3 btn btn-sm" onclick="toggleFavorite(@Model.ForumThreadID, this)">
+            <i class="bi bi-heart"></i>
+        </a> *@
+        <a href="javascript:void(0);"
+           id="hIcon"
+           class="text-danger heart-button me-3 btn btn-sm"
+           onclick="toggleFavorite('@Model.ForumThreadID', this, event)">
             <i class="bi bi-heart"></i>
         </a>
     </div>
-</div>
+    
 
+</div>
 
 <br />
 
@@ -185,7 +192,39 @@
 </nav>
 
 <script>
-    function reactToPost(postId, isLike) {
+    document.addEventListener("DOMContentLoaded", function () {
+        console.log("DOM is fully loaded!");
+        CheckFavStatus("@Model.ForumThreadID", document.getElementById('hIcon'))
+    });
+
+    function CheckFavStatus(threadId, element) {
+        fetch(`/thread/${threadId}/is-favorite`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("Network response was not ok");
+                }
+                return response.json();
+            })
+            
+            .then(data => {
+                console.log("Thread is favorite:", data);
+                let icon = element.querySelector("i");
+                if (data.isFavorite) {
+                    icon.classList.replace("bi-heart", "bi-heart-fill");
+                } else {
+                    icon.classList.replace("bi-heart-fill", "bi-heart");
+                }
+            })
+            
+    }
+
+    function reactToPost(postId, isLike) 
+    {
         const url = isLike ? `/api/threadposts/${postId}/like` : `/api/threadposts/${postId}/dislike`;
         console.log("Sending request to: ", url);
 
@@ -193,7 +232,8 @@
             url: url,
             type: 'POST',
             headers: { "Content-Type": "application/json" }, // Optional
-            success: function (response) {
+            success: function (response) 
+            {
                 console.log("Response received:", response)
                 console.log("Before updating:", $('#like-count-' + postId).text());
                 console.log("New LikeCount:", response.likeCount);
@@ -201,18 +241,22 @@
 
 
                 // Ensure elements exist before updating them
-                if ($('#like-count-' + postId).length) {
+                if ($('#like-count-' + postId).length) 
+                {
                     $('#like-count-' + postId).text(response.likeCount);
                 }
-                if ($('#dislike-count-' + postId).length) {
+                if ($('#dislike-count-' + postId).length) 
+                {
                     $('#dislike-count-' + postId).text(response.dislikeCount);
                 }
 
                 // Highlight the clicked button
-                if (isLike) {
+                if (isLike) 
+                {
                     $('#likeButton-' + postId).addClass('active');
                     $('#dislikeButton-' + postId).removeClass('active');
-                } else {
+                } else 
+                {
                     $('#dislikeButton-' + postId).addClass('active');
                     $('#likeButton-' + postId).removeClass('active');
                 }
@@ -222,4 +266,7 @@
             }
         });
     }
-</script>
+    </script>
+    
+    
+

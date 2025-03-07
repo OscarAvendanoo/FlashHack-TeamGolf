@@ -22,5 +22,6 @@ namespace FlashHackForum.Models
         public virtual List<ThreadPost> PostsInThread { get; set; } = new List<ThreadPost>();
         public bool IsAnonymous { get; set; } = false;
         public bool IsShowSignature { get; set; } = false;
+        
     }
 }

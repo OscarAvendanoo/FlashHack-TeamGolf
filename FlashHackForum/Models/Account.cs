@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.CompilerServices;
 
 namespace FlashHackForum.Models
@@ -27,6 +28,7 @@ namespace FlashHackForum.Models
         public int UserId { get; set; } // Foreign Key
         [Required]
         public virtual User User { get; set; } // Navigation property back to User
+        
 
         // properties that declares which information that should be left out or not,
         // will be handled by logics inside razor view.
@@ -34,6 +36,7 @@ namespace FlashHackForum.Models
         public bool ShowContact { get; set; } = true;        // sätter allt initialt till true så får användaren ändra detta om den vill
         public bool ShowToCompanies { get; set; } = true;
         public DateTime AccountCreatedAt { get; set; } = DateTime.Now;  
+        
       
         
     }
