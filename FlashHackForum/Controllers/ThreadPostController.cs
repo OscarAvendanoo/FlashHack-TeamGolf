@@ -91,6 +91,7 @@ namespace FlashHackForum.Controllers
             return RedirectToAction("ShowThread", "ForumThread", new { id = createPostVM.ThreadId });
         }
 
+
         // Endpoint to Like a ThreadPost
         [HttpPost("{PostId}/like")]
         public async Task<IActionResult> LikePost(int postId)
