@@ -12,7 +12,7 @@
     <h3 style="margin-bottom: 0;">
         @ViewBag.SecondCategory
     </h3>
-    <a asp-action="Create" asp-controller="ForumThread" class="create-thread-btn text-end text-decoration-none">
+    <a asp-action="Create" asp-controller="ForumThread" asp-route-id="@ViewBag.SecondCategoryId" class="create-thread-btn text-end text-decoration-none">
         Skapa tråd
     </a>
 </div>

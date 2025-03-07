@@ -18,12 +18,21 @@
                 <input asp-for="Title" class="form-control" />
                 <span asp-validation-for="Title" class="text-danger"></span>
             </div>
-
+            <!--Gjorde en liten uppdatering (inte snygg) men gjorde så valet som visas och läggs in i redan är förinställt om man går via tråden för att skapa ny tråd-->
+            <!--// Kevin :))-->
             <!-- Dropdown för SecondCategoryId -->
             <div class="form-group">
                 <label asp-for="SecondCategoryId" class="control-label">Kategori</label>
                 <select asp-for="SecondCategoryId" class="form-control">
-                    <option value="">Välj kategori</option>
+                    @if(Model.SecondCategoryId != null)
+                    {
+                        <option value="@ViewBag.SecondCategory">@ViewBag.SecondCategoryName</option>
+
+                    }
+                    else
+                    {
+                        <option value="">Välj kategori</option>
+                    }
                     @foreach (var category in Model.SecondCategories)
                     {
                         

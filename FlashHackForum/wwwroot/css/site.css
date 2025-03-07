@@ -317,7 +317,7 @@ body {
     background-color: var(--dark-blue);
     color: var(--orange);
     padding: 8px;
-    font-size: 1.3em;
+    font-size: 1.3rem;
     margin-bottom: 0;
     border-bottom: solid;
     
