@@ -22,14 +22,12 @@
             @Model.UserName
             @if (!string.IsNullOrEmpty(Model.Account.ProfileImage))
             {
-                <img src="@Model.Account.ProfileImage" class="img-thumbnail" alt="Profil bild" />
                 @*<img src="~/Images/userId1_image.gif" class="img-fluid rounded-circle" alt="Profil bild" />*@
+                <img src="@Url.Content(Model.Account.ProfileImage)" class="img-fluid rounded-circle" alt="profil bild" />
             }
             else
             {
-                @*<a>Bild saknas</a>
-            Nedanstående rad ska tas bort senare*@
-                <img src="~/Images/userId1_image.gif" class="img-fluid rounded-circle" alt="Profil bild" />
+                <img src="~/Images/NoProfileImage.jpeg" class="img-fluid rounded-circle" alt="Profil bild" width="150" height="140"/>
             }
         </h2>
         <!-- Lägg till formulär för att redigera användardata -->
@@ -223,14 +221,14 @@ else
             @Model.UserName
             @if (!string.IsNullOrEmpty(Model.Account.ProfileImage))
             {
-                <img src="@Model.Account.ProfileImage" class="img-thumbnail" alt="Profil bild" />
                 @*<img src="~/Images/userId1_image.gif" class="img-fluid rounded-circle" alt="Profil bild" />*@
+                <img src="@Url.Content(Model.Account.ProfileImage)" class="img-fluid rounded-start" alt="profil bild"/>
             }
             else
             {
                 @*<a>Bild saknas</a>
-            Nedanstående rad ska tas bort senare*@
-                <img src="~/Images/userId1_image.gif" class="img-fluid rounded-circle" alt="Profil bild" />
+                Nedanstående rad ska tas bort senare*@
+                <img src="~/Images/NoProfileImage.jpeg" class="img-fluid rounded-circle" alt="Profil bild" width="150" height="140" />
             }
         </h2>
 
