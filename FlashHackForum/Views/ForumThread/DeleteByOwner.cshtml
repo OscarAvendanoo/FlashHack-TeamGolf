@@ -11,6 +11,7 @@
 
             <!-- Buttons -->
             <form asp-action="DeleteByOwner" method="post">
+                @Html.AntiForgeryToken()
                 <input type="hidden" name="ThreadId" value="@Model.ThreadId" />
                 <input type="hidden" name="ThreadName" value="@Model.ThreadName" />
                 <div class="d-flex justify-content-center gap-3 mt-4">

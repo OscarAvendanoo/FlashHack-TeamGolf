@@ -9,6 +9,7 @@
     <h2 class="mb-3 ms-2">Svara på inlägg</h2>
 
     <form asp-action="CreateReplyPost" method="post" class="card p-4 shadow-sm">
+        @Html.AntiForgeryToken()
         <input type="hidden" asp-for="ThreadId" />
         <input type="hidden" asp-for="PostToReplyTo.ThreadPostId" />
 
