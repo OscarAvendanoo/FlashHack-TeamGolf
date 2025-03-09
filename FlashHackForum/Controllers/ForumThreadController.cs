@@ -33,7 +33,7 @@ namespace FlashHackForum.Controllers
         }
 
         // GET: ForumThread/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create(int id)
         {
             var userId = HttpContext.Session.GetInt32("UserId");
 
@@ -51,7 +51,16 @@ namespace FlashHackForum.Controllers
             }
             var secondCategories = _secondCategoryRepository.GetAllAsync().Result;
 
-            ViewBag.SecondCategoryId = new SelectList(secondCategories, "Id", "Name");
+            if(id != 0) // if sats behövdes för att metoden ska funka från ForumThread/Create utan ID
+            {
+                ViewBag.SecondCategoryId = new SelectList(secondCategories, "Id", "Name");
+
+                //Gjord en liten fuling för att få in id och namnet. Vågade inte pilla i din ViewModel hehe
+                var secondCategory = await _secondCategoryRepository.GetByIDAsync(id)/*.Result*/;
+                ViewBag.SecondCategoryName = secondCategory.Name;
+                ViewBag.SecondCategory = id;
+            }
+            
 
             // Skapa viewModel och sätt CreatorId till AccountId
             var viewModel = new ForumThreadViewModel
@@ -277,7 +286,7 @@ namespace FlashHackForum.Controllers
             
             await _threadPostRepository.SaveChanges();
 
-            return RedirectToAction("Index");
+            return RedirectToAction("ListMyThreads", "Favourite");
         }
         public async Task<IActionResult> ShowThread(int id)
         {

@@ -6,22 +6,24 @@
     ViewData["Title"] = "ListAllFavourites";
     int currentPage = ViewBag.CurrentPage ?? 1;
 }
+<div class="main-category mb-2 d-flex justify-content-between">
+    <h3 style="margin-bottom: 0;">Favoriter</h3>
 
-<h3>Favoriter</h3>
-
+</div>
 <br />
-<hr />
+
 
 <div class="list-group custom-list">
 @foreach (var item in Model)
 {
-        <a href="#" class="list-group-item list-group-item-action">
+        <a asp-action="ShowThread" asp-controller="ForumThread" asp-route-id="@item.ForumThreadID" class="list-group-item list-group-item-action">
             <div class="d-flex w-100 justify-content-between">
                 <h5 class="mb-1">@Html.DisplayFor(modelItem => item.Title)</h5>
                 <small>@Html.DisplayFor(modelItem => item.CreatedAt)</small>
                 
             </div>
-            <p>@Html.DisplayFor(modelItem => item.ThreadCreator.Signature)</p>
+            <br />
+            @* <p>@Html.DisplayFor(modelItem => item.ThreadCreator.Signature)</p> *@
             </a>
 }
 </div>

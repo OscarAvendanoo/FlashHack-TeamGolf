@@ -6,10 +6,15 @@
     ViewData["Title"] = "ListAllFavourites";
     int currentPage = ViewBag.CurrentPage ?? 1;
 }
+<div class="main-category mb-2 d-flex justify-content-between">
+    <h3 style="margin-bottom: 0;">Mina inlägg</h3>
+    <a asp-action="Create" asp-controller="ForumThread" class="create-thread-btn text-end text-decoration-none">
+        Skapa tråd
+    </a>
+</div>
 
-<h3>Mina inlägg</h3>
 <br />
-<hr />
+
 
 <div class="custom-list">
     @foreach (var item in Model)
