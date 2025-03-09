@@ -58,7 +58,8 @@
         }
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm box-shadow" style="background:black;">
             <div class="container-fluid">
-                <img src=@Url.Content("~/faviconNoBG/web-app-manifest-512x512.png") alt="Compaby logo" width="384" height="108" />
+                <a asp-controller="Home" asp-action="Index" class="no-hover"><img src=@Url.Content("~/faviconNoBG/web-app-manifest-512x512.png") alt="Compaby logo" width="384" height="108" /></a>
+                
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                 aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>

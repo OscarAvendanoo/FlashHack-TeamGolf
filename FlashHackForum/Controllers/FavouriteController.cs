@@ -153,6 +153,7 @@ namespace FlashHackForum.Controllers
 
             
             ViewBag.SecondCategory = secondCategory.Name;
+            ViewBag.SecondCategoryId = secondCategory.SecondCategoryId;
 
            
             var vmList = secondCategory.Threads

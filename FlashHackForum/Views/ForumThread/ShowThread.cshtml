@@ -12,11 +12,11 @@
         <h3>@Model.Title</h3>
         @if (Model.IsAnonymous == false)
         {
-            <p class="text-muted d-inline">Skapad av: @Model.ThreadCreator.DisplayName den @Model.CreatedAt.ToString("yyyy-MM-dd HH:mm")</p>
+            <p class="text-muted d-inline">Skapad av: @Model.ThreadCreator.DisplayName @Model.CreatedAt.ToString("dddd dd MMMM HH:mm")</p>
         }
         else
         {
-            <p class="text-muted d-inline">Skapad av: Anonym användare den @Model.CreatedAt.ToString("yyyy-MM-dd HH:mm")</p>
+            <p class="text-muted d-inline">Skapad av: Anonym användare @Model.CreatedAt.ToString("dddd dd MMMM HH:mm")</p>
         }
     </div>
     
