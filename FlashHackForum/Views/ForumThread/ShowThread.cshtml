@@ -65,8 +65,11 @@
                 <!-- Profile Picture -->
                 @if (!string.IsNullOrEmpty(post.PostCreator.ProfileImage) && post.Anonymous != true)
                 {
-                    <img src="@post.PostCreator.ProfileImage" alt="Profile Picture"
-                    class="rounded-circle me-3" style="width: 100px; height: 100px; object-fit: cover;">  
+                    <a asp-action="Details" asp-controller="User" asp-route-id="@post.PostCreatorId">
+                        <img src="@post.PostCreator.ProfileImage" alt="Profile Picture"
+                             class="rounded-circle me-3" style="width: 100px; height: 100px; object-fit: cover;">
+                    </a>
+                    
                 }
                 else
                 {

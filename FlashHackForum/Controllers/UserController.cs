@@ -60,7 +60,7 @@ namespace FlashHackForum.Controllers
                         LastName = registerVM.LastName,
                         Email = registerVM.Email,
                         UserName = registerVM.UserName,
-                        Password = registerVM.Password
+                        Password = registerVM.Password,
 
                     };
                     await _unitOfWork.UserRepository.AddAsync(user);
@@ -78,11 +78,13 @@ namespace FlashHackForum.Controllers
                         AccountCreatedAt = DateTime.UtcNow
                     };
                     await _unitOfWork.AccountRepository.AddAsync(account);
+
                     await _unitOfWork.CommitTransactionAsync(); // Commit the transaction if Successful
 
                     // Set Session variables
                     HttpContext.Session.SetInt32("UserId", user.UserId);
                     HttpContext.Session.SetString("UserName", user.UserName);
+                    HttpContext.Session.SetString("ProfileIMG", account.ProfileImage);
 
                     ViewBag.UserName = user.UserName;
 

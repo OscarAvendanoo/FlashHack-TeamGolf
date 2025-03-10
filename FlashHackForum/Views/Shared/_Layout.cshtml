@@ -54,6 +54,7 @@
             var userId = Context.Session.GetInt32("UserId");
             var user = Context.Session.GetString("UserName");
             var admin = Context.Session.GetInt32("IsAdmin");
+            var userIMG = Context.Session.GetString("ProfileIMG");
 
         }
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm box-shadow" style="background:black;">
@@ -91,6 +92,14 @@
                                             else if(userId==2)
                                             {
                                                 <img src="~/Images/userId2_image.gif" alt="profil bild" class="img-fluid rounded-start" style="max-height: 50px;">
+                                            }
+                                            else if (userId == 3)
+                                            {
+                                                <img src="~/Images/userId3_image.gif" alt="profil bild" class="img-fluid rounded-start" style="max-height: 50px;">
+                                            }
+                                            else if (userId == 2005)
+                                            {
+                                                <img src="~/Images/userId2005_image.gif" alt="profil bild" class="img-fluid rounded-start" style="max-height: 50px;">
                                             }
                                             else
                                             {

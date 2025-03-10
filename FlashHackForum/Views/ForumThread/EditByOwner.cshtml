@@ -7,6 +7,14 @@
 <div class="container mt-4">
     <h2 class="mb-3 ms-2">Redigera tråd</h2>
 
+    @if (!ViewData.ModelState.IsValid)
+
+    {
+        <div class="alert alert-danger mt-2">
+            @Html.ValidationSummary(false)
+        </div>
+    }
+
     <form asp-action="EditByOwner" method="post" class="card p-4 shadow-sm">
         @Html.AntiForgeryToken()
         <input type="hidden" asp-for="ThreadToEditId"/>
@@ -34,11 +42,5 @@
             <a asp-controller="Favourite" asp-action="ListMyThreads" class="btn btn-secondary">Avbryt</a>
         </div>
     </form>
-    @if (!ViewData.ModelState.IsValid)
-
-    {
-        <div class="alert alert-danger mt-2">
-            @Html.ValidationSummary(false)
-        </div>
-    }
+   
 </div>

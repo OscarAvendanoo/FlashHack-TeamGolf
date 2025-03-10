@@ -1,11 +1,6 @@
 ﻿using FlashHackForum.Data.Interfaces;
 using FlashHackForum.ViewModels;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc;
-using FlashHackForum.Models;
-using Microsoft.AspNetCore.Http;
-using FlashHackForum.ViewModels;
-using FlashHackForum.Data;
 
 namespace FlashHackForum.Controllers
 {
@@ -31,18 +26,15 @@ namespace FlashHackForum.Controllers
             if (ModelState.IsValid)
             {
                 var user = (await userRepository.GetAllAsync()).FirstOrDefault(c => c.Email == userLoginVM.Email && c.Password == userLoginVM.Password);
-
-                if (user == null)
                 {
                     ViewData["Message"] = "Invalid user id or password.";
                     return View(userLoginVM);
                 }
+
                 // Set Session variables
                 HttpContext.Session.SetInt32("UserId", user.UserId);
                 HttpContext.Session.SetString("UserName", user.UserName);
 
-                //HttpContext.Session.SetString("UserName", ($"{user.FirstName} {user.LastName}"));
-                HttpContext.Session.SetString("UserName", user.UserName);
                 ViewBag.UserName = user.UserName;
 
                 // If user IS an admin, set Session int [IsAdmin] to 1
