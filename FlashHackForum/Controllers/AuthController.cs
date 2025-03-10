@@ -34,6 +34,7 @@ namespace FlashHackForum.Controllers
                 // Set Session variables
                 HttpContext.Session.SetInt32("UserId", user.UserId);
                 HttpContext.Session.SetString("UserName", user.UserName);
+                HttpContext.Session.SetString("ProfileIMG", user.ProfileImage);
 
                 ViewBag.UserName = user.UserName;
 

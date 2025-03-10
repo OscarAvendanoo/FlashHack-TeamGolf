@@ -63,10 +63,10 @@
         <div class="list-group-item">
             <div class="d-flex">
                 <!-- Profile Picture -->
-                @if (!string.IsNullOrEmpty(post.PostCreator.ProfileImage) && post.Anonymous != true)
+                @if (!string.IsNullOrEmpty(post.PostCreator.User.ProfileImage) && post.Anonymous != true)
                 {
                     <a asp-action="Details" asp-controller="User" asp-route-id="@post.PostCreatorId">
-                        <img src="@post.PostCreator.ProfileImage" alt="Profile Picture"
+                        <img src="@post.PostCreator.User.ProfileImage" alt="Profile Picture"
                              class="rounded-circle me-3" style="width: 100px; height: 100px; object-fit: cover;">
                     </a>
                     

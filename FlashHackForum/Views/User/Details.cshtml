@@ -20,10 +20,10 @@
     <div class="row g-3 rounded" style="background-color: var(--dark-blue); color: var(--orange)">
         <h2>
             @Model.UserName
-            @if (!string.IsNullOrEmpty(Model.Account.ProfileImage))
+            @if (!string.IsNullOrEmpty(Model.ProfileImage))
             {
                 @*<img src="~/Images/userId2_image.gif" class="img-fluid rounded-circle" alt="Profil bild" />*@
-                <img src="@Url.Content(Model.Account.ProfileImage)" class="img-fluid rounded-circle" alt="profil bild" />
+                <img src="@Url.Content(Model.ProfileImage)" class="img-fluid rounded-circle" alt="profil bild" />
             }
             else
             {
@@ -37,7 +37,7 @@
             <input type="hidden" asp-for="AccountId" />
             <input type="hidden" asp-for="Account" />
             <input type="hidden" asp-for="Password" />
-            <input type="hidden" asp-for="Account.ProfileImage" />
+            <input type="hidden" asp-for="ProfileImage" />
 
             <div class="col-md-6 form-group">
                 <label class="form-label" for="FirstName">Förnamn</label>
@@ -220,10 +220,10 @@ else
         <!-- Följande data visas om någon annan besöker användarens profilsida -->
         <h2>
             @Model.UserName
-            @if (!string.IsNullOrEmpty(Model.Account.ProfileImage))
+            @if (!string.IsNullOrEmpty(Model.ProfileImage))
             {
                 @*<img src="~/Images/userId1_image.gif" class="img-fluid rounded-circle" alt="Profil bild" />*@
-                <img src="@Url.Content(Model.Account.ProfileImage)" class="img-fluid rounded-start" alt="profil bild"/>
+                <img src="@Url.Content(Model.ProfileImage)" class="img-fluid rounded-start" alt="profil bild"/>
             }
             else
             {

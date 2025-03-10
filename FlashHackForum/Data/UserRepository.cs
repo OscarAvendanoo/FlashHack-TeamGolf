@@ -23,6 +23,6 @@ namespace FlashHackForum.Data
         public async Task<User> GetUserByUsername(string username)
         {
             return await _context.Users.FirstOrDefaultAsync(u => u.UserName == username);
-        }
+        }       
     }
 }
