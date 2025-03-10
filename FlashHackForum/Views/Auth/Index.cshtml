@@ -33,3 +33,11 @@
         <a asp-controller="User" asp-action="Registration" class=" btn main-btn mt-3">Skapa konto</a>
     </div>
 </form>
+
+@if (!ViewData.ModelState.IsValid)
+
+{
+    <div class="alert alert-danger mt-2 w-25">
+        @Html.ValidationSummary(false)
+    </div>
+}

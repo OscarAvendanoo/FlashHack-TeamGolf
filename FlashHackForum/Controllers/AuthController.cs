@@ -26,25 +26,38 @@ namespace FlashHackForum.Controllers
             if (ModelState.IsValid)
             {
                 var user = (await userRepository.GetAllAsync()).FirstOrDefault(c => c.Email == userLoginVM.Email && c.Password == userLoginVM.Password);
+                if(user ==null)
                 {
-                    ViewData["Message"] = "Invalid user id or password.";
+                    ModelState.AddModelError("", "Det finns ingen användare med den Email adressen.");
                     return View(userLoginVM);
                 }
-
-                // Set Session variables
-                HttpContext.Session.SetInt32("UserId", user.UserId);
-                HttpContext.Session.SetString("UserName", user.UserName);
-                HttpContext.Session.SetString("ProfileIMG", user.ProfileImage);
-
-                ViewBag.UserName = user.UserName;
-
-                // If user IS an admin, set Session int [IsAdmin] to 1
-                if (user.IsAdmin)
+                
+                if (user.Password == userLoginVM.Password)
                 {
-                    HttpContext.Session.SetInt32("IsAdmin", 1);
+                    //var user = (await userRepository.GetAllAsync()).FirstOrDefault(c => c.Email == userLoginVM.Email && c.Password == userLoginVM.Password);
+
+                    //if (user == null)
+                    //{
+                    //    ViewData["Message"] = "Invalid user id or password.";
+                    //    return View(userLoginVM);
+                    //}
+                    // Set Session variables
+                    HttpContext.Session.SetInt32("UserId", user.UserId);
+                    HttpContext.Session.SetString("UserName", user.UserName);
+                    HttpContext.Session.SetString("ProfileIMG", user.ProfileImage);
+
+                    ViewBag.UserName = user.UserName;
+
+                    // If user IS an admin, set Session int [IsAdmin] to 1
+                    if (user.IsAdmin)
+                    {
+                        HttpContext.Session.SetInt32("IsAdmin", 1);
+                    }
+                    return RedirectToAction("Index", "Home");
                 }
-                return RedirectToAction("Index", "Home");
+                ModelState.AddModelError("", "Lösenord och Email Matchar inte");
             }
+            ModelState.AddModelError("", "Du måste ange en email och ett lösenord.");
             return View(userLoginVM);
         }
     }
