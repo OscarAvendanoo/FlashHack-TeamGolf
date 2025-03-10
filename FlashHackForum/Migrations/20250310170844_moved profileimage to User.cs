@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace FlashHackForum.Migrations
 {
     /// <inheritdoc />
-    public partial class keke : Migration
+    public partial class movedprofileimagetoUser : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -70,11 +70,33 @@ namespace FlashHackForum.Migrations
                     IsAdmin = table.Column<bool>(type: "bit", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Password = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    AccountId = table.Column<int>(type: "int", nullable: true)
+                    AccountId = table.Column<int>(type: "int", nullable: true),
+                    ProfileImage = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Users", x => x.UserId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Competenses",
+                columns: table => new
+                {
+                    CompetensId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Category = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CompanyId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Competenses", x => x.CompetensId);
+                    table.ForeignKey(
+                        name: "FK_Competenses_Companies_CompanyId",
+                        column: x => x.CompanyId,
+                        principalTable: "Companies",
+                        principalColumn: "CompanyId");
                 });
 
             migrationBuilder.CreateTable(
@@ -108,7 +130,6 @@ namespace FlashHackForum.Migrations
                     Signature = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Employer = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ProfileImage = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     AccountRating = table.Column<int>(type: "int", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DisplayName = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -127,39 +148,6 @@ namespace FlashHackForum.Migrations
                         principalTable: "Users",
                         principalColumn: "UserId",
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Competenses",
-                columns: table => new
-                {
-                    CompetensId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    EducationId = table.Column<int>(type: "int", nullable: true),
-                    Grade = table.Column<int>(type: "int", nullable: false),
-                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    AccountId = table.Column<int>(type: "int", nullable: true),
-                    CompanyId = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Competenses", x => x.CompetensId);
-                    table.ForeignKey(
-                        name: "FK_Competenses_Accounts_AccountId",
-                        column: x => x.AccountId,
-                        principalTable: "Accounts",
-                        principalColumn: "AccountId");
-                    table.ForeignKey(
-                        name: "FK_Competenses_Companies_CompanyId",
-                        column: x => x.CompanyId,
-                        principalTable: "Companies",
-                        principalColumn: "CompanyId");
-                    table.ForeignKey(
-                        name: "FK_Competenses_Educations_EducationId",
-                        column: x => x.EducationId,
-                        principalTable: "Educations",
-                        principalColumn: "EducationId");
                 });
 
             migrationBuilder.CreateTable(
@@ -190,6 +178,39 @@ namespace FlashHackForum.Migrations
                         principalTable: "SecondCategories",
                         principalColumn: "SecondCategoryId",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserCompetences",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    AccountId = table.Column<int>(type: "int", nullable: false),
+                    CompetensId = table.Column<int>(type: "int", nullable: false),
+                    Grade = table.Column<int>(type: "int", nullable: false),
+                    EducationId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserCompetences", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_UserCompetences_Accounts_AccountId",
+                        column: x => x.AccountId,
+                        principalTable: "Accounts",
+                        principalColumn: "AccountId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_UserCompetences_Competenses_CompetensId",
+                        column: x => x.CompetensId,
+                        principalTable: "Competenses",
+                        principalColumn: "CompetensId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_UserCompetences_Educations_EducationId",
+                        column: x => x.EducationId,
+                        principalTable: "Educations",
+                        principalColumn: "EducationId");
                 });
 
             migrationBuilder.CreateTable(
@@ -292,19 +313,9 @@ namespace FlashHackForum.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Competenses_AccountId",
-                table: "Competenses",
-                column: "AccountId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Competenses_CompanyId",
                 table: "Competenses",
                 column: "CompanyId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Competenses_EducationId",
-                table: "Competenses",
-                column: "EducationId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ForumThreads_CreatorId",
@@ -337,6 +348,21 @@ namespace FlashHackForum.Migrations
                 column: "ReplyToPostId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_UserCompetences_AccountId",
+                table: "UserCompetences",
+                column: "AccountId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserCompetences_CompetensId",
+                table: "UserCompetences",
+                column: "CompetensId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserCompetences_EducationId",
+                table: "UserCompetences",
+                column: "EducationId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_UserPostReactions_ThreadPostId",
                 table: "UserPostReactions",
                 column: "ThreadPostId");
@@ -354,19 +380,22 @@ namespace FlashHackForum.Migrations
                 name: "AccountFavorites");
 
             migrationBuilder.DropTable(
-                name: "Competenses");
+                name: "UserCompetences");
 
             migrationBuilder.DropTable(
                 name: "UserPostReactions");
 
             migrationBuilder.DropTable(
-                name: "Companies");
+                name: "Competenses");
 
             migrationBuilder.DropTable(
                 name: "Educations");
 
             migrationBuilder.DropTable(
                 name: "ThreadPosts");
+
+            migrationBuilder.DropTable(
+                name: "Companies");
 
             migrationBuilder.DropTable(
                 name: "ForumThreads");

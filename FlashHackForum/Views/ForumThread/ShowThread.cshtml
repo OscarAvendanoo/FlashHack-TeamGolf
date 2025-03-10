@@ -3,7 +3,7 @@
 @{
     ViewData["Title"] = Model.Title;
 
-
+    var userId = Context.Session.GetInt32("UserId");
 
     int currentPage = ViewBag.CurrentPage ?? 1;
 }
@@ -19,25 +19,35 @@
             <p class="text-muted d-inline">Skapad av: Anonym användare @Model.CreatedAt.ToString("dddd dd MMMM HH:mm")</p>
         }
     </div>
-    
+
     <!-- Buttons aligned to the left -->
     <div class="ms-auto">
-        <a asp-action="CreatePost" asp-controller="ThreadPost" asp-route-threadId="@Model.ForumThreadID"
-           class="create-thread-btn text-decoration-none btn btn-sm">
-            <i class="bi bi-arrow-return-left"></i> Svara i tråden
-        </a>
-        @* <a asp-action="AddToFavorites" 
+        @if(userId >0)
+        {
+            <a asp-action="CreatePost" asp-controller="ThreadPost" asp-route-threadId="@Model.ForumThreadID"
+            class="create-thread-btn text-decoration-none btn btn-sm">
+                <i class="bi bi-arrow-return-left"></i> Svara i tråden
+            </a>
+            @* <a asp-action="AddToFavorites" 
            class="text-danger heart-button me-3 btn btn-sm" onclick="toggleFavorite(@Model.ForumThreadID, this)">
             <i class="bi bi-heart"></i>
         </a> *@
-        <a href="javascript:void(0);"
-           id="hIcon1"
-           class="text-danger heart-button me-3 btn btn-sm"
-           onclick="toggleFavorite('@Model.ForumThreadID', this, event)">
-            <i class="bi bi-heart"></i>
-        </a>
+            <a href="javascript:void(0);"
+            id="hIcon1"
+            class="text-danger heart-button me-3 btn btn-sm"
+            onclick="toggleFavorite('@Model.ForumThreadID', this, event)">
+                <i class="bi bi-heart"></i>
+            </a>
+        }
+        else
+        {
+            <a asp-action="Index" asp-controller="Auth"
+               class="create-thread-btn text-decoration-none btn btn-sm">
+                <i class="bi bi-arrow-return-left"></i> Svara i tråden
+            </a>
+        }
     </div>
-    
+
 
 </div>
 
@@ -53,15 +63,18 @@
         <div class="list-group-item">
             <div class="d-flex">
                 <!-- Profile Picture -->
-                @if (!string.IsNullOrEmpty(post.PostCreator.ProfileImage) && post.Anonymous != true)
+                @if (!string.IsNullOrEmpty(post.PostCreator.User.ProfileImage) && post.Anonymous != true)
                 {
-                    <img src="@post.PostCreator.ProfileImage" alt="Profile Picture"
-                    class="rounded-circle me-3" style="width: 100px; height: 100px; object-fit: cover;">  
+                    <a asp-action="Details" asp-controller="User" asp-route-id="@post.PostCreatorId">
+                        <img src="@post.PostCreator.User.ProfileImage" alt="Profile Picture"
+                             class="rounded-circle me-3" style="width: 100px; height: 100px; object-fit: cover;">
+                    </a>
+                    
                 }
                 else
                 {
                     <img src="@Url.Content($"~/images/NoProfileImage.jpeg")"
-                         class="rounded-circle me-3" style="width: 100px; height: 100px; object-fit: cover;">
+                    class="rounded-circle me-3" style="width: 100px; height: 100px; object-fit: cover;">
                 }
 
                 <!-- Username -->
@@ -94,18 +107,28 @@
                     }
                 </div>
                 <!-- Checks if the post is a reply to another post -->
-                
+
             </div>
             @if (post.ReplyToPost != null)
             {
                 <p class="mt-3" style="margin-left: 115px;">@post.PostMessage</p>
             }
-            
+
             <div class="d-flex justify-content-between mt-2">
                 <!-- Reply Button on the Left -->
-                <a asp-action="CreateReplyPost" asp-controller="ThreadPost" asp-route-postId="@post.ThreadPostId" asp-route-threadId="@Model.ForumThreadID" class="btn btn-secondary btn-sm ms-1">
-                    <i class="bi bi-arrow-return-left"></i> Citera
-                </a>
+                @if(userId > 0)
+                {
+                    <a asp-action="CreateReplyPost" asp-controller="ThreadPost" asp-route-postId="@post.ThreadPostId" asp-route-threadId="@Model.ForumThreadID" class="btn btn-secondary btn-sm ms-1">
+                        <i class="bi bi-arrow-return-left"></i> Citera
+                    </a>
+                }
+                else
+                {
+                    <a asp-action="Index" asp-controller="Auth" class="btn btn-secondary btn-sm ms-1">
+                        <i class="bi bi-arrow-return-left"></i> Citera
+                    </a>
+                }
+
 
                 <!-- Edit and Delete Buttons on the Right -->
                 @* <div class="d-flex justify-content-end">
@@ -157,10 +180,20 @@
     }
 </div>
 <div class="ms-auto float-end">
-    <a asp-action="CreatePost" asp-controller="ThreadPost" asp-route-threadId="@Model.ForumThreadID"
-       class="create-thread-btn text-decoration-none btn btn-sm">
-        <i class="bi bi-arrow-return-left"></i> Svara i tråden
-    </a>
+    @if(userId > 0)
+    {
+        <a asp-action="CreatePost" asp-controller="ThreadPost" asp-route-threadId="@Model.ForumThreadID"
+        class="create-thread-btn text-decoration-none btn btn-sm">
+            <i class="bi bi-arrow-return-left"></i> Svara i tråden
+        </a>
+    }
+    else
+    {
+        <a asp-action="Index" asp-controller="Auth" asp-route-threadId="@Model.ForumThreadID"
+           class="create-thread-btn text-decoration-none btn btn-sm">
+            <i class="bi bi-arrow-return-left"></i> Svara i tråden
+        </a>
+    }
     @* <a asp-action="AddToFavorites" asp-controller="ThreadPost" asp-route-threadId="@Model.ForumThreadID"
        class="text-danger heart-button me-3 btn btn-sm" onclick="toggleFavorite(this)">
         <i class="bi bi-heart"></i>

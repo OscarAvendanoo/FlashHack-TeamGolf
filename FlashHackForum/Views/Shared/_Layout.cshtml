@@ -15,32 +15,32 @@
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-                
 
-            function toggleFavorite(threadId, element, event)
-            {
 
-                console.log("Toggling favorite for threadId:", threadId); // Debugging log
-                event.preventDefault();
-            fetch(`/thread/${threadId}/favorite`, { method: "POST" })
-                .then(response =>
-                {
-                    if (response.ok)
-                    {
-                        let icon = element.querySelector("i");
-                        if (icon.classList.contains("bi-heart"))
-                        {
-                            icon.classList.replace("bi-heart", "bi-heart-fill");
-                        } else
-                        {
-                            icon.classList.replace("bi-heart-fill", "bi-heart");
-                        }
-                    } else
-                    {
-                        console.error("Failed to toggle favorite.");
-                    }
-                })
-                .catch(error => console.error("Error:", error));
+        function toggleFavorite(threadId, element, event)
+        {
+
+        console.log("Toggling favorite for threadId:", threadId); // Debugging log
+        event.preventDefault();
+        fetch(`/thread/${threadId}/favorite`, { method: "POST" })
+        .then(response =>
+        {
+        if (response.ok)
+        {
+        let icon = element.querySelector("i");
+        if (icon.classList.contains("bi-heart"))
+        {
+        icon.classList.replace("bi-heart", "bi-heart-fill");
+        } else
+        {
+        icon.classList.replace("bi-heart-fill", "bi-heart");
+        }
+        } else
+        {
+        console.error("Failed to toggle favorite.");
+        }
+        })
+        .catch(error => console.error("Error:", error));
         }
 
     </script>
@@ -54,21 +54,21 @@
             var userId = Context.Session.GetInt32("UserId");
             var user = Context.Session.GetString("UserName");
             var admin = Context.Session.GetInt32("IsAdmin");
-
+            var userIMG = Context.Session.GetString("ProfileIMG");
         }
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm box-shadow" style="background:black;">
             <div class="container-fluid">
-                <a asp-controller="Home" asp-action="Index" class="no-hover"><img src=@Url.Content("~/faviconNoBG/web-app-manifest-512x512.png") alt="Compaby logo" width="384" height="108" /></a>
-                
+                <div class="ms-lg-5">
+                    <a asp-controller="Home" asp-action="Index" class="no-hover"><img src=@Url.Content("~/faviconNoBG/web-app-manifest-512x512.png") alt="Compaby logo" width="384" height="108" /></a>
+                </div>
+
+
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                 aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between mt-3">
                     <ul class="navbar-nav flex-grow-1 mt-0">
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Hem</a>
-                        </li>
 
                         @if (!string.IsNullOrEmpty(user))
                         {
@@ -84,7 +84,27 @@
 
                                         <!-- Bildkolumn -->
                                         <div class="col-auto p-2">
-                                            <img src="~/Images/userId1_image.gif" alt="profil bild" class="img-fluid rounded-start" style="max-height: 50px;">
+                                            @if(userId== 1)
+                                            {
+                                                <img src="~/Images/userId1_image.gif" alt="profil bild" class="img-fluid rounded-start" style="max-height: 50px;">
+                                            }
+                                            else if(userId==2)
+                                            {
+                                                <img src="~/Images/userId2_image.gif" alt="profil bild" class="img-fluid rounded-start" style="max-height: 50px;">
+                                            }
+                                            else if (userId == 3)
+                                            {
+                                                <img src="~/Images/userId3_image.gif" alt="profil bild" class="img-fluid rounded-start" style="max-height: 50px;">
+                                            }
+                                            else if (userId == 2005)
+                                            {
+                                                <img src="~/Images/userId2005_image.gif" alt="profil bild" class="img-fluid rounded-start" style="max-height: 50px;">
+                                            }
+                                            else
+                                            {
+                                                <img src="~/Images/NoProfileImage.jpeg" alt="profil bild" class="img-fluid rounded-start" style="max-height: 50px;">
+                                            }
+                                            
                                         </div>
 
                                         <!-- Dropdown meny kolumn -->
@@ -97,8 +117,10 @@
                                                         <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false"></a>
                                                         <ul class="dropdown-menu">
                                                             <li><a class="dropdown-item" asp-controller="User" asp-action="Details" asp-route-id=@userId>Min Profil</a></li>
-                                                            <li><a class="dropdown-item" asp-controller="" asp-action="">Dashboard</a></li>
-                                                            <li><a class="dropdown-item" asp-controller="" asp-action="">Användare</a></li>
+                                                            <li><a class="dropdown-item" asp-controller="" asp-action="">Hantera Användare</a></li>
+                                                            <li><a class="dropdown-item" asp-controller="" asp-action="">Hantera Konton</a></li>
+                                                            <li><a class="dropdown-item" asp-controller="" asp-action="">Hantera Kategorier</a></li>
+                                                            <li><a class="dropdown-item" asp-controller="" asp-action="">Hantera Inlägg</a></li>
                                                             <li><a class="dropdown-item" asp-controller="" asp-action="">Inställningar</a></li>
                                                             <li><a class="dropdown-item" asp-controller="User" asp-action="Logout">Logga ut</a></li>
                                                         </ul>
@@ -139,10 +161,12 @@
     <nav class="navbar navbar-lower">
 
         <ul class="nav-list" style="display: flex">
-            
+            <li class="nav-item">
+                <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Hem</a>
+            </li>
             <!--Category Dropdown Menu-->
             @await Component.InvokeAsync("CategoryMenu")
-            
+           
             @* @if (!string.IsNullOrEmpty(user))
             {
                 <li class="nav-item">
