@@ -5,6 +5,7 @@ using FlashHackForum.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Identity.Client;
 
 namespace FlashHackForum.Controllers
 {
@@ -189,6 +190,50 @@ namespace FlashHackForum.Controllers
                 ModelState.AddModelError("", "Det gick inte att uppdatera användardata.");
             }
             return View("Details", user);  // Om validering misslyckades, visa om användardatan i Details igen
+        }
+
+        // GET: ChangePassword
+        public async Task<ActionResult> ChangePassword()
+        {
+            var model = new ChangePasswordViewModel();
+            return View(model);
+        }
+
+        // POST: AccountController/ChangePassword/model
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> ChangePassword(int id, ChangePasswordViewModel model)
+        {
+            var user = await _userRepository.GetByIDAsync(id);
+            model.User = user;
+
+            if (model.Password != user.Password)
+            {
+                ModelState.AddModelError("", "Fel lösenord!");
+                return View(model);
+            }
+            else
+            {
+                if(model.NewPassword != model.ConfirmPassword)
+                {
+                    ModelState.AddModelError("", "Lösenorden måste matcha");
+                    return View(model);
+                }
+                else
+                {
+                    try
+                    {
+                        user.Password = model.NewPassword;
+                        await _userRepository.UpdateAsync(user);
+                        return RedirectToAction("Details", new { id = user.UserId });
+                    }
+                    catch
+                    {
+                        ModelState.AddModelError("", "Det gick inte att ändra lösenordet!");
+                    }
+                }
+            }
+            return View(model);
         }
     }
 }

@@ -22,7 +22,7 @@
             @Model.UserName
             @if (!string.IsNullOrEmpty(Model.Account.ProfileImage))
             {
-                @*<img src="~/Images/userId1_image.gif" class="img-fluid rounded-circle" alt="Profil bild" />*@
+                @*<img src="~/Images/userId2_image.gif" class="img-fluid rounded-circle" alt="Profil bild" />*@
                 <img src="@Url.Content(Model.Account.ProfileImage)" class="img-fluid rounded-circle" alt="profil bild" />
             }
             else
@@ -35,6 +35,7 @@
         <form asp-action="Edit" method="post" class="row g-3">
             <input type="hidden" asp-for="UserId" />
             <input type="hidden" asp-for="AccountId" />
+            <input type="hidden" asp-for="Account" />
             <input type="hidden" asp-for="Password" />
             <input type="hidden" asp-for="Account.ProfileImage" />
 
@@ -62,7 +63,7 @@
                 <label for="Password">Lösenord</label>
                 <div class="input-group">
                     <input for="Password" placeholder=@Model.Password class="form-control" disabled readonly />
-                    <button class="btn btn-primary border-0" style="background-color: var(--orange);" type="button" asp-action="" asp-route-id="@Model?.UserId">Ändra lösenord</button>
+                    <a class="btn btn-primary border-0" style="background-color: var(--orange);" type="button" asp-action="ChangePassword" asp-route-id="@Model?.UserId">Ändra lösenord</a>
                 </div>
             </div>
             <div class="col-md-6 form-group">

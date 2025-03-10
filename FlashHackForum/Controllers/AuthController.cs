@@ -26,7 +26,7 @@ namespace FlashHackForum.Controllers
         // POST: AuthController/Login
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Login(UserLoginViewModel userLoginVM)
+        public async Task<ActionResult> Index(UserLoginViewModel userLoginVM)
         {
             if (ModelState.IsValid)
             {
