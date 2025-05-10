@@ -1,0 +1,58 @@
+﻿@model FlashHackForum.ViewModels.CreatePostReplyVM
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+<div style="width:10em; height: 10em;"></div>
+<div class="container mt-4">
+    <h2 class="mb-3 ms-2">Svara på inlägg</h2>
+
+    <form asp-action="CreateReplyPost" method="post" class="card p-4 shadow-sm">
+        @Html.AntiForgeryToken()
+        <input type="hidden" asp-for="ThreadId" />
+        <input type="hidden" asp-for="PostToReplyTo.ThreadPostId" />
+
+        <div class="mb-3">
+            <h5 class="mb-3">Inlägg att svara på:</h5>
+            <div class="card p-3 mb-4">
+                @if(Model.PostToReplyTo.Anonymous == false)
+                {
+                    <h6>@Model.PostToReplyTo.PostCreator.DisplayName</h6>
+                }
+                else
+                {
+                    <h6>Anonymous</h6>
+                }
+                <p>@Model.PostToReplyTo.PostMessage</p>
+                <small class="text-muted">Skapad den: @Model.PostToReplyTo.PostDate.ToString("yyyy-MM-dd HH:mm")</small>
+            </div>
+        </div>
+
+        <div>
+            <label class="form-label">Ditt svar:</label>
+            <textarea asp-for="PostMessage" class="form-control" rows="4" required></textarea>
+        </div>
+        <div class="form-check mb-4 mt-4">
+            <input type="checkbox" asp-for="Anonymous" class="form-check-input" />
+            <label class="form-check-label" asp-for="Anonymous">Post Anonymously</label>
+        </div>
+        <div class="form-check mb-4 mt-4">
+            <input type="checkbox" asp-for="ShowSignature" class="form-check-input" />
+            <label class="form-check-label" asp-for="ShowSignature">Post Signature</label>
+        </div>
+
+        <div class="d-flex justify-content-start gap-3">
+            <button type="submit" class="btn btn-primary">Svara</button>
+            <a asp-controller="ForumThread" asp-action="ShowThread" asp-route-id="@Model.ThreadId" class="btn btn-secondary">Avbryt</a>
+        </div>
+       
+    </form>
+
+    @if (!ViewData.ModelState.IsValid)
+    {
+        <div class="alert alert-danger">
+            @Html.ValidationSummary(false)
+        </div>
+    }
+</div>

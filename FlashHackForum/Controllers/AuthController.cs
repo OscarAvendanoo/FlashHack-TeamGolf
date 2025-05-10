@@ -1,0 +1,69 @@
+﻿using FlashHackForum.Data.Interfaces;
+using FlashHackForum.ViewModels;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
+using FlashHackForum.Models;
+using Microsoft.AspNetCore.Http;
+using FlashHackForum.ViewModels;
+using FlashHackForum.Data;
+
+namespace FlashHackForum.Controllers
+{
+    public class AuthController : Controller
+    {
+        private readonly IUserRepository userRepository;
+
+        public AuthController(IUserRepository userRepository)
+        {
+            this.userRepository = userRepository;
+        }
+
+        public IActionResult Index()
+        {
+            return View();
+        }
+
+        // POST: AuthController/Login
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Index(UserLoginViewModel userLoginVM)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await userRepository.GetUserByEmail(userLoginVM.Email);
+                if(user ==null)
+                {
+                    ModelState.AddModelError("", "Det finns ingen användare med den Email adressen.");
+                    return View(userLoginVM);
+                }
+                if (user.Password == userLoginVM.Password)
+                {
+                    //var user = (await userRepository.GetAllAsync()).FirstOrDefault(c => c.Email == userLoginVM.Email && c.Password == userLoginVM.Password);
+
+                    //if (user == null)
+                    //{
+                    //    ViewData["Message"] = "Invalid user id or password.";
+                    //    return View(userLoginVM);
+                    //}
+                    // Set Session variables
+                    HttpContext.Session.SetInt32("UserId", user.UserId);
+                    HttpContext.Session.SetString("UserName", user.UserName);
+
+                    //HttpContext.Session.SetString("UserName", ($"{user.FirstName} {user.LastName}"));
+                    HttpContext.Session.SetString("UserName", user.UserName);
+                    ViewBag.UserName = user.UserName;
+
+                    // If user IS an admin, set Session int [IsAdmin] to 1
+                    if (user.IsAdmin)
+                    {
+                        HttpContext.Session.SetInt32("IsAdmin", 1);
+                    }
+                    return RedirectToAction("Index", "Home");
+                }
+                ModelState.AddModelError("", "Lösenord och Email Matchar inte");
+            }
+            ModelState.AddModelError("", "Du måste ange en email och ett lösenord.");
+            return View(userLoginVM);
+        }
+    }
+}

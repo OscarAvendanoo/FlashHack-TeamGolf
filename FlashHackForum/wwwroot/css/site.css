@@ -1,22 +1,344 @@
+:root {
+    --dark-blue: rgba(44, 62, 80, 1); /* För bakgrunder och kontrast.*/
+    --turqouise-blue: rgba(78, 140, 163, 1); /* För robotens kropp och detaljer.*/
+    --orange: rgba(255, 165, 0, 1); /*För de lysande ögonen.*/
+    --light-green: rgba(161, 195, 73, 1); /* För detaljer och accenter.*/
+    --white-grey: rgba(208, 211, 217, 1); /* För text och hög kontrast.*/
+}
+
 html {
-  font-size: 14px;
+    font-size: 14px;
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    html {
+        font-size: 16px;
+        /*#4fa0ab*/
+    }
 }
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
+    color: var(--orange);
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
+    padding-right: 220px;
+    padding-left: 220px;
+    background-color: rgba(44, 62, 80, 0.2);
+    overflow-x: hidden;
+    font-family: 'Oxygen', sans-serif;
+}
+
+/*HUVUDKNAPP*/
+
+.main-btn {
+    color: var(--orange);
+    background-color: var(--dark-blue);
+    border-radius: 10px;
+}
+
+    .main-btn:hover {
+        color: var(--dark-blue);
+        background-color: var(--orange);
+    }
+
+/*CreateThread Button*/
+.create-thread-btn {
+    padding: 5px;
+    font-size: 1rem;
+    color: var(--light-green);
+    background-color: var(--dark-blue);
+    align-items: center;
+    align-content: center;
+    font-weight: 600;
+    border-radius: 5px;
+}
+
+    .create-thread-btn:hover {
+        color: var(--dark-blue);
+        background-color: var(--light-green);
+    }
+
+
+
+
+
+
+/* Navbar utan padding från sidorna */
+.navbar {
+    background-color: var(--dark-blue);
+    /*overflow: hidden;*/
+    width: 100vw;
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+    padding-top: 0;
+    padding-bottom: 0;
+    border-bottom: solid;
+    border-color: var(--turqouise-blue);
+}
+
+.userMenu li {
+    background-color: var(--dark-blue);
+    /*padding: 2px 10px;*/
+    text-decoration: none;
+    font-weight: 500;
+}
+
+    .userMenu li:hover {
+        color: var(--dark-blue);
+        background-color: var(--orange);
+    }
+
+.navbar-lower {
+    border-bottom: none;
+    margin-bottom: 30px;
+}
+
+.navbar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    justify-content: center;
+    margin-left: 14%;
+}
+
+.navbar li {
+    margin: 0;
+}
+
+    .navbar li a:hover {
+        color: var(--dark-blue);
+        background-color: var(--orange);
+    }
+
+    .navbar li a:active {
+        color: var(--dark-blue);
+        background-color: var(--orange);
+    }
+
+.navbar img {
+    margin-left: 12%;
+}
+
+
+
+.navbar a {
+    display: block;
+    padding: 7px 20px;
+    color: var(--orange);
+    text-decoration: none;
+    font-weight: 500;
+    border-radius: 10px;
+    margin-right: 1em;
+    margin-left: 1em;
+}
+
+
+
+    .navbar a:hover {
+        color: var(--dark-blue);
+        background-color: var(--orange);
+    }
+
+    .navbar a:active {
+        color: var(--dark-blue);
+        background-color: var(--orange);
+    }
+
+
+.navbar a.no-hover:hover{
+    background-color: transparent !important;
+    color: inherit !important;
+}
+
+/*Innehåll med padding från sidorna */
+.content-wrapper {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/*CUSTOM LIST FAVOURITES*/
+
+.custom-list .list-group-item {
+    margin-bottom: 0.5em;
+    border-radius: 0.5em;
+}
+
+    .custom-list .list-group-item:nth-child(odd) {
+        background-color: rgba(78, 140, 163, 0.3);
+    }
+
+
+    .custom-list .list-group-item:nth-child(even) {
+        background-color: rgba(78, 140, 163, 0.8);
+        color: white;
+    }
+
+        /*.custom-list .list-group-item:nth-child(even) a {
+            color: white;
+        }*/
+
+    .custom-list .list-group-item a {
+        text-decoration: none;
+        color: black;
+    }
+
+
+/*PAGEINATION*/
+
+.page-link {
+    background-color: rgba(44, 62, 80, 0.8);
+    color: var(--orange);
+    font-weight: 400;
+}
+
+    .page-link:hover {
+        color: var(--dark-blue);
+        background-color: var(--orange);
+    }
+
+.pagination .page-item.active .page-link {
+    background-color: var(--dark-blue);
+    border-color: var(--dark-blue);
+    color: var(--orange);
+    font-weight: bold;
+}
+
+
+/*LOGIN DROPDOWN CARD*/
+
+.login-card {
+    background-color: var(--dark-blue);
+}
+
+    .login-card li a {
+        color: var(--orange);
+    }
+
+
+/*AVDELNINGAR DROPDOWN*/
+
+.dropdown-submenu:hover .dropdown-menu {
+    display: block;
+}
+
+.dropdown-menu {
+    display: none;
+}
+
+.dropdown-submenu {
+    position: relative;
+    color: var(--orange);
+}
+
+    .dropdown-submenu:hover > a {
+        color: inherit;
+    }
+
+    .dropdown-submenu > a {
+        color: inherit;
+    }
+
+    .dropdown-submenu > .dropdown-menu {
+        top: 0;
+        left: 80%;
+        margin-top: -1px;
+        display: none;
+        position: absolute;
+        min-width: 200px;
+    }
+
+
+    .dropdown-submenu:hover > .dropdown-menu {
+        display: block;
+    }
+
+
+
+.a-link {
+    color: rgba(204, 133, 0, 1);
+}
+/* Heart button */
+.heart-button {
+    font-size: 1.5rem;
+    text-decoration: none;
+    transition: transform 0.2s ease-in-out;
+}
+
+
+.custom-card {
+    padding: 0.4rem;
+}
+
+.custom-card-subcategory {
+    background-color: rgba(78, 140, 163, 0.3);
+    color: black;
+}
+
+    .custom-card-subcategory a {
+        text-decoration: none;
+        background-color: var(--light-green);
+    }
+
+.custom-card-threads {
+    background-color: rgba(78, 140, 163, 0.8);
+    color: #f0f0f0;
+}
+
+    .custom-card-threads a {
+        text-decoration: none;
+    }
+
+
+
+/* Fill the heart on hover if it's not already clicked */
+.heart-button:not(.active) i:hover {
+    font-weight: bold;
+    content: "\f417"; /* Won't work for Bootstrap icons, JS will handle it */
+}
+
+/* Optional: Add a slight scale effect on hover */
+.heart-button:hover {
+    transform: scale(1.2);
+}
+
+
+/*MainCategory Banner*/
+
+.main-category {
+    background-color: var(--dark-blue);
+    color: var(--orange);
+    padding: 8px;
+    font-size: 1.3rem;
+    margin-bottom: 0;
+    border-bottom: solid;
+}
+
+.main-page-row {
+    --bs-gutter-x: 0;
+    --bs-gutter-y: 0;
+}
+
+/*SubNav Menu*/
+a.nav-link:focus, a.nav-link:active {
+    color: var(--orange);
+    background-color: var(--dark-blue);
+    text-decoration: none;
+}
+
+a.nav-link:hover {
+    color: var(--dark-blue);
+    background-color: var(--orange);
+    text-decoration: none;
 }

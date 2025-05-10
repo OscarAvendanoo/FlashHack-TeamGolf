@@ -1,0 +1,281 @@
+﻿@model FlashHackForum.Models.ForumThread
+
+@{
+    ViewData["Title"] = Model.Title;
+
+
+
+    int currentPage = ViewBag.CurrentPage ?? 1;
+}
+<div class="main-category mb-2 d-flex align-items-center justify-content-between">
+    <div class="ms-1">
+        <h3>@Model.Title</h3>
+        @if (Model.IsAnonymous == false)
+        {
+            <p class="text-muted d-inline">Skapad av: @Model.ThreadCreator.DisplayName @Model.CreatedAt.ToString("dddd dd MMMM HH:mm")</p>
+        }
+        else
+        {
+            <p class="text-muted d-inline">Skapad av: Anonym användare @Model.CreatedAt.ToString("dddd dd MMMM HH:mm")</p>
+        }
+    </div>
+    
+    <!-- Buttons aligned to the left -->
+    <div class="ms-auto">
+        <a asp-action="CreatePost" asp-controller="ThreadPost" asp-route-threadId="@Model.ForumThreadID"
+           class="create-thread-btn text-decoration-none btn btn-sm">
+            <i class="bi bi-arrow-return-left"></i> Svara i tråden
+        </a>
+        @* <a asp-action="AddToFavorites" 
+           class="text-danger heart-button me-3 btn btn-sm" onclick="toggleFavorite(@Model.ForumThreadID, this)">
+            <i class="bi bi-heart"></i>
+        </a> *@
+        <a href="javascript:void(0);"
+           id="hIcon1"
+           class="text-danger heart-button me-3 btn btn-sm"
+           onclick="toggleFavorite('@Model.ForumThreadID', this, event)">
+            <i class="bi bi-heart"></i>
+        </a>
+    </div>
+    
+
+</div>
+
+<br />
+
+
+
+@* <hr /> *@
+<div class="list-group custom-list">
+
+    @foreach (var post in Model.PostsInThread.OrderBy(p => p.PostDate))
+    {
+        <div class="list-group-item">
+            <div class="d-flex">
+                <!-- Profile Picture -->
+                @if (!string.IsNullOrEmpty(post.PostCreator.ProfileImage) && post.Anonymous != true)
+                {
+                    <img src="@post.PostCreator.ProfileImage" alt="Profile Picture"
+                    class="rounded-circle me-3" style="width: 100px; height: 100px; object-fit: cover;">  
+                }
+                else
+                {
+                    <img src="@Url.Content($"~/images/NoProfileImage.jpeg")"
+                         class="rounded-circle me-3" style="width: 100px; height: 100px; object-fit: cover;">
+                }
+
+                <!-- Username -->
+                <div>
+                    @if (post.Anonymous == false)
+                    {
+                        <h5 class="mb-1">@post.PostCreator.DisplayName</h5>
+                    }
+                    else
+                    {
+                        <h5 class="mb-1">Anonym användare</h5>
+                    }
+                    @if (post.ReplyToPost != null)
+                    {
+                        <div class="p-2 rounded-3 mt-2" style="background-color: gainsboro; 0.9rem; color: black;">
+                            @if (post.ReplyToPost.Anonymous == false)
+                            {
+                                <p><strong>@post.ReplyToPost.PostCreator.DisplayName</strong> citat:</p>
+                            }
+                            else
+                            {
+                                <p><strong>Anonym användare</strong> citat:</p>
+                            }
+                            <p>@post.ReplyToPost.PostMessage</p>
+                        </div>
+                    }
+                    else
+                    {
+                        <p class="mt-2">@post.PostMessage</p>
+                    }
+                </div>
+                <!-- Checks if the post is a reply to another post -->
+                
+            </div>
+            @if (post.ReplyToPost != null)
+            {
+                <p class="mt-3" style="margin-left: 115px;">@post.PostMessage</p>
+            }
+            
+            <div class="d-flex justify-content-between mt-2">
+                <!-- Reply Button on the Left -->
+                <a asp-action="CreateReplyPost" asp-controller="ThreadPost" asp-route-postId="@post.ThreadPostId" asp-route-threadId="@Model.ForumThreadID" class="btn btn-secondary btn-sm ms-1">
+                    <i class="bi bi-arrow-return-left"></i> Citera
+                </a>
+
+                <!-- Edit and Delete Buttons on the Right -->
+                @* <div class="d-flex justify-content-end">
+            <a asp-action="UpVote" asp-controller="ThreadPost" asp-route-id="@post.ThreadPostId" class="btn btn-success btn-sm me-2">
+            <i class="bi bi-pencil"></i> Gilla
+            </a>
+            <a asp-action="DownVote" asp-controller="ThreadPost" asp-route-id="@post.ThreadPostId" class="btn btn-danger btn-sm">
+            <i class="bi bi-trash"></i> Ogilla
+            </a>
+            </div> *@
+                <div class="d-flex justify-content-end">
+
+                    @* <a asp-action="UpVote" asp-controller="ThreadPost" asp-route-id="@post.ThreadPostId" class="btn btn-success btn-sm me-2">
+                        <i class="bi bi-hand-thumbs-up"></i> Gilla
+                    </a>
+                    <a asp-action="DownVote" asp-controller="ThreadPost" asp-route-id="@post.ThreadPostId" class="btn btn-danger btn-sm">
+                        <i class="bi bi-hand-thumbs-down"></i> Ogilla
+                    </a> *@
+
+                    <button class="btn btn-success btn-sm me-2" id="likeButton-@post.ThreadPostId" onclick="reactToPost(@post.ThreadPostId, true)">
+                        <i class="bi bi-hand-thumbs-up"></i> Gilla <span id="like-count-@post.ThreadPostId">@post.LikeCount</span>
+                    </button>
+
+                    <button class="btn btn-danger btn-sm" id="dislikeButton-@post.ThreadPostId" onclick="reactToPost(@post.ThreadPostId, false)">
+                        <i class="bi bi-hand-thumbs-down"></i> Ogilla <span id="dislike-count-@post.ThreadPostId">@post.DislikeCount</span>
+                    </button>
+
+                </div>
+
+
+
+
+            </div>
+            <!-- Horizontal ruler and signature (if available) --> 
+            @if (!string.IsNullOrEmpty(post.PostCreator.Signature) && post.ShowSignature && post.Anonymous == false)
+            {
+                <hr />
+                <p class="text-muted" style="font-style: italic; margin-top: 10px;">
+                    @post.PostCreator.Signature
+                </p>
+            }
+            else if (!string.IsNullOrEmpty(post.PostCreator.Signature) && !post.ShowSignature)
+            {
+                <p class="text-muted" style="font-style: italic; margin-top: 10px;">
+                    (Signatur gömd)
+                </p>
+            }
+        </div>
+    }
+</div>
+<div class="ms-auto float-end">
+    <a asp-action="CreatePost" asp-controller="ThreadPost" asp-route-threadId="@Model.ForumThreadID"
+       class="create-thread-btn text-decoration-none btn btn-sm">
+        <i class="bi bi-arrow-return-left"></i> Svara i tråden
+    </a>
+    @* <a asp-action="AddToFavorites" asp-controller="ThreadPost" asp-route-threadId="@Model.ForumThreadID"
+       class="text-danger heart-button me-3 btn btn-sm" onclick="toggleFavorite(this)">
+        <i class="bi bi-heart"></i>
+    </a> *@
+    <a href="javascript:void(0);"
+       id="hIcon2"
+       class="text-danger heart-button me-3 btn btn-sm"
+       onclick="toggleFavorite('@Model.ForumThreadID', this, event)">
+        <i class="bi bi-heart"></i>
+    </a>
+</div>
+<br />
+<nav aria-label="Page navigation example">
+    <ul class="pagination">
+        <li class="page-item">
+            <a class="page-link" href="@Url.Action("ShowThread", new { id = Model.ForumThreadID, page = 1 })" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
+        <li class="page-item @(currentPage == 1 ? "active" : "")">
+            <a class="page-link" href="@Url.Action("ShowThread", new { id = Model.ForumThreadID, page = 1 })">1</a>
+        </li>
+        <li class="page-item @(currentPage == 2 ? "active" : "")">
+            <a class="page-link" href="@Url.Action("ShowThread", new { id = Model.ForumThreadID, page = 2 })">2</a>
+        </li>
+        <li class="page-item @(currentPage == 3 ? "active" : "")">
+            <a class="page-link" href="@Url.Action("ShowThread", new { id = Model.ForumThreadID, page = 3 })">3</a>
+        </li>
+        <li class="page-item">
+            <a class="page-link" href="@Url.Action("ShowThread", new { id = Model.ForumThreadID, page = 2 })" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+    </ul>
+</nav>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        console.log("DOM is fully loaded!");
+        CheckFavStatus("@Model.ForumThreadID", document.getElementById('hIcon1'), document.getElementById('hIcon2'))
+    });
+
+    function CheckFavStatus(threadId, element1, element2) {
+        fetch(`/thread/${threadId}/is-favorite`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("Network response was not ok");
+                }
+                return response.json();
+            })
+            
+            .then(data => {
+                console.log("Thread is favorite:", data);
+                let icon1 = element1.querySelector("i");
+                let icon2 = element2.querySelector("i");
+                if (data.isFavorite) {
+                    icon1.classList.replace("bi-heart", "bi-heart-fill");
+                    icon2.classList.replace("bi-heart", "bi-heart-fill");
+                } else {
+                    icon1.classList.replace("bi-heart-fill", "bi-heart");
+                    icon2.classList.replace("bi-heart-fill", "bi-heart");
+                }
+            })
+            
+    }
+
+    function reactToPost(postId, isLike) 
+    {
+        const url = isLike ? `/api/threadposts/${postId}/like` : `/api/threadposts/${postId}/dislike`;
+        console.log("Sending request to: ", url);
+
+        $.ajax({
+            url: url,
+            type: 'POST',
+            headers: { "Content-Type": "application/json" }, // Optional
+            success: function (response) 
+            {
+                console.log("Response received:", response)
+                console.log("Before updating:", $('#like-count-' + postId).text());
+                console.log("New LikeCount:", response.likeCount);
+                console.log("New DislikeCount:", response.dislikeCount);
+
+
+                // Ensure elements exist before updating them
+                if ($('#like-count-' + postId).length) 
+                {
+                    $('#like-count-' + postId).text(response.likeCount);
+                }
+                if ($('#dislike-count-' + postId).length) 
+                {
+                    $('#dislike-count-' + postId).text(response.dislikeCount);
+                }
+
+                // Highlight the clicked button
+                if (isLike) 
+                {
+                    $('#likeButton-' + postId).addClass('active');
+                    $('#dislikeButton-' + postId).removeClass('active');
+                } else 
+                {
+                    $('#dislikeButton-' + postId).addClass('active');
+                    $('#likeButton-' + postId).removeClass('active');
+                }
+            },
+            error: function (error) {
+                console.log('Error: ', error);
+            }
+        });
+    }
+    </script>
+    
+    
+

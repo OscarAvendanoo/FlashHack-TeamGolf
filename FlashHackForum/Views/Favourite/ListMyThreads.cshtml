@@ -1,0 +1,63 @@
+﻿@using X.PagedList
+
+@model PagedList<FlashHackForum.Models.ForumThread>
+
+@{
+    ViewData["Title"] = "ListAllFavourites";
+    int currentPage = ViewBag.CurrentPage ?? 1;
+}
+<div class="main-category mb-2 d-flex justify-content-between">
+    <h3 style="margin-bottom: 0;">Mina inlägg</h3>
+    <a asp-action="Create" asp-controller="ForumThread" class="create-thread-btn text-end text-decoration-none">
+        Skapa tråd
+    </a>
+</div>
+
+<br />
+
+
+<div class="custom-list">
+    @foreach (var item in Model)
+    {
+        <div class="list-group-item">
+            <a asp-action="ShowThread" asp-controller="ForumThread" asp-route-id="@item.ForumThreadID">
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1">@item.Title</h5>
+                    <small>Skapad: @item.CreatedAt.ToString("dddd, dd MMMM")</small>
+                </div>
+                
+                
+
+                <!-- Button Container (Floating Right) -->
+                <div class="d-flex justify-content-end mt-2">
+                    <a asp-action="EditByOwner" asp-controller="ForumThread" asp-route-id="@item.ForumThreadID" class="btn btn-primary btn-sm me-2 text-light">
+                        <i class="bi bi-pencil"></i> Ändra
+                    </a>
+                    <a asp-action="DeleteByOwner" asp-controller="ForumThread" asp-route-id="@item.ForumThreadID" class="btn btn-danger btn-sm text-light">
+                        <i class="bi bi-trash"></i> Ta bort
+                    </a>
+                </div>
+
+            </a>
+
+        </div>
+    }
+</div>
+
+<nav aria-label="Page navigation example">
+    <ul class="pagination">
+        <li class="page-item">
+            <a class="page-link" href="@Url.Action("ListAllFavourites", new { page = 1 })" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
+        <li class="page-item @(currentPage == 1 ? "active" : "")"><a class="page-link" href="@Url.Action("ListAllFavourites", new { page = 1 })">1</a></li>
+        <li class="page-item @(currentPage == 2 ? "active" : "")"><a class="page-link" href="@Url.Action("ListAllFavourites", new { page = 2 })">2</a></li>
+        <li class="page-item @(currentPage == 3 ? "active" : "")"><a class="page-link" href="@Url.Action("ListAllFavourites", new { page = 3 })">3</a></li>
+        <li class="page-item">
+            <a class="page-link" href="@Url.Action("ListAllFavourites", new { page = 2 })" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+    </ul>
+</nav>

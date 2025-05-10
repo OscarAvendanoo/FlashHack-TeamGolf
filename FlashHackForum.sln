@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.11.35222.181
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlashHackForum", "FlashHackForum\FlashHackForum.csproj", "{390118B8-0074-456F-AD5B-F251EFBAC43A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlashHackForum", "FlashHackForum\FlashHackForum.csproj", "{390118B8-0074-456F-AD5B-F251EFBAC43A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

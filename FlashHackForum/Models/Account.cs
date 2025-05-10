@@ -1,0 +1,43 @@
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Runtime.CompilerServices;
+
+namespace FlashHackForum.Models
+{
+    public class Account
+    {
+        public int AccountId { get; set; }
+        [Required]
+        public bool IsPremium { get; set; }
+        public string? Biography { get; set; }
+        public string? Signature { get; set; }
+        public virtual ICollection<ForumThread> Favorites { get; set; } = new List<ForumThread>();
+        public virtual ICollection<ForumThread> ThreadsStarted { get; set; } = new List<ForumThread>();
+        public virtual ICollection<ThreadPost> ThreadPosts { get; set; } = new List<ThreadPost>();
+        public virtual ICollection<UserCompetence> UserCompetences { get; set; } = new List<UserCompetence>();
+        [Required]
+        public string? PhoneNumber { get; set; }
+        public string? Employer { get; set; }
+        public string ?ProfileImage { get; set; }
+        public int AccountRating { get; set; } = 0;
+        public string? Email { get; set; }
+        [Required]
+        public string DisplayName { get; set; }
+
+        // Foreign key for User
+        public int UserId { get; set; } // Foreign Key
+        [Required]
+        public virtual User User { get; set; } // Navigation property back to User
+        
+
+        // properties that declares which information that should be left out or not,
+        // will be handled by logics inside razor view.
+        public bool ShowAdvertisements { get; set; } = true;
+        public bool ShowContact { get; set; } = true;        // sätter allt initialt till true så får användaren ändra detta om den vill
+        public bool ShowToCompanies { get; set; } = true;
+        public DateTime AccountCreatedAt { get; set; } = DateTime.Now;  
+        
+      
+        
+    }
+}

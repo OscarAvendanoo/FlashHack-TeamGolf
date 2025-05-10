@@ -1,0 +1,39 @@
+﻿@model IEnumerable<FlashHackForum.Models.SecondCategory>
+
+@{
+    ViewData["Title"] = "GetAllSecondCategoriesAsync";
+}
+
+<h1>Sub Categories</h1>
+
+<p>
+    <a asp-action="CreateCategory">Create New Sub Category</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                    <a asp-action="EditCategory" asp-route-id="@item.SecondCategoryId">Edit</a> |
+                    <a asp-action="DeleteCategory" asp-route-id="@item.SecondCategoryId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+<p style="background-color: var(--dark-blue)">Hejsan</p>
+<p style="background-color: var(--turqouise-blue)">Hejsan</p>
+<p style="background-color: var(--orange)">Hejsan</p>
+<p style="background-color: var(--light-green)">Hejsan</p>
+<p style="background-color: var(--white)">Hejsan</p>
